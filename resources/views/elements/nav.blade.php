@@ -19,6 +19,9 @@
 				@else
 					@include('elements.nav_list_'.(Auth::user()->perfil == 'U' ? 'U' : 'A'))
 					<li>
+						<a href="{{ route('perfil') }}">Mi cuenta</a>
+					</li>
+					<li>
 						<a href="{{ route('logout') }}">Cerrar sesión</a>
 					</li>
 				@endif	

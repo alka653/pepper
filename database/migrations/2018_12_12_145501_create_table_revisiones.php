@@ -18,10 +18,10 @@ class CreateTableRevisiones extends Migration
             $table->date('fecha');
             $table->integer('solicitud_id')->unsigned();
             $table->foreign('solicitud_id')->references('id')->on('solicitudes');
-            $table->integer('inspector_id')->unsigned();
+            $table->integer('inspector_id')->unsigned()->nullable();
             $table->foreign('inspector_id')->references('id')->on('users');
-            $table->longText('observacion');
-            $table->enum('estado', ['R','N']);
+            $table->longText('observacion')->nullable();
+            $table->enum('estado', ['R','N','P']);
             $table->enum('modo', ['1','2','3']);
         });
     }

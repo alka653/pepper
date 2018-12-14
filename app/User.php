@@ -20,4 +20,10 @@ class User extends Authenticatable{
 		$data['estado'] = 'A';
 		return User::create($data);
 	}
+	public static function updatePassword($password, $user_id){
+		$user = User::find($user_id);
+		$user->password = bcrypt($password);
+		$user->save();
+		return $user;
+	}
 }

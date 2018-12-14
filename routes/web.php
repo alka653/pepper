@@ -27,4 +27,31 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
+	Route::prefix('/solicitudes')->group(function(){
+		Route::get('/', 'SolicitudesController@list')->name('listar_solicitudes');
+		Route::prefix('/crear')->group(function(){
+			Route::get('/', 'SolicitudesController@new')->name('crear_solicitud');
+			Route::post('/', 'SolicitudesController@saveOrUpdateData')->name('crear_solicitud.post');
+		});
+		Route::prefix('/{solicitud}')->group(function(){
+			Route::get('/', 'SolicitudesController@detail')->name('detalle_solicitud');
+			Route::prefix('/editar')->group(function(){
+				Route::get('/', 'SolicitudesController@edit')->name('editar_solicitud');
+				Route::put('/', 'SolicitudesController@saveOrUpdateData')->name('editar_solicitud.post');
+			});
+			Route::prefix('/revisiones')->group(function(){
+				Route::post('/', 'RevisionesController@save')->name('crear_revision.post');
+			});
+		});
+	});
+	Route::prefix('/perfil')->group(function(){
+		Route::get('/', 'UsersController@profile')->name('perfil');
+		Route::prefix('/cambiar-credencial')->group(function(){
+			Route::get('/', 'UsersController@changePassword')->name('cambiar_password');
+			Route::post('/', 'UsersController@updatePassword')->name('cambiar_password.post');
+		});
+		Route::prefix('/{user}')->group(function(){
+			Route::get('/editar', 'UsersController@edit')->name('editar_perfil');
+		});
+	});
 });

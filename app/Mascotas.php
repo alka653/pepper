@@ -25,6 +25,11 @@ class Mascotas extends Model{
 	public function getEstadoAttribute($estado){
 		return $estado == 'V' ? 'Vivo' : 'Fallecido';
 	}
+	public static function listaMascotasByUser($propietario){
+		return Mascotas::where('propietario_id', $propietario)->get()->map(function($mascota){
+			return $mascota->only(['id']);
+		})->toArray();
+	}
 	public static function saveData($data){
 		return Mascotas::create($data);
 	}

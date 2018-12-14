@@ -25,15 +25,17 @@ class PersonaFormRequest extends FormRequest{
 			'direccion_residencia' => 'required|max:150,direccion_residencia,'.$persona,
 			'sexo' => 'required|max:2,sexo,'.$persona,
 			'numero_celular' => 'required|max:10,numero_celular,'.$persona,
-			'numero_telefonico' => 'max:10,numero_telefonico,'.$persona
+			'numero_telefonico' => 'max:10,numero_telefonico,'.$persona,
+			'ocupacion' => 'required|max:100,ocupacion,'.$persona,
+			'foto' => 'nullable|image'
 		];
 	}
 	public function messages(){
 		return [
 			'nombre.required' => 'Debe ingresar el nombre',
-			'nombre.max' => 'El nombre no puede superar los 45 caracteres',
+			'nombre.max' => 'El nombre no puede superar los :max caracteres',
 			'apellido.required' => 'Debe ingresar el apellido',
-			'apellido.max' => 'El apellido no puede superar los 45 caracteres',
+			'apellido.max' => 'El apellido no puede superar los :max caracteres',
 			'tipo_documento.required' => 'Debe ingresar el tipo de documento',
 			'departamento_expedicion_id.required' => 'Debe selecccionar una opción',
 			'municipio_expedicion_id.required' => 'Debe selecccionar una opción',
@@ -41,13 +43,16 @@ class PersonaFormRequest extends FormRequest{
 			'municipio_residencia_id.required' => 'Debe selecccionar una opción',
 			'numero_documento.required' => 'Debe ingresar el número de documento',
 			'numero_documento.unique' => 'El número de documento ya se encuentra registrado',
-			'numero_documento.max' => 'El número de documento no debe superar los 15 caracteres',
+			'numero_documento.max' => 'El número de documento no debe superar los :max caracteres',
 			'direccion_residencia.required' => 'Debe ingresar la dirección de residencia',
-			'direccion_residencia.max' => 'La dirección de residencia no debe superar los 150 caracteres',
+			'direccion_residencia.max' => 'La dirección de residencia no debe superar los :max caracteres',
 			'sexo.required' => 'Debe ingresar la orientación sexual',
 			'numero_celular.required' => 'Debe ingrresar el número de celular',
-			'numero_celular.max' => 'El número de celular no puede superar los 10 caracteres',
-			'numero_telefonico.max' => 'El número de teléfono no puede superar los 10 caracteres'
+			'numero_celular.max' => 'El número de celular no puede superar los :max caracteres',
+			'numero_telefonico.max' => 'El número de teléfono no puede superar los :max caracteres',
+			'ocupacion.required' => 'Debes ingresar tu ocupación',
+			'ocupacion.max' => 'La ocupación no debe superar los :max caracteres',
+			'foto.image' => 'Archivo inválido'
 		];
 	}
 }

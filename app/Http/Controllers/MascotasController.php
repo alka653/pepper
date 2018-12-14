@@ -55,14 +55,24 @@ class MascotasController extends Controller{
 	}
 	public function saveOrUpdateData(MascotaFormRequest $mascotaRequest){
 		$mascota = null;
+		$message = '';
 		if($mascotaRequest->mascota){
 			$mascota = Mascotas::updateData($mascotaRequest);
 			$mascotasFotos = MascotasFotos::where('mascota_id', $mascotaRequest->mascota)->get();
-			foreach($mascotaRequest->foto as $key => $foto) {
-				$mascotasFotos[$key]->fecha = date('Y-m-d');
-				$mascotasFotos[$key]->foto = $foto->store('mascotas');
-				$mascotasFotos[$key]->save();
+			foreach($mascotaRequest->foto as $key => $foto){
+				$foto = $foto->store('mascotas');
+				if(isset($mascotasFotos[$key])){
+					$mascotasFotos[$key]->fecha = date('Y-m-d');
+					$mascotasFotos[$key]->foto = $foto;
+					$mascotasFotos[$key]->save();
+				}else{
+					MascotasFotos::saveData([
+						'foto' => $foto,
+						'mascota_id' => $mascota->id
+					]);
+				}
 			}
+			$message = 'Los datos de tu mascota se han actualizado con éxito.';
 		}else{
 			$mascota = Mascotas::saveData([
 				'nombre' => $mascotaRequest->nombre,
@@ -83,7 +93,10 @@ class MascotasController extends Controller{
 					'mascota_id' => $mascota->id
 				]);
 			}
+			$message = 'Se ha registrado tu mascota con éxito.';
 		}
+		$mascotaRequest->session()->flash('message.level', 'success');
+		$mascotaRequest->session()->flash('message.content', $message);
 		return redirect()->route('detalle_mascota', ['mascota' => $mascota->id]);
 	}
 }

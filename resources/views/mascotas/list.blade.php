@@ -10,11 +10,14 @@
 
 @section('content')
 	<div class="container" style="margin-bottom: 50px">
-		<h2>Mis mascotas</h2>
+		<h2>Lista de mascotas</h2>
 		<div class="row justify-content-md-center">
 			<div class="col-12 text-center">
 				@include('elements.buscar')
-				<a href="{{ route('crear_mascota') }}" class="btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 10px;">Agregar mascota</a>
+				<br>
+				@if(Auth::user()->perfil == 'U')
+					<a href="{{ route('crear_mascota') }}" class="btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 10px;">Agregar mascota</a>
+				@endif
 			</div>
 			@forelse($mascotas as $mascota)
 				<div class="col-md-4 block">
@@ -29,7 +32,9 @@
 								<h6 class="no-margin"><b>Propietario:</b> {{ $mascota->propietario->nombre.' '.$mascota->propietario->apellido }}</h6>
 							@endif
 							<a href="{{ route('detalle_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-info">Detalle</a>
-							<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
+							@if(Auth::user()->perfil == 'U')
+								<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
+							@endif
 						</div>
 					</div>
 				</div>

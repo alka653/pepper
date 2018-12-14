@@ -7,6 +7,7 @@ use App\Personas;
 use App\Departamentos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ChangePasswordFormRequest;
 use App\Http\Requests\RegistroUsuarioFormRequest;
 
 class UsersController extends Controller{
@@ -27,7 +28,9 @@ class UsersController extends Controller{
 			'sexo' => $request->sexo,
 			'numero_celular' => $request->numero_celular,
 			'numero_telefonico' => $request->numero_telefonico,
-			'tipo_documento' => $request->tipo_documento
+			'tipo_documento' => $request->tipo_documento,
+			'ocupacion' => $request->ocupacion,
+			'foto' => $request->foto->store('personas')
 		]);
 		$usuario = User::saveData([
 			'email' => $request->email,
@@ -36,5 +39,26 @@ class UsersController extends Controller{
 		]);
 		Auth::login($usuario);
 		return redirect()->route('home');
+	}
+	public function profile(){
+		return view(self::DIR_TEMPLATE.'profile');
+	}
+	public function edit(User $user){
+		if(Auth::user()->perfil == 'J' || ($user->id == Auth::user()->id)){
+			return view(self::DIR_TEMPLATE.'edit', [
+				'user' => $user
+			]);
+		}else{
+			return redirect()->route('editar_perfil', ['user' => Auth::user()->id]);
+		}
+	}
+	public function changePassword(){
+		return view(self::DIR_TEMPLATE.'modal_password');
+	}	
+	public function updatePassword(ChangePasswordFormRequest $request){
+		User::updatePassword($request->password, Auth::user()->id);
+		return response()->json([
+			'message' => 'Contraseña actualizada con éxito'
+		]);
 	}
 }

@@ -74,7 +74,7 @@
 							<img class="hide" style="width: 180px; height: 150px;">
 						@endif
 						<div class="custom-file">
-							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1']) }}
+							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1', 'required']) }}
 							{{ Form::label('foto[]', 'Foto frontal', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>

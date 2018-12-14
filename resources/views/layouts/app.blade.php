@@ -17,6 +17,11 @@
 		@yield('style')
 	</head>
 	<body id="body">
+		@if(session()->has('message.level'))
+			<div class="alert alert-{{ session('message.level') }}" role="alert" style="border: none; border-radius: 0; margin: 0;">
+		    	{!! session('message.content') !!}
+			</div>
+		@endif
 		@include('elements.nav')
 		<main id="main">
 			@yield('content')
@@ -30,13 +35,13 @@
 		<script src="{{ mix('/js/sticky.js') }}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 		<script src="{{ mix('/js/theme.js') }}"></script>
-		@if(Auth::check())
+		@if(Auth::check() && Auth::user()->perfil == 'U')
 			<script>
 				$(document).ready(function(){
 					$.get('{{ route('verificar_usuario_mascotas') }}', function(response){
 						if(response.count_pet == 0){
 							$(`
-								<div class="alert alert-warning" role="alert" style="margin: 0">
+								<div class="alert alert-warning" role="alert" style="border: none; border-radius: 0; margin: 0;">
 									No tienes mascotas registradas. Da <a href="{{ route('crear_mascota') }}" class="alert-link">clic aquí</a> para registrar tu mascota
 								</div>
 							`).insertBefore('header#header')

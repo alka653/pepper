@@ -89,6 +89,10 @@ jQuery(document).ready(function ($) {
 		}
 	})
 })
+function url_param(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	return (results != null) ? results[1] || 0: false;
+}
 function loading(text = 'Cargando datos'){
 	if($('.load').children().length == 0){
 		$('.load').append(
@@ -143,7 +147,7 @@ $(document).on('keypress', '.only-number-float', function(event){
 })
 $(document).on('click', '.open-modal', function(e){
 	e.preventDefault()
-	$('.modal').load($(this).attr('href'), function(){
+	$('.modal').empty().load($(this).attr('href'), function(){
 		$('#Modal').modal()
 	})
 })

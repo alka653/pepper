@@ -17,7 +17,7 @@ class CreateTableSolicitudes extends Migration
             $table->increments('id');
             $table->date('fecha_solicitud');
             $table->date('fecha_finalizado')->nullable();
-            $table->enum('estado', ['P','F','R']);
+            $table->enum('estado', ['P','F','C']);
             $table->integer('mascota_id')->unsigned();
             $table->foreign('mascota_id')->references('id')->on('mascotas');
         });
