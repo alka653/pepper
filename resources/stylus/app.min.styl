@@ -1,0 +1,89 @@
+RED = #c0392b
+
+border-radius(args)
+	border-radius args
+	-o-border-radius args
+	-webkit-border-radius args
+	-moz-border-radius args
+	-ms-transition args
+
+box-shadow(args)
+	box-shadow args
+	-o-box-shadow args
+	-webkit-box-shadow args
+	-moz-box-shadow args
+	-ms-transition args
+
+transition(args)
+	-webkit-transition args
+	-moz-transition args
+	-ms-transition args
+	-o-transition args
+	transition args
+
+html
+	position relative
+	min-height 100%
+
+body
+	margin-bottom 60px
+
+footer
+	position absolute
+	bottom 0
+	width 100%
+	margin-top 10px
+
+main
+	margin-bottom 10px
+	
+.load-animation
+	width 100%
+	height 100%
+	top 0
+	bottom 0
+	position fixed
+	background-color rgba(0, 0, 0, 0.54)
+	z-index 10000
+	transition 1s
+
+.loading
+	margin 300px auto
+	padding 10px
+	width 200px
+	background-color white
+	border-radius 3px
+	transition 1.2s
+
+.hidden
+	display none
+
+.label-required
+	&:after
+		color RED
+		content ' *'
+
+.select2-container
+	.select2-selection--single
+		height 38px
+
+.block
+	background-color white
+	margin-bottom 10px
+	padding 10px
+	border-radius(5px)
+	box-shadow(0px 2px 2px 0px rgba(0, 0, 0, 0.06))
+
+.help-block
+	color RED
+	font-size 13px
+	margin 0
+
+header
+	margin-bottom 10px
+
+.hide
+	display none
+
+.no-margin
+	margin 0

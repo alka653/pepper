@@ -1,0 +1,14 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.min.css": "/css/app.min.css",
+    "/js/jquery.min.js": "/js/jquery.min.js",
+    "/js/jquery-migrate.min.js": "/js/jquery-migrate.min.js",
+    "/js/bootstrap.min.js": "/js/bootstrap.min.js",
+    "/js/theme.js": "/js/theme.js",
+    "/js/sticky.js": "/js/sticky.js",
+    "/css/bootstrap.min.css": "/css/bootstrap.min.css",
+    "/css/font-awesome/font-awesome.min.css": "/css/font-awesome/font-awesome.min.css",
+    "/css/animate/animate.min.css": "/css/animate/animate.min.css",
+    "/css/ionicons/ionicons.min.css": "/css/ionicons/ionicons.min.css",
+    "/css/theme.css": "/css/theme.css"
+}
