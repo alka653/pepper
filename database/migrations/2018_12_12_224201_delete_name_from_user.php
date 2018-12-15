@@ -15,7 +15,7 @@ class DeleteNameFromUser extends Migration
     {
         if(Schema::hasColumn('users', 'name')){
             Schema::table('users', function (Blueprint $table) {
-                $table->dropColumnIfExist('name');
+                $table->dropColumn('name');
             });
         }
     }

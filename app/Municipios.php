@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Municipios extends Model{
+	protected $guarded = [];
+	public $timestamps = false;
 	public function departamento(){
 		return $this->belongsTo('App\Departamentos', 'departamento_id');
 	}
