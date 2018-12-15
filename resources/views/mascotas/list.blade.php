@@ -40,7 +40,11 @@
 				</div>
 			@empty
 				<div class="col-12 text-center">
-					<h5>No tienes una mascota agregada. Da <a href="{{ route('crear_mascota') }}">clic aquí</a> para agregar tu mascota</h5>
+					@if(Auth::user()->perfil == 'U')
+						<h5>No tienes una mascota agregada. Da <a href="{{ route('crear_mascota') }}">clic aquí</a> para agregar tu mascota</h5>
+					@else
+						<h5>Aún nohan registrado mascotas</h5>
+					@endif
 				</div>
 			@endforelse
 		</div>
