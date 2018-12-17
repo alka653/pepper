@@ -56,14 +56,14 @@ class UsersTableSeeder extends Seeder{
 			'email' => 'coordinador@gmail.com',
 			'password' => bcrypt('12345'),
 			'persona_id' => $coordinador->id,
-			'perfil' => 'Z',
+			'perfil' => 'C',
 			'estado' => 'A'
 		]);
 		User::create([
 			'email' => 'jefe@gmail.com',
 			'password' => bcrypt('12345'),
 			'persona_id' => $jefe->id,
-			'perfil' => 'Z',
+			'perfil' => 'J',
 			'estado' => 'A'
 		]);
 	}
