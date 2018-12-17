@@ -6,7 +6,7 @@
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
-		{{ Form::open(['url' => route('cambiar_password.post'), 'method' => 'post', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data', 'id' => 'form-password']) }}
+		{{ Form::open(['url' => route('cambiar_password.post'), 'method' => 'post', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data', 'id' => 'form-modal']) }}
 			<div class="modal-body">
 				<div class="form-group">
 					{{ Form::label('password', 'Contraseña') }}
@@ -26,24 +26,3 @@
 		{{ Form::close() }}
 	</div>
 </div>
-<script>
-	$(document).on('submit', '#form-password', function(event){
-		event.preventDefault()
-		$.post($(this).attr('action'), $(this).serialize())
-		.done(function(response){
-			alert(response.message)
-			$('.modal').modal('hide')
-		})
-		.fail(function(xhr, status, error){
-			$.each(xhr.responseJSON.errors, function(index, value){
-				console.log(index, value)
-				$(`#${index}`).parent().find('.invalid-feedback').remove()
-				$(`#${index}`).parent().append(
-					`<div class="invalid-feedback" style="display: block;">
-						${value[0]}
-					</div>`
-				)
-			})
-		})
-	})
-</script>

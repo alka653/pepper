@@ -11,7 +11,13 @@ class Personas extends Model{
 	public $timestamps = false;
 	protected $fillable = ['nombre', 'apellido', 'numero_documento', 'municipio_expedicion_id', 'direccion_residencia', 'municipio_residencia_id', 'sexo', 'numero_celular', 'numero_telefonico', 'tipo_documento', 'ocupacion', 'foto'];
 	public function mascotas(){
-		return $this->belongsTo('App\Mascotas', 'propietario_id');
+		return $this->hasMany('App\Mascotas', 'propietario_id');
+	}
+	public function municipio_expedicion(){
+		return $this->belongsTo('App\Municipios', 'municipio_expedicion_id');
+	}
+	public function municipio_residencia(){
+		return $this->belongsTo('App\Municipios', 'municipio_residencia_id');
 	}
 	public function getFotoAttribute($foto){
 		return $foto != null ? Storage::url($foto) : '/img/user.png';
@@ -51,5 +57,24 @@ class Personas extends Model{
 	}
 	public static function saveData($data){
 		return Personas::create($data);
+	}
+	public static function updateData($request){
+		$persona = Personas::find($request->persona);
+		$persona->nombre = $request->nombre;
+		$persona->apellido = $request->apellido;
+		$persona->numero_documento = $request->numero_documento;
+		$persona->municipio_expedicion_id = $request->municipio_expedicion_id;
+		$persona->direccion_residencia = $request->direccion_residencia;
+		$persona->municipio_residencia_id = $request->municipio_residencia_id;
+		$persona->sexo = $request->sexo;
+		$persona->numero_celular = $request->numero_celular;
+		$persona->numero_telefonico = $request->numero_telefonico;
+		$persona->tipo_documento = $request->tipo_documento;
+		$persona->ocupacion = $request->ocupacion;
+		if($request->foto){
+			$persona->foto = $request->foto->store('personas');
+		}
+		$persona->save();
+		return $persona;
 	}
 }

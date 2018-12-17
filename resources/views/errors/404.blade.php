@@ -9,11 +9,8 @@
 @endsection
 
 @section('content')
-	<div class="container" style="margin-bottom: 100px">
-		<div class="block">
-			<h2>Edición de datos personales</h2>
-			<div class="row">
-			</div>
-		</div>
+	<div class="container text-center" style="margin-top: 10%; margin-bottom: 50px;">
+		<h1>Algo ha ocurrido!</h1>
+		<h4>No hemos encontrado lo que buscas.</h4>
 	</div>
 @endsection

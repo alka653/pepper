@@ -10,9 +10,9 @@
 
 @section('content')
 	<div class="container" style="margin-top: 10px; padding-bottom: 30px;">
-		<h2>Regístrate en Pepper</h2>
+		<h2>{{ $title }}</h2>
 		<div class="block">
-			{{ Form::open(['url' => route('crear_cuenta.post'), 'method' => 'post', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data']) }}
+			{{ Form::model($persona, ['route' => $route, 'method' => $method, 'enctype' => 'multipart/form-data', 'autocomplete' => 'off']) }}
 				<div class="row">
 					<div class="col-md-6 form-group">
 						{{ Form::label('nombre', 'Nombre', ['class' => 'label-required']) }}
@@ -42,12 +42,12 @@
 					</div>
 					<div class="col-md-6 form-group">
 						{{ Form::label('departamento_expedicion_id', 'Departamento expedición documento', ['class' => 'label-required']) }}
-						{{ Form::select('departamento_expedicion_id', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change']) }}
+						{{ Form::select('departamento_expedicion_id', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change'] + ($persona->toArray() ? ['data-id' => $persona->municipio_expedicion->departamento_id] : [])) }}
 						{!! $errors->first('departamento_expedicion_id', '<p class="help-block">:message</p>') !!}
 					</div>
 					<div class="col-md-6 form-group">
 						{{ Form::label('municipio_expedicion_id', 'Municipio expedición documento', ['class' => 'label-required']) }}
-						{{ Form::select('municipio_expedicion_id', [], null, ['required', 'class' => 'form-control select2']) }}
+						{{ Form::select('municipio_expedicion_id', [], null, ['required', 'class' => 'form-control select2'] + ($persona->toArray() ? ['data-id' => $persona->municipio_expedicion_id] : [])) }}
 						{!! $errors->first('municipio_expedicion_id', '<p class="help-block">:message</p>') !!}
 					</div>
 					<div class="col-md-6 form-group">
@@ -57,19 +57,21 @@
 					</div>
 					<div class="col-md-6 form-group">
 						{{ Form::label('departamento_residencia_id', 'Departamento residencia', ['class' => 'label-required']) }}
-						{{ Form::select('departamento_residencia_id', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change']) }}
+						{{ Form::select('departamento_residencia_id', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change'] + ($persona->toArray() ? ['data-id' => $persona->municipio_residencia->departamento_id] : [])) }}
 						{!! $errors->first('departamento_residencia_id', '<p class="help-block">:message</p>') !!}
 					</div>
 					<div class="col-md-6 form-group">
 						{{ Form::label('municipio_residencia_id', 'Municipio residencia', ['class' => 'label-required']) }}
-						{{ Form::select('municipio_residencia_id', [], null, ['required', 'class' => 'form-control select2']) }}
+						{{ Form::select('municipio_residencia_id', [], null, ['required', 'class' => 'form-control select2'] + ($persona->toArray() ? ['data-id' => $persona->municipio_residencia_id] : [])) }}
 						{!! $errors->first('municipio_residencia_id', '<p class="help-block">:message</p>') !!}
 					</div>
-					<div class="col-md-6 form-group">
-						{{ Form::label('email', 'Correo electrónico', ['class' => 'label-required']) }}
-						{{ Form::email('email', null, ['required', 'class' => 'form-control']) }}
-						{!! $errors->first('email', '<p class="help-block">:message</p>') !!}
-					</div>
+					@if(!$persona->toArray())
+						<div class="col-md-6 form-group">
+							{{ Form::label('email', 'Correo electrónico', ['class' => 'label-required']) }}
+							{{ Form::email('email', null, ['required', 'class' => 'form-control']) }}
+							{!! $errors->first('email', '<p class="help-block">:message</p>') !!}
+						</div>
+					@endif
 					<div class="col-md-6 form-group">
 						{{ Form::label('sexo', 'Sexo', ['class' => 'label-required']) }}
 						{{ Form::select('sexo', [
@@ -94,9 +96,14 @@
 						{{ Form::text('ocupacion', null, ['required', 'class' => 'form-control']) }}
 						{!! $errors->first('ocupacion', '<p class="help-block">:message</p>') !!}
 					</div>
-					<div class="col-md-6 form-group">
+					<div class="col-md-6 form-group text-center">
+						@if($persona->toArray())
+							<img src="{{ $persona->foto }}" alt="{{ $persona->nombre }}" class="img-fluid rounded" width="100">
+						@else
+							<img class="hide" style="width: 180px; height: 150px;">
+						@endif
 						<div class="custom-file">
-							{{ Form::file('foto', ['class' => 'custom-file-input', 'accept' => 'image/*']) }}
+							{{ Form::file('foto', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => 1]) }}
 							{{ Form::label('foto', 'Foto', ['class' => 'custom-file-label']) }}
 							{!! $errors->first('foto', '<p class="help-block">:message</p>') !!}
 						</div>
@@ -108,4 +115,29 @@
 			{{ Form::close() }}
 		</div>
 	</div>
+@endsection
+
+@section('script')
+	<script>
+		@if($persona->toArray())
+			$(document).ready(function(){
+				$('.departamento_change').each(function(){
+					$(this).val($(this).attr('data-id')).trigger('change')
+				})
+			})
+		@endif
+		function readURL(input){
+			if(input.files && input.files[0]){
+				if(input.files[0].size <= 500000){
+					var reader = new FileReader()
+					reader.onload = function(e){
+						$(`[data-id="${input.getAttribute('data-id')}"]`).parent().parent().find('img').attr('src', e.target.result).removeClass('hide')
+					}
+					reader.readAsDataURL(input.files[0])
+				}else{
+					alert('La foto no puede superar los 5Mb')
+				}
+			}
+		}
+	</script>
 @endsection

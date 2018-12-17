@@ -12,11 +12,11 @@
 	<div class="container">
 		<h2>
 			Lista de solicitudes
-			@if(Auth::user()->perfil == 'U')
+			@can('crear_solicitud')
 				<small>
 					<a href="{{ route('crear_solicitud') }}" class="btn btn-sm btn-success">Crear solicitud</a>
 				</small>
-			@endif
+			@endcan
 		</h2>
 		<div class="block">
 			<div class="table-responsive">
@@ -26,9 +26,9 @@
 							<th>Fecha solicitud</th>
 							<th>Fecha finalizado</th>
 							<th>Mascota</th>
-							@if(Auth::user()->perfil != 'U')
+							@unlessrole('guest')
 								<th>Propietario</th>
-							@endif
+							@endunlessrole
 							<th>Estado</th>
 							<th></th>
 						</tr>
@@ -39,9 +39,9 @@
 								<td>{{ $solicitud->fecha_solicitud }}</td>
 								<td>{{ $solicitud->fecha_finalizado }}</td>
 								<td>{{ $solicitud->mascota->nombre }}</td>
-								@if(Auth::user()->perfil != 'U')
+								@unlessrole('guest')
 									<td>{{ $solicitud->mascota->propietario->nombre.' '.$solicitud->mascota->propietario->apellido }}</td>
-								@endif
+								@endunlessrole
 								<td>{!! $solicitud->estado !!}</td>
 								<td>
 									<a href="{{ route('detalle_solicitud', ['solicitud' => $solicitud->id]) }}" class="btn btn-primary btn-sm">Ver solicitud</a>
@@ -52,12 +52,12 @@
 							</tr>
 						@empty
 							<tr class="text-center">
-								<td colspan="5">
-									@if(Auth::user()->perfil == 'U')
+								<td colspan="@role('guest') 5 @else 6 @endcan">
+									@role('guest')
 										Aún no tienes solicitudes de certificados para tus mascotas. Da <a href="{{ route('crear_solicitud') }}">clic aquí</a> para realizar el trámite
 									@else
 										Aún no han realizado solicitudes
-									@endif
+									@endrole
 								</td>
 							</tr>
 						@endforelse
@@ -65,5 +65,6 @@
 				</table>
 			</div>
 		</div>
+		{{ $solicitudes->links() }}
 	</div>
 @endsection

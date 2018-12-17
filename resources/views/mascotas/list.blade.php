@@ -15,9 +15,9 @@
 			<div class="col-12 text-center">
 				@include('elements.buscar')
 				<br>
-				@if(Auth::user()->perfil == 'U')
+				@can('crear_mascota')
 					<a href="{{ route('crear_mascota') }}" class="btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 10px;">Agregar mascota</a>
-				@endif
+				@endcan
 			</div>
 			@forelse($mascotas as $mascota)
 				<div class="col-md-4 block">
@@ -28,25 +28,28 @@
 						<div class="col-9">
 							<h3 class="no-margin">{{ $mascota->nombre }}</h3>
 							<h6 class="no-margin"><b>Sexo:</b> {{ $mascota->getSexo($mascota->sexo) }}</h6>
-							@if(Auth::user()->perfil != 'U')
+							@unlessrole('guest')
 								<h6 class="no-margin"><b>Propietario:</b> {{ $mascota->propietario->nombre.' '.$mascota->propietario->apellido }}</h6>
-							@endif
+							@endunlessrole
 							<a href="{{ route('detalle_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-info">Detalle</a>
-							@if(Auth::user()->perfil == 'U')
+							@can('editar_mascota')
 								<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
-							@endif
+							@endcan
 						</div>
 					</div>
 				</div>
 			@empty
 				<div class="col-12 text-center">
-					@if(Auth::user()->perfil == 'U')
+					@role('guest')
 						<h5>No tienes una mascota agregada. Da <a href="{{ route('crear_mascota') }}">clic aquí</a> para agregar tu mascota</h5>
 					@else
 						<h5>Aún no han registrado mascotas</h5>
-					@endif
+					@endrole
 				</div>
 			@endforelse
+			<div class="col-12">
+				{{ $mascotas->links() }}
+			</div>
 		</div>
 	</div>
 @endsection

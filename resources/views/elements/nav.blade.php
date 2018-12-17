@@ -8,7 +8,7 @@
 			</h1>
 		</div>
 		<nav id="nav-menu-container">
-			<ul class="nav-menu">
+			<ul class="nav-menu sf-js-enabled sf-arrows">
 				<li>
 					<a href="{{ route('home') }}">Inicio</a>
 				</li>
@@ -17,12 +17,17 @@
 						<a href="{{ route('login') }}">Iniciar sesión</a>
 					</li>
 				@else
-					@include('elements.nav_list_'.(Auth::user()->perfil == 'U' ? 'U' : 'A'))
-					<li>
-						<a href="{{ route('perfil') }}">Mi cuenta</a>
-					</li>
-					<li>
-						<a href="{{ route('logout') }}">Cerrar sesión</a>
+					@include('elements.nav_list_'.(Auth::user()->perfil != 'U' ? 'A' : Auth::user()->perfil))
+					<li class="menu-has-children">
+						<a href="#" class="sf-with-ul">{{ Auth::user()->persona->nombre }}</a>
+						<ul>
+							<li>
+								<a href="{{ route('perfil') }}">Mi cuenta</a>
+							</li>
+							<li>
+								<a href="{{ route('logout') }}">Cerrar sesión</a>
+							</li>
+						</ul>
 					</li>
 				@endif	
 			</ul>

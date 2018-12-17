@@ -76,11 +76,11 @@
 							@empty
 								<tr>
 									<td class="text-center" colspan="3">
-										@if(Auth::user()->perfil == 'U')
+										@role('guest')
 											{{ $mascota->nombre }} aún no tiene certificado. Da <a href="{{ route('crear_solicitud') }}?mascota={{ $mascota->id }}">clic aquí</a> para hacer la solicitud.
 										@else
 											Sin certificados
-										@endif
+										@endrole
 									</td>
 								</tr>
 							@endforelse

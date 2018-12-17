@@ -32,7 +32,7 @@
 		<br>
 		<h4>Revisiones</h4>
 		<div class="block">
-			@if(Auth::user()->perfil != 'U')
+			@unlessrole('guest')
 				@if($solicitud->revisionesInspector($solicitud->id, Auth::user()->id) == 0)
 					{{ Form::open(['url' => route('crear_revision.post', ['solicitud' => $solicitud->id]), 'method' => 'post', 'autocomplete' => 'off']) }}
 						<div class="form-group">
@@ -67,7 +67,7 @@
 						Ya has realizado la revisión
 					</div>
 				@endif
-			@endif
+			@endunlessrole
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>

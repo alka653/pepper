@@ -13,8 +13,12 @@ use App\Http\Requests\RegistroUsuarioFormRequest;
 class UsersController extends Controller{
 	const DIR_TEMPLATE = 'usuarios.';
 	public function signup(){
-		return view(self::DIR_TEMPLATE.'signup', [
-			'departamentoLista' => Departamentos::lista()
+		return view(self::DIR_TEMPLATE.'form', [
+			'departamentoLista' => Departamentos::lista(),
+			'title' => 'Regístrate en Pepper',
+			'route' => ['crear_cuenta.post'],
+			'persona' => new Personas,
+			'method' => 'post'
 		]);
 	}
 	public function signupSave(RegistroUsuarioFormRequest $request){
@@ -37,20 +41,37 @@ class UsersController extends Controller{
 			'persona_id' => $persona->id,
 			'perfil' => 'U'
 		]);
+		$usuario->assignRole('guest');
 		Auth::login($usuario);
 		return redirect()->route('home');
 	}
-	public function profile(){
-		return view(self::DIR_TEMPLATE.'profile');
+	public function profile($persona = ''){
+		$usuario = null;
+		if($persona){
+			$usuario = User::where('persona_id', $persona)->first();
+		}else{
+			$usuario = Auth::user();
+		}
+		return view(self::DIR_TEMPLATE.'profile', [
+			'usuario' => $usuario
+		]);
 	}
-	public function edit(User $user){
-		if(Auth::user()->perfil == 'J' || ($user->id == Auth::user()->id)){
-			return view(self::DIR_TEMPLATE.'edit', [
-				'user' => $user
+	public function edit(Personas $persona){
+		if(Auth::user()->perfil == 'J' || ($persona->id == Auth::user()->persona_id)){
+			return view(self::DIR_TEMPLATE.'form', [
+				'departamentoLista' => Departamentos::lista(),
+				'title' => 'Edición de datos',
+				'route' => ['editar_perfil.post', $persona->id],
+				'method' => 'put',
+				'persona' => $persona
 			]);
 		}else{
-			return redirect()->route('editar_perfil', ['user' => Auth::user()->id]);
+			return redirect()->route('editar_perfil', ['persona' => Auth::user()->id]);
 		}
+	}
+	public function updateData(Request $request){
+		Personas::updateData($request);
+		return redirect()->route('perfil_usuario', ['persona' => $request->persona]);
 	}
 	public function changePassword(){
 		return view(self::DIR_TEMPLATE.'modal_password');

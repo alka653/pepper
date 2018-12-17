@@ -117,7 +117,7 @@ function show_input(data, name_field){
 	//select_input.select2('destroy')
 	$.each(data, function(index, val){
 		let selected = ''
-		if(select_input.attr('data-value') != '' && index == select_input.attr('data-value')){
+		if(select_input.attr('data-id') != '' && index == select_input.attr('data-id')){
 			selected = 'selected'
 			val_select = index
 		}
@@ -156,6 +156,26 @@ $(document).on('change', '.departamento_change', function(e){
 		var municipio = $(`[name="${$(this).attr('name').replace('departamento', 'municipio')}`)
 		get_by_url(`/municipios/obtener-by-departamento/${$(this).val()}`, municipio.attr('name'))
 	}
+})
+$(document).on('submit', '#form-modal', function(event){
+	event.preventDefault()
+	$.post($(this).attr('action'), $(this).serialize())
+	.done(function(response){
+		alert(response.message)
+		$('.modal').modal('hide')
+		location.reload(true)
+	})
+	.fail(function(xhr, status, error){
+		$.each(xhr.responseJSON.errors, function(index, value){
+			console.log(index, value)
+			$(`#${index}`).parent().find('.invalid-feedback').remove()
+			$(`#${index}`).parent().append(
+				`<div class="invalid-feedback" style="display: block;">
+					${value[0]}
+				</div>`
+			)
+		})
+	})
 })
 Number.prototype.format = function(n, x) {
 	var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')'
