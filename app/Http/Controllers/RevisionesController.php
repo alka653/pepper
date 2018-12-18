@@ -63,7 +63,7 @@ class RevisionesController extends Controller{
 			]);
 			$message = 'La solicitud ha sido aprobada, ahora puede ingresar y generar el certificado para la mascota.';
 		}
-		/*
+		
 		try{
 			$usuario = User::where('persona_id', $solicitud->mascota->propietario_id)->first();
 			$userData = new \stdClass();
@@ -78,7 +78,7 @@ class RevisionesController extends Controller{
 			$request->session()->flash('message.level', 'danger');
 			$request->session()->flash('message.content', 'El correo del usuario de la solicitud no es válido.');
 		}
-		*/
+		
 		$request->session()->flash('message.level', 'success');
 		$request->session()->flash('message.content', 'Se ha realizado la revisión.');
 		return redirect()->route('detalle_solicitud', ['solicitud' => $solicitud->id]);
