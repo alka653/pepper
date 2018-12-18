@@ -6,8 +6,6 @@ use App\User;
 use App\Personas;
 use App\Departamentos;
 use Illuminate\Http\Request;
-//use App\Mail\UserRegisterEmail;
-//use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ChangePasswordFormRequest;
 use App\Http\Requests\RegistroUsuarioFormRequest;
@@ -44,18 +42,6 @@ class UsersController extends Controller{
 			'perfil' => 'U'
 		]);
 		$usuario->assignRole('guest');
-		/*try{
-			$userData = new \stdClass();
-			$userData->email = $request->email;
-			$userData->nombre = $request->nombre;
-			$userData->apellido = $request->apellido;
-			$userData->sender = 'Pepper';
-			$userData->receiver = $request->nombre.' '.$request->apellido;
-			Mail::to($request->email)->send(new UserRegisterEmail($userData));
-		}catch(\Exception $e){
-			$request->session()->flash('message.level', 'danger');
-			$request->session()->flash('message.content', 'El correo ingresado no es válido para recepción de notificaciones. Por favor verifica el correo.');
-		}*/ 
 		Auth::login($usuario);
 		return redirect()->route('home');
 	}
