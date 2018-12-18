@@ -41,7 +41,7 @@ class UsersController extends Controller{
 			'persona_id' => $persona->id,
 			'perfil' => 'U'
 		]);
-		$usuario->assignRole('guest');
+		//$usuario->assignRole('guest');
 		Auth::login($usuario);
 		return redirect()->route('home');
 	}
