@@ -14,7 +14,7 @@ class VerifyNotification extends Command{
 	public function __construct(){
 		parent::__construct();
 	}
-	public static function getDateEnable($date, $)
+	//public static function getDateEnable($date, $)
 	public function handle(){
 		foreach(Solicitudes::where('estado', 'P')->get() as $solicitud){
 			if($solicitud->revisiones->count() > 0){
