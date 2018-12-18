@@ -12,7 +12,12 @@
 	<div class="container" style="margin-bottom: 100px;">	
 		<h2 class="no-margin">
 			Solicitud de certificado para {{ $solicitud->mascota->nombre }}
-			<small>{!! $solicitud->estado !!}</small>
+			<small>{!! $solicitud->getEstado($solicitud->estado) !!}</small>
+			@if(Auth::user()->perfil == 'U' && $solicitud->estado == 'P')
+				<small>
+					<a href="{{ route('editar_solicitud', ['solicitud' => $solicitud->id]) }}" class="btn btn-warning btn-sm">Editar</a>
+				</small>
+			@endif
 		</h2>
 		<p>
 			<b>Fecha de solicitud</b>
@@ -39,7 +44,7 @@
 							{{ Form::label('observacion', 'Observación', ['class' => 'label-required']) }}
 							{{ Form::textarea('observacion', null, ['required', 'rows' => 2, 'class' => 'form-control']) }}
 						</div>
-						@if($solicitud->revisiones == null || (isset(end($solicitud->revisiones)[0]) && end($solicitud->revisiones)[0]->modo < 3))
+						@if($solicitud->revisiones->count() == 0 || (isset(end($solicitud->revisiones)[0]) && end($solicitud->revisiones)[0]->modo < 3))
 							<div class="form-group">
 								{{ Form::label('remitir', '¿Remitir al siguiente inspector?', ['class' => 'label-required']) }}
 								{{ Form::select('remitir', [
@@ -85,7 +90,7 @@
 									<td>{{ $revision->fecha }}</td>
 									<td>{{ $revision->inspector->persona->nombre.' '.$revision->inspector->persona->apellido }}</td>
 									<td>{{ $revision->observacion }}</td>
-									<td>{{ $revision->estado }}</td>
+									<td>{{ $revision->getEstado($revision->estado) }}</td>
 								</tr>
 							@endif
 						@empty

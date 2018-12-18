@@ -13,6 +13,9 @@ class Personas extends Model{
 	public function mascotas(){
 		return $this->hasMany('App\Mascotas', 'propietario_id');
 	}
+	public function usuario(){
+		return $this->belongsTo('App\User', 'persona_id');
+	}
 	public function municipio_expedicion(){
 		return $this->belongsTo('App\Municipios', 'municipio_expedicion_id');
 	}

@@ -21,4 +21,15 @@ class RegistroUsuarioFormRequest extends FormRequest{
 		}
 		return $rules;
 	}
+	public function messages(){
+		$messages = [];
+		$formRequests = [
+			PersonaFormRequest::class,
+			UsuarioFormRequest::class,
+		];
+		foreach ($formRequests as $source) {
+			$messages = array_merge($messages, (new $source)->messages());
+		}
+		return $messages;
+	}
 }

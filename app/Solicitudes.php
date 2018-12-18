@@ -17,7 +17,7 @@ class Solicitudes extends Model{
 	public function revisiones(){
 		return $this->hasMany('App\Revisiones', 'solicitud_id')->orderBy('fecha', 'DESC')->orderBy('id', 'DESC');
 	}
-	public function getEstadoAttribute($estado){
+	public function getEstado($estado){
 		switch($estado){
 			case 'P':
 				$estado = '<span class="badge badge-info">Pendiente</span>';

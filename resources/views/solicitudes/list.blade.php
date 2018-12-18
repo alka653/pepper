@@ -42,7 +42,7 @@
 								@unlessrole('guest')
 									<td>{{ $solicitud->mascota->propietario->nombre.' '.$solicitud->mascota->propietario->apellido }}</td>
 								@endunlessrole
-								<td>{!! $solicitud->estado !!}</td>
+								<td>{!! $solicitud->getEstado($solicitud->estado) !!}</td>
 								<td>
 									<a href="{{ route('detalle_solicitud', ['solicitud' => $solicitud->id]) }}" class="btn btn-primary btn-sm">Ver solicitud</a>
 									@if(Auth::user()->perfil == 'U' && $solicitud->estado == 'P')

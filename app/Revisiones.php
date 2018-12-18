@@ -11,7 +11,7 @@ class Revisiones extends Model{
 	public function inspector(){
 		return $this->belongsTo('App\User', 'inspector_id');
 	}
-	public function getEstadoAttribute($estado){
+	public function getEstado($estado){
 		switch($estado){
 			case 'R':
 				$estado = 'Remitido';
