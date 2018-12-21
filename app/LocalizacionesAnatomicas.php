@@ -10,6 +10,11 @@ class LocalizacionesAnatomicas extends Model{
 	public function ataques(){
 		return $this->hasMany('App\AtaquesAnatomicas', 'localizacion_anatomica_id');
 	}
+	public static function lista(){
+		return LocalizacionesAnatomicas::get()->mapWithKeys(function($localizacion_anatomica){
+			return [$localizacion_anatomica['id'] => $localizacion_anatomica['nombre']];
+		})->toArray();
+	}
 	public static function saveData($data){
 		return LocalizacionesAnatomicas::create($data);
 	}

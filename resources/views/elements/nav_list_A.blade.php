@@ -5,7 +5,7 @@
 	<a href="{{ route('listar_solicitudes') }}">Solicitudes</a>
 </li>
 <li>
-	<a href="#">Ataques</a>
+	<a href="{{ route('listar_ataques') }}">Ataques</a>
 </li>
 @role('administrator')
 	<li class="menu-has-children">

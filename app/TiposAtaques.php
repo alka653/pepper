@@ -10,6 +10,11 @@ class TiposAtaques extends Model{
 	public function ataques(){
 		return $this->hasMany('App\Ataques', 'tipo_ataque_id');
 	}
+	public static function lista(){
+		return ['' => 'Seleccione una opción'] + TiposAtaques::get()->mapWithKeys(function($tipo_ataque){
+			return [$tipo_ataque['id'] => $tipo_ataque['nombre']];
+		})->toArray();
+	}
 	public static function saveData($data){
 		return TiposAtaques::create($data);
 	}

@@ -20,8 +20,8 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::post('/', 'MascotasController@saveOrUpdateData')->name('crear_mascota.post')->middleware('permission:crear_mascota.post');
 		});
 		Route::prefix('/{mascota}')->group(function(){
-			Route::get('/', 'MascotasController@detail')->name('detalle_mascota');
-			Route::prefix('/editar')->group(function(){
+			Route::get('/', 'MascotasController@detail')->name('detalle_mascota')->middleware('check_own_pet');
+			Route::group(['middleware' => 'check_own_pet:false', 'prefix' => 'editar'], function(){
 				Route::get('/', 'MascotasController@edit')->name('editar_mascota')->middleware('permission:editar_mascota');
 				Route::put('/', 'MascotasController@saveOrUpdateData')->name('editar_mascota.post')->middleware('permission:editar_mascota.post');
 			});
@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::get('/', 'SolicitudesController@new')->name('crear_solicitud')->middleware('permission:crear_solicitud');
 			Route::post('/', 'SolicitudesController@saveOrUpdateData')->name('crear_solicitud.post')->middleware('permission:crear_solicitud.post');
 		});
-		Route::prefix('/{solicitud}')->group(function(){
+		Route::group(['prefix' => '{solicitud}', 'middleware' => 'check_id_user:solicitud'], function(){
 			Route::get('/', 'SolicitudesController@detail')->name('detalle_solicitud');
 			Route::prefix('/editar')->group(function(){
 				Route::get('/', 'SolicitudesController@edit')->name('editar_solicitud')->middleware('permission:editar_solicitud');
@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::get('/', 'UsersController@changePassword')->name('cambiar_password');
 			Route::post('/', 'UsersController@updatePassword')->name('cambiar_password.post');
 		});
-		Route::prefix('/{persona}')->group(function(){
+		Route::group(['prefix' => '{persona}', 'middleware' => 'check_id_user'], function(){
 			Route::get('/', 'UsersController@profile')->name('perfil_usuario');
 			Route::prefix('/editar')->group(function(){
 				Route::get('/', 'UsersController@edit')->name('editar_perfil');
@@ -106,6 +106,21 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::prefix('/eliminar')->group(function(){
 				Route::get('/', 'LocalizacionesAnatomicasController@delete')->name('eliminar_localizacion_anatomica')->middleware('permission:eliminar_localizacion_anatomica');
 				Route::delete('/', 'LocalizacionesAnatomicasController@deleteData')->name('eliminar_localizacion_anatomica.delete')->middleware('permission:eliminar_localizacion_anatomica.delete');
+			});
+		});
+	});
+	Route::group(['middleware' => 'permission:modulo_ataques'], function(){
+		Route::prefix('/propietarios')->group(function(){
+			Route::get('/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario');
+		});
+		Route::prefix('/ataques')->group(function(){
+			Route::get('/', 'AtaquesController@list')->name('listar_ataques');
+			Route::prefix('/crear')->group(function(){
+				Route::get('/', 'AtaquesController@new')->name('registrar_ataque');
+				Route::post('/', 'AtaquesController@saveOrUpdateData')->name('registrar_ataque.post');
+			});
+			Route::prefix('/{ataque}')->group(function(){
+				Route::get('/', 'AtaquesController@detail')->name('detalle_ataque');
 			});
 		});
 	});

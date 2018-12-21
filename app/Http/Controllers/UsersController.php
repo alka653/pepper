@@ -6,7 +6,9 @@ use App\User;
 use App\Personas;
 use App\Departamentos;
 use Illuminate\Http\Request;
+use App\Mail\UserRegisterEmail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ChangePasswordFormRequest;
 use App\Http\Requests\RegistroUsuarioFormRequest;
 
@@ -41,7 +43,21 @@ class UsersController extends Controller{
 			'persona_id' => $persona->id,
 			'perfil' => 'U'
 		]);
-		//$usuario->assignRole('guest');
+		$usuario->assignRole('guest');
+		/*
+		try{
+			$userData = new \stdClass();
+			$userData->email = $usuario->email;
+			$userData->nombre = $usuario->persona->nombre;
+			$userData->apellido = $usuario->persona->apellido;
+			$userData->sender = 'Pepper';
+			$userData->receiver = $usuario->persona->nombre.' '.$usuario->persona->apellido;
+			Mail::to($usuario->email)->send(new UserRegisterEmail($userData));
+		}catch(\Exception $e){
+			$request->session()->flash('message.level', 'danger');
+			$request->session()->flash('message.content', 'El correo electrónico ingresado no es correcto.');
+		}
+		*/
 		Auth::login($usuario);
 		return redirect()->route('home');
 	}
@@ -80,6 +96,16 @@ class UsersController extends Controller{
 		User::updatePassword($request->password, Auth::user()->id);
 		return response()->json([
 			'message' => 'Contraseña actualizada con éxito'
+		]);
+	}
+	public function getOwnerByNumDoc(Request $request){
+		$data = [];
+		$numero_documento = $request->input('propietario_numero_documento');
+		if($numero_documento != null){
+			$data = Personas::with('mascotas', 'municipio_residencia')->where('numero_documento', $numero_documento)->first();
+		}
+		return response()->json([
+			'data' => $data
 		]);
 	}
 }

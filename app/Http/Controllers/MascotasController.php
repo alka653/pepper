@@ -35,9 +35,7 @@ class MascotasController extends Controller{
 		return view(self::DIR_TEMPLATE.'form', [
 			'mascota' => new Mascotas(),
 			'title' => 'Registra tu mascota',
-			'razas' => ['' => 'Seleccione una raza'] + Razas::get()->mapWithKeys(function($raza){
-				return [$raza['id'] => $raza['nombre']];
-			})->toArray(),
+			'razas' => Razas::lista(),
 			'route' => ['crear_mascota.post'],
 			'method' => 'post'
 		]);
@@ -77,13 +75,13 @@ class MascotasController extends Controller{
 			$mascota = Mascotas::saveData([
 				'nombre' => $mascotaRequest->nombre,
 				'propietario_id' => Auth::user()->persona->id,
-				'fecha_nacimiento' => date('Y-m-d', strtotime($mascotaRequest->fecha_nacimiento)),
+				'fecha_nacimiento' => $mascotaRequest->fecha_nacimiento,
 				'sexo' => $mascotaRequest->sexo,
 				'color' => $mascotaRequest->color,
 				'descripcion' => $mascotaRequest->descripcion,
 				'estado' => 'V',
 				'vacunado' => $mascotaRequest->vacunado,
-				'fecha_vacunacion' => date('Y-m-d', strtotime($mascotaRequest->fecha_vacunacion)),
+				'fecha_vacunacion' => $mascotaRequest->fecha_vacunacion,
 				'raza_id' => $mascotaRequest->raza_id
 			]);
 			foreach($mascotaRequest->foto as $foto){

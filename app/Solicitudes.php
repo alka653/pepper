@@ -31,8 +31,9 @@ class Solicitudes extends Model{
 		}
 		return $estado;
 	}
-	public static function revisionesInspector($solicitud_id, $inspector_id){
-		return Revisiones::where(['solicitud_id' => $solicitud_id, 'inspector_id' => $inspector_id, 'estado' => 'R'])->count();
+	public static function revisionesInspector($solicitud_id, $inspector_id = null, $estado = 'R'){
+		$revisiones = Revisiones::where(['solicitud_id' => $solicitud_id, 'estado' => $estado]);
+		return $inspector_id != null ? $revisiones->where(['inspector_id' => $inspector_id])->orderBy('id', 'DESC') : $revisiones->orderBy('id', 'DESC');
 	}
 	public static function saveData($data){
 		$data['fecha_solicitud'] = date('Y-m-d');

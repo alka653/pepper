@@ -48,7 +48,7 @@ class TiposAtaquesController extends Controller{
 		return response()->json([
 			'message' => $message
 		]);
-		return redirect()->route('listar_tipos_ataques');
+		//return redirect()->route('listar_tipos_ataques');
 	}
 	public function delete(TiposAtaques $tipoAtaque){
 		return view('elements.delete_form', [

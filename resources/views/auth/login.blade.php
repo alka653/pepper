@@ -30,8 +30,8 @@
 						</div>
 						<div class="form-group">
 							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-								<label class="custom-control-label" for="remember">Recordar acceso</label>
+								{{ Form::checkbox('remember', false, old('remember'), ['class' => 'custom-control-input', 'id' => 'remember']) }}
+								{{ Form::label('remember', 'Recordar acceso', ['class' => 'custom-control-label']) }}
 							</div>
 						</div>
 						<div class="form-group text-center">

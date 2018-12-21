@@ -18,16 +18,16 @@ class CreateTablePersonas extends Migration
             $table->string('nombre', 45);
             $table->string('apellido', 45);
             $table->string('numero_documento', 15);
-            $table->integer('municipio_expedicion_id')->unsigned();
+            $table->integer('municipio_expedicion_id')->unsigned()->nullable();
             $table->foreign('municipio_expedicion_id')->references('id')->on('municipios');
             $table->string('direccion_residencia', 150);
             $table->integer('municipio_residencia_id')->unsigned();
             $table->foreign('municipio_residencia_id')->references('id')->on('municipios');
             $table->enum('sexo', ['M','F']);
             $table->string('ocupacion', 45)->nullable();
-            $table->string('numero_celular', 10);
+            $table->string('numero_celular', 10)->nullable();
             $table->string('numero_telefonico', 10)->nullable();
-            $table->date('fecha_nacimiento');
+            $table->date('fecha_nacimiento')->nullable();
         });
     }
 

@@ -31,6 +31,8 @@ class Mascotas extends Model{
 		})->toArray();
 	}
 	public static function saveData($data){
+		$data['fecha_nacimiento'] = $data['fecha_nacimiento'] != null ? date('Y-m-d', strtotime($data['fecha_nacimiento'])) : null;
+		$data['fecha_vacunacion'] = $data['fecha_vacunacion'] != null ? date('Y-m-d', strtotime($data['fecha_vacunacion'])) : null;
 		return Mascotas::create($data);
 	}
 	public static function updateData($request){

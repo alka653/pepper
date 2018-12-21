@@ -10,7 +10,12 @@
 
 @section('content')
 	<div class="container">
-		<h2 class="text-center">{{ $mascota->nombre }}</h2>
+		<h2 class="text-center">
+			{{ $mascota->nombre }}
+			@role('guest')
+				<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
+			@endrole
+		</h2>
 		<div class="row justify-content-md-center align-items-center">
 			@foreach($mascota->fotos as $foto)
 				<div class="col-md-2">

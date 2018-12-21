@@ -14,7 +14,7 @@ class AddRowsToPersonas extends Migration
     public function up()
     {
         Schema::table('personas', function (Blueprint $table) {
-            $table->string('ocupacion');
+            $table->string('ocupacion')->nullable();
             $table->string('foto', 255)->nullable();
         });
     }

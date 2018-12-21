@@ -24,6 +24,11 @@ class Razas extends Model{
 		}
 		return $especie;
 	}
+	public static function lista(){
+		return ['' => 'Seleccione una raza'] + Razas::get()->mapWithKeys(function($raza){
+			return [$raza['id'] => $raza['nombre']];
+		})->toArray();
+	}
 	public static function saveData($data){
 		return Razas::create($data);
 	}

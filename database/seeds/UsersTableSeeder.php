@@ -91,6 +91,7 @@ class UsersTableSeeder extends Seeder{
 		Permission::create(['name' => 'editar_localizacion_anatomica.post']);
 		Permission::create(['name' => 'eliminar_localizacion_anatomica']);
 		Permission::create(['name' => 'eliminar_localizacion_anatomica.delete']);
+		Permission::create(['name' => 'modulo_ataques']);
 		
 		$roleAdministrator->givePermissionTo([
 			'crear_revision.post',
@@ -114,7 +115,8 @@ class UsersTableSeeder extends Seeder{
 			'editar_localizacion_anatomica',
 			'editar_localizacion_anatomica.post',
 			'eliminar_localizacion_anatomica',
-			'eliminar_localizacion_anatomica.delete'
+			'eliminar_localizacion_anatomica.delete',
+			'modulo_ataques'
 		]);
 		$roleGuest->givePermissionTo([
 			'crear_mascota',
@@ -131,6 +133,7 @@ class UsersTableSeeder extends Seeder{
 		]);
 		$roleChecker->givePermissionTo([
 			'crear_revision.post',
+			'modulo_ataques'
 		]);
 
 		$zootecnico = User::create([

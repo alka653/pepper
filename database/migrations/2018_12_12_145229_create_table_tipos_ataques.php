@@ -15,7 +15,7 @@ class CreateTableTiposAtaques extends Migration
     {
         Schema::create('tipos_ataques', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre', 45);
+            $table->longText('nombre');
         });
     }
 

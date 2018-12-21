@@ -49,7 +49,7 @@
 									'1' => 'Si'
 								], null, ['required', 'class' => 'form-control']) }}
 							</div>
-							<div class="col-md-6 form-group hide" id="fecha_vacunacion_div">
+							<div class="col-md-6 form-group hidden" id="fecha_vacunacion_div">
 								{{ Form::label('fecha_vacunacion', 'Fecha de vacunación', ['class' => 'label-required']) }}
 								{{ Form::text('fecha_vacunacion', null, ['class' => 'form-control date']) }}
 								{!! $errors->first('fecha_vacunacion', '<p class="help-block">:message</p>') !!}
@@ -71,7 +71,7 @@
 						@if($mascota->toArray() && isset($mascota->fotos[0]))
 							<img src="{{ Storage::url($mascota->fotos[0]->foto) }}" style="width: 180px; height: 150px;">
 						@else
-							<img class="hide" style="width: 180px; height: 150px;">
+							<img class="hidden" style="width: 180px; height: 150px;">
 						@endif
 						<div class="custom-file">
 							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1', 'required']) }}
@@ -84,7 +84,7 @@
 						@if($mascota->toArray() && isset($mascota->fotos[1]))
 							<img src="{{ Storage::url($mascota->fotos[1]->foto) }}" style="width: 180px; height: 150px;">
 						@else
-							<img class="hide" style="width: 180px; height: 150px;">
+							<img class="hidden" style="width: 180px; height: 150px;">
 						@endif
 						<div class="custom-file">
 							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '2']) }}
@@ -97,7 +97,7 @@
 						@if($mascota->toArray() && isset($mascota->fotos[2]))
 							<img src="{{ Storage::url($mascota->fotos[2]->foto) }}" style="width: 180px; height: 150px;">
 						@else
-							<img class="hide" style="width: 180px; height: 150px;">
+							<img class="hidden" style="width: 180px; height: 150px;">
 						@endif
 						<div class="custom-file">
 							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '3']) }}
@@ -124,9 +124,9 @@
 		})
 		$(document).on('change', '#vacunado', function(){
 			if($(this).val() == '1'){
-				$('#fecha_vacunacion_div').removeClass('hide')
+				$('#fecha_vacunacion_div').removeClass('hidden')
 			}else{
-				$('#fecha_vacunacion_div').addClass('hide')
+				$('#fecha_vacunacion_div').addClass('hidden')
 			}
 		})
 		function readURL(input){
@@ -134,7 +134,7 @@
 				if(input.files[0].size <= 500000){
 					var reader = new FileReader()
 					reader.onload = function(e){
-						$(`[data-id="${input.getAttribute('data-id')}"]`).parent().parent().find('img').attr('src', e.target.result).removeClass('hide')
+						$(`[data-id="${input.getAttribute('data-id')}"]`).parent().parent().find('img').attr('src', e.target.result).removeClass('hidden')
 					}
 					reader.readAsDataURL(input.files[0])
 				}else{

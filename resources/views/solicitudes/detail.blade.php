@@ -37,14 +37,21 @@
 		<br>
 		<h4>Revisiones</h4>
 		<div class="block">
+			@if($solicitud->estado == 'F' && Auth::user()->perfil == 'U')
+				<div class="alert alert-success">
+					La solicitud ha sido aprobada. Puede descargarlo <a href="#">aquí</a>
+				</div>
+			@endif
 			@unlessrole('guest')
-				@if($solicitud->revisionesInspector($solicitud->id, Auth::user()->id) == 0)
+				@if($solicitud->revisionesInspector($solicitud->id, Auth::user()->id)->count() == 0 || $solicitud->estado == 'P')
 					{{ Form::open(['url' => route('crear_revision.post', ['solicitud' => $solicitud->id]), 'method' => 'post', 'autocomplete' => 'off']) }}
 						<div class="form-group">
 							{{ Form::label('observacion', 'Observación', ['class' => 'label-required']) }}
 							{{ Form::textarea('observacion', null, ['required', 'rows' => 2, 'class' => 'form-control']) }}
 						</div>
-						@if($solicitud->revisiones->count() == 0 || (isset(end($solicitud->revisiones)[0]) && end($solicitud->revisiones)[0]->modo < 3))
+						@php($revisiones = $solicitud->revisionesInspector($solicitud->id))
+						@php($revisionesFinale = $solicitud->revisionesInspector($solicitud->id, null, 'P'))
+						@if($revisiones->count() == 0 || ($revisionesFinale->count() > 0 && $revisionesFinale->first()->modo < 3) || (Auth::user()->perfil != 'J' && $revisionesFinale->count() == 0))
 							<div class="form-group">
 								{{ Form::label('remitir', '¿Remitir al siguiente inspector?', ['class' => 'label-required']) }}
 								{{ Form::select('remitir', [

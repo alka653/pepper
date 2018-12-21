@@ -6,9 +6,11 @@
     "/js/bootstrap.min.js": "/js/bootstrap.min.js",
     "/js/theme.js": "/js/theme.js",
     "/js/sticky.js": "/js/sticky.js",
+    "/js/jquery.smartWizard.js": "/js/jquery.smartWizard.js",
     "/css/bootstrap.min.css": "/css/bootstrap.min.css",
     "/css/font-awesome/font-awesome.min.css": "/css/font-awesome/font-awesome.min.css",
     "/css/animate/animate.min.css": "/css/animate/animate.min.css",
     "/css/ionicons/ionicons.min.css": "/css/ionicons/ionicons.min.css",
-    "/css/theme.css": "/css/theme.css"
+    "/css/theme.css": "/css/theme.css",
+    "/css/smart_wizard.css": "/css/smart_wizard.css"
 }

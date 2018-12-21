@@ -18,10 +18,10 @@ class CreateTableAtaquesVictima extends Migration
             $table->integer('ataque_id')->unsigned();
             $table->foreign('ataque_id')->references('id')->on('ataques');
             $table->unique('ataque_id');
-            $table->boolean('suero_antirrabico');
-            $table->date('fecha_aplicacion_suero');
-            $table->enum('vacuna_antirrabica', ['S','N','D']);
-            $table->integer('numero_dosis');
+            $table->enum('suero_antirrabico', ['S', 'N', 'D']);
+            $table->date('fecha_aplicacion_suero')->nullable();
+            $table->enum('vacuna_antirrabica', ['S','N','D'])->nullable();
+            $table->integer('numero_dosis')->nullable();
             $table->date('fecha_ultima_dosis');
             $table->boolean('lavado_herida');
             $table->boolean('sutura_herida');

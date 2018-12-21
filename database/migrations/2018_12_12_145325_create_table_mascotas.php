@@ -16,16 +16,16 @@ class CreateTableMascotas extends Migration
         Schema::create('mascotas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre', 20);
-            $table->integer('propietario_id')->unsigned();
+            $table->integer('propietario_id')->unsigned()->nullable();
             $table->foreign('propietario_id')->references('id')->on('personas');
-            $table->date('fecha_nacimiento');
-            $table->enum('sexo', ['M','F']);
-            $table->string('color', 20);
-            $table->longText('descripcion');
-            $table->enum('estado', ['V','M']);
+            $table->date('fecha_nacimiento')->nullable();
+            $table->enum('sexo', ['M','F'])->nullable();
+            $table->string('color', 20)->nullable();
+            $table->longText('descripcion')->nullable();
+            $table->enum('estado', ['V','M'])->nullable();
             $table->boolean('vacunado');
             $table->date('fecha_vacunacion')->nullable();
-            $table->integer('raza_id')->unsigned();
+            $table->integer('raza_id')->unsigned()->nullable();
             $table->foreign('raza_id')->references('id')->on('razas');
         });
     }
