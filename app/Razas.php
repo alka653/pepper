@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class Razas extends Model{
@@ -9,6 +10,9 @@ class Razas extends Model{
 	public $timestamps = false;
 	public function mascotas(){
 		return $this->hasMany('App\Mascotas', 'raza_id');
+	}
+	public function getFotoAttribute($foto){
+		return $foto != null ? Storage::url($foto) : '/img/dog.png';
 	}
 	public static function getEspecie($especie){
 		switch($especie){
@@ -24,8 +28,8 @@ class Razas extends Model{
 		}
 		return $especie;
 	}
-	public static function lista(){
-		return ['' => 'Seleccione una raza'] + Razas::get()->mapWithKeys(function($raza){
+	public static function lista($title = 'Seleccione una raza'){
+		return ['' => $title] + Razas::get()->mapWithKeys(function($raza){
 			return [$raza['id'] => $raza['nombre']];
 		})->toArray();
 	}

@@ -1,6 +1,15 @@
 <?php
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/ley', function(){
+	return view('home.law');
+})->name('ley_746');
+Route::get('/quienes-somos', function(){
+	return view('home.about');
+})->name('quienes_somos');
+Route::get('/acerda-de', function(){
+	return view('home.acerca_de');
+})->name('acerca');
 Route::prefix('/crear-cuenta')->group(function(){
 	Route::get('/', 'UsersController@signup')->name('crear_cuenta');
 	Route::post('/', 'UsersController@signupSave')->name('crear_cuenta.post');
@@ -21,9 +30,9 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 		Route::prefix('/{mascota}')->group(function(){
 			Route::get('/', 'MascotasController@detail')->name('detalle_mascota')->middleware('check_own_pet');
-			Route::group(['middleware' => 'check_own_pet:false', 'prefix' => 'editar'], function(){
-				Route::get('/', 'MascotasController@edit')->name('editar_mascota')->middleware('permission:editar_mascota');
-				Route::put('/', 'MascotasController@saveOrUpdateData')->name('editar_mascota.post')->middleware('permission:editar_mascota.post');
+			Route::group(['middleware' => 'check_own_pet', 'prefix' => 'editar'], function(){
+				Route::get('/', 'MascotasController@edit')->name('editar_mascota');
+				Route::put('/', 'MascotasController@saveOrUpdateData')->name('editar_mascota.post');
 			});
 		});
 	});
@@ -59,7 +68,7 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 	});
 	Route::prefix('/razas')->group(function(){
-		Route::get('/', 'RazasController@list')->name('listar_razas')->middleware('permission:listar_razas');
+		Route::get('/lista', 'RazasController@listWithAuth')->name('listar_razas_with_auth')->middleware('permission:listar_razas');
 		Route::prefix('/crear')->group(function(){
 			Route::get('/', 'RazasController@new')->name('crear_raza')->middleware('permission:crear_raza');
 			Route::post('/', 'RazasController@saveOrUpdateData')->name('crear_raza.post')->middleware('permission:crear_raza.post');
@@ -121,7 +130,27 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 			Route::prefix('/{ataque}')->group(function(){
 				Route::get('/', 'AtaquesController@detail')->name('detalle_ataque');
+				Route::prefix('/seguimiento')->group(function(){
+					Route::get('/', 'AtaquesSeguimientosController@list')->name('seguimiento_ataque');
+					Route::prefix('/crear')->group(function(){
+						Route::get('/', 'AtaquesSeguimientosController@new')->name('crear_seguimiento_ataque');
+						Route::post('/', 'AtaquesSeguimientosController@saveOrUpdateData')->name('crear_seguimiento_ataque.post');
+					});
+					Route::prefix('/{seguimiento}')->group(function(){
+						Route::prefix('/editar')->group(function(){
+							Route::get('/', 'AtaquesSeguimientosController@edit')->name('editar_seguimiento_ataque');
+							Route::put('/', 'AtaquesSeguimientosController@saveOrUpdateData')->name('editar_seguimiento_ataque.post');
+						});
+						Route::prefix('/eliminar')->group(function(){
+							Route::get('/', 'AtaquesSeguimientosController@delete')->name('eliminar_seguimiento_ataque');
+							Route::delete('/', 'AtaquesSeguimientosController@deleteData')->name('eliminar_seguimiento_ataque.delete');
+						});
+					});
+				});
 			});
 		});
 	});
+});
+Route::prefix('/razas')->group(function(){
+	Route::get('/', 'RazasController@listWithOutAuth')->name('listar_razas_without_auth');
 });

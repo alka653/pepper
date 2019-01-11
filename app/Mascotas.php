@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Mascotas extends Model{
@@ -20,7 +21,7 @@ class Mascotas extends Model{
 		return $this->belongsTo('App\Razas', 'raza_id');
 	}
 	public static function getSexo($sexo){
-		return $sexo == 'M' ? 'Masculino' : 'Femenino';
+		return $sexo == 'M' ? 'Macho' : 'Hembra';
 	}
 	public function getEstadoAttribute($estado){
 		return $estado == 'V' ? 'Vivo' : 'Fallecido';
@@ -36,7 +37,7 @@ class Mascotas extends Model{
 		return Mascotas::create($data);
 	}
 	public static function updateData($request){
-		$mascota = Mascotas::find($request->mascota);
+		$mascota = Mascotas::find($request->mascota->id);
 		$mascota->nombre = $request->input('nombre');
 		$mascota->fecha_nacimiento = $request->input('fecha_nacimiento');
 		$mascota->sexo = $request->input('sexo');
@@ -45,6 +46,9 @@ class Mascotas extends Model{
 		$mascota->vacunado = $request->input('vacunado');
 		$mascota->fecha_vacunacion = $request->input('fecha_vacunacion');
 		$mascota->raza_id = $request->input('raza_id');
+		if(Auth::user()->perfil != 'U'){
+			$mascota->propietario_id = $request->input('propietario_id');
+		}
 		$mascota->save();
 		return $mascota;
 	}

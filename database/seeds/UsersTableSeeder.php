@@ -61,8 +61,6 @@ class UsersTableSeeder extends Seeder{
 		Permission::create(['name' => 'crear_mascota']);
 		Permission::create(['name' => 'crear_mascota.post']);
 		Permission::create(['name' => 'detalle_mascota']);
-		Permission::create(['name' => 'editar_mascota']);
-		Permission::create(['name' => 'editar_mascota.post']);
 		Permission::create(['name' => 'listar_solicitudes']);
 		Permission::create(['name' => 'crear_solicitud']);
 		Permission::create(['name' => 'crear_solicitud.post']);
@@ -122,8 +120,6 @@ class UsersTableSeeder extends Seeder{
 			'crear_mascota',
 			'crear_mascota.post',
 			'detalle_mascota',
-			'editar_mascota',
-			'editar_mascota.post',
 			'listar_solicitudes',
 			'crear_solicitud',
 			'crear_solicitud.post',

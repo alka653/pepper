@@ -3,7 +3,7 @@
 		<div id="logo" class="pull-left">
 			<h1>
 				<a href="{{ route('home') }}" class="scrollto">
-					PEP<span>PER</span>
+					<img src="img/img.jpg" height="60px">
 				</a>
 			</h1>
 		</div>
@@ -13,6 +13,18 @@
 					<a href="{{ route('home') }}">Inicio</a>
 				</li>
 				@if(!Auth::check())
+					<li>
+						<a href="{{ route('quienes_somos') }}">Quienes somos</a>
+					</li>
+					<li>
+						<a href="{{ route('listar_razas_without_auth') }}">Razas</a>
+					</li>
+					<li>
+						<a href="{{ route('acerca') }}">Acerca de</a>
+					</li>
+					<li>
+						<a href="{{ route('ley_746') }}">Ley 746</a>
+					</li>
 					<li>
 						<a href="{{ route('login') }}">Iniciar sesión</a>
 					</li>

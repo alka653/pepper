@@ -9,7 +9,18 @@ class AtaquesVictima extends Model{
 	public $timestamps = false;
 	protected $table = 'ataques_victima';
 	public function sueroAntirrabico($suero_antirrabico){
-		return $suero_antirrabico == 1 ? 'Si' : 'No';
+		switch($suero_antirrabico){
+			case 'S':
+				$suero_antirrabico = 'Si';
+				break;
+			case 'N':
+				$suero_antirrabico = 'No';
+				break;
+			case 'D':
+				$suero_antirrabico = 'No sabe';
+				break;
+		}
+		return $suero_antirrabico;
 	}
 	public function vacunaAntirrabica($vacuna_antirrabica){
 		switch($vacuna_antirrabica){
@@ -40,6 +51,7 @@ class AtaquesVictima extends Model{
 	public static function saveData($data){
 		$data['fecha_aplicacion_suero'] = date('Y-m-d', strtotime($data['fecha_aplicacion_suero']));
 		$data['fecha_ultima_dosis'] = date('Y-m-d', strtotime($data['fecha_aplicacion_suero']));
+		$data['suero_antirrabico'] = $data['suero_antirrabico'] != null ? $data['suero_antirrabico'] : 'D';
 		return AtaquesVictima::create($data);
 	}
 }

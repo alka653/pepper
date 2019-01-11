@@ -10,7 +10,7 @@ class LocalizacionesAnatomicasController extends Controller{
 	const DIR_TEMPLATE = 'localizaciones_anatomicas.';
 	public function list(Request $request){
 		$query = $request->input('query');
-		$localizaciones_anatomicas = $query != null && $query != '' ? LocalizacionesAnatomicas::where('nombre', 'LIKE', "%$query%") : new LocalizacionesAnatomicas();
+		$localizaciones_anatomicas = $query != null && $query != '' ? LocalizacionesAnatomicas::whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%']) : new LocalizacionesAnatomicas();
 		return view(self::DIR_TEMPLATE.'list', [
 			'query' => $query,
 			'url' => route('listar_localizaciones_anatomicas'),
@@ -48,7 +48,6 @@ class LocalizacionesAnatomicasController extends Controller{
 		return response()->json([
 			'message' => $message
 		]);
-		return redirect()->route('listar_localizaciones_anatomicas');
 	}
 	public function delete(LocalizacionesAnatomicas $localizacion_anatomica){
 		return view('elements.delete_form', [

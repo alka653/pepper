@@ -27,7 +27,7 @@
 				<div class="row align-items-center">
 					<div class="col-12 col-md-5">
 						<p class="no-margin">
-							<b>Nombres y apellidos del paciente</b>
+							<b>Nombreres y apellidos del paciente</b>
 						</p>
 						<p class="no-margin">{{ $ataque->victima->nombre.' '.$ataque->victima->apellido }}</p>
 					</div>
@@ -42,6 +42,13 @@
 							<b>Número de identificación</b>
 						</p>
 						<p class="no-margin">{{ number_format($ataque->victima->numero_documento) }}</p>
+					</div>
+					<div class="col-12">
+						<hr/>
+						<p class="no-margin">
+							<b>Detalle del ataque</b>
+						</p>
+						<p class="no-margin">{{ $ataque->descripcion }}</p>
 					</div>
 				</div>
 			</div>
@@ -217,14 +224,14 @@
 						<p class="no-margin">
 							<b>Suero antirrábico</b>
 						</p>
-						<p class="no-margin">{{ $ataque->ataqueVictima->sueroAntirrabico($ataque->ataqueVictima->suero_antirrabico) }}</p>
+						<p class="no-margin">{{ $ataque->suero_antirrabico != null ? $ataque->ataqueVictima->sueroAntirrabico($ataque->ataqueVictima->suero_antirrabico) : '' }}</p>
 					</div>
 					<div class="col-6 col-md-4">
 						<p class="no-margin">
 							<b>Fecha de aplicación</b>
 						</p>
 						<p class="no-margin">
-							@if($ataque->ataqueVictima->suero_antirrabico == 1)
+							@if($ataque->ataqueVictima != null && $ataque->ataqueVictima->suero_antirrabico == 1)
 								{{ $ataque->ataqueVictima->fecha_aplicacion_suero }}
 							@else
 								-
@@ -236,7 +243,7 @@
 							<b>Vacuna antirrábica</b>
 						</p>
 						<p class="no-margin">
-							@if($ataque->ataqueVictima->suero_antirrabico == 1)
+							@if($ataque->ataqueVictima != null && $ataque->ataqueVictima->suero_antirrabico == 1)
 								{{ $ataque->ataqueVictima->vacunaAntirrabica($ataque->ataqueVictima->vacuna_antirrabica) }}
 							@else
 								-
@@ -244,7 +251,7 @@
 						</p>
 					</div>
 				</div>
-				@if($ataque->ataqueVictima->vacuna_antirrabica != null && $ataque->ataqueVictima->vacuna_antirrabica == 'S')
+				@if($ataque->ataqueVictima != null && $ataque->ataqueVictima->vacuna_antirrabica != null && $ataque->ataqueVictima->vacuna_antirrabica == 'S')
 					<hr/>
 					<div class="row align-items-center">
 						<div class="col-6">
@@ -274,7 +281,7 @@
 							<b>¿Lavado de herida con agua y jabón?</b>
 						</p>
 						<p class="no-margin">
-							{{ $ataque->ataqueVictima->lavadoHerida($ataque->ataqueVictima->lavado_herida) }}
+							{{ $ataque->ataqueVictima != null ? $ataque->ataqueVictima->lavadoHerida($ataque->ataqueVictima->lavado_herida) : '' }}
 						</p>
 					</div>
 					<div class="col-6 col-md-3">
@@ -282,7 +289,7 @@
 							<b>¿Sutura de la herida?</b>
 						</p>
 						<p class="no-margin">
-							{{ $ataque->ataqueVictima->suturaHerida($ataque->ataqueVictima->sutura_herida) }}
+							{{ $ataque->ataqueVictima != null ? $ataque->ataqueVictima->suturaHerida($ataque->ataqueVictima->sutura_herida) : '' }}
 						</p>
 					</div>
 					<div class="col-6 col-md-3">
@@ -290,7 +297,7 @@
 							<b>¿Ordenó suero antirrábico?</b>
 						</p>
 						<p class="no-margin">
-							{{ $ataque->ataqueVictima->ordenSuero($ataque->ataqueVictima->orden_suero) }}
+							{{ $ataque->ataqueVictima != null ? $ataque->ataqueVictima->ordenSuero($ataque->ataqueVictima->orden_suero) : '' }}
 						</p>
 					</div>
 					<div class="col-6 col-md-3">
@@ -298,11 +305,20 @@
 							<b>¿Ordenó aplicación vacuna?</b>
 						</p>
 						<p class="no-margin">
-							{{ $ataque->ataqueVictima->ordenAplicacionVacuna($ataque->ataqueVictima->orden_aplicacion_vacuna) }}
+							{{ $ataque->ataqueVictima != null ? $ataque->ataqueVictima->ordenAplicacionVacuna($ataque->ataqueVictima->orden_aplicacion_vacuna) : '' }}
 						</p>
+					</div>
+					<div class="col-6 col-md-12">
+						<p class="no-margin">
+							<b>Razón social de la unidad primaria</b>
+						</p>
+						<p class="no-margin">{{ $ataque->ataqueVictima->razon_social_unidad }}</p>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="text-center">
+			<a href="{{ route('seguimiento_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-info">Realizar seguimiento</a>
 		</div>
 	</div>
 @endsection

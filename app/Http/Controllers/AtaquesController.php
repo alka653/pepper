@@ -104,19 +104,20 @@ class AtaquesController extends Controller{
 		]);
 		$ataque_victima = AtaquesVictima::saveData([
 			'ataque_id' => $ataque->id,
-			'suero_antirrabico' => $ataque->ataque_victima['suero_antirrabico'] == 'S' ? true : false,
-			'fecha_aplicacion_suero' => $ataque->ataque_victima['fecha_aplicacion_suero'],
-			'vacuna_antirrabica' => $ataque->ataque_victima['vacuna_antirrabica'],
-			'numero_dosis' => $ataque->ataque_victima['numero_dosis'],
-			'fecha_ultima_dosis' => $ataque->ataque_victima['fecha_ultima_dosis'],
-			'lavado_herida' => $ataque->ataque_victima['lavado_herida'] == 'S' ? true : false,
-			'sutura_herida' => $ataque->ataque_victima['sutura_herida'] == 'S' ? true : false,
-			'orden_suero' => $ataque->ataque_victima['orden_suero'] == 'S' ? true : false,
-			'orden_aplicacion_vacuna' => $ataque->ataque_victima['orden_aplicacion_vacuna'] == 'S' ? true : false
+			'suero_antirrabico' => $request->ataque_victima['suero_antirrabico'] == 'S' ? true : false,
+			'fecha_aplicacion_suero' => $request->ataque_victima['fecha_aplicacion_suero'],
+			'vacuna_antirrabica' => $request->ataque_victima['vacuna_antirrabica'],
+			'numero_dosis' => $request->ataque_victima['numero_dosis'],
+			'fecha_ultima_dosis' => $request->ataque_victima['fecha_ultima_dosis'],
+			'lavado_herida' => $request->ataque_victima['lavado_herida'] == 'S' ? true : false,
+			'sutura_herida' => $request->ataque_victima['sutura_herida'] == 'S' ? true : false,
+			'orden_suero' => $request->ataque_victima['orden_suero'] == 'S' ? true : false,
+			'orden_aplicacion_vacuna' => $request->ataque_victima['orden_aplicacion_vacuna'] == 'S' ? true : false,
+			'razon_social_unidad' => $request->ataque_victima['razon_social_unidad']
 		]);
 		$request->session()->flash('message.level', 'success');
 		$request->session()->flash('message.content', 'Se ha registrado el ataque occn éxito.');
-		return redirect()->route('listar_ataques');
+		return redirect()->route('seguimiento_ataque', ['ataque' => $ataque->id]);
 	}
 	public function detail(Ataques $ataque){
 		return view(self::DIR_TEMPLATE.'detail', [

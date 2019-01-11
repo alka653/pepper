@@ -17,6 +17,12 @@
 				<div class="col-12">
 					<div class="block">
 						<div class="row">
+							@if(Auth::user()->perfil != 'U')
+								<div class="col-md-6 form-group">
+									{{ Form::label('propietario_id', 'Propietario', ['class' => 'label-required']) }}
+									{{ Form::select('propietario_id', $propietarios, null, ['required', 'class' => 'form-control select2']) }}
+								</div>
+							@endif
 							<div class="col-md-6 form-group">
 								{{ Form::label('nombre', 'Nombre de la mascota', ['class' => 'label-required']) }}
 								{{ Form::text('nombre', null, ['required', 'class' => 'form-control']) }}
@@ -31,8 +37,8 @@
 								{{ Form::label('sexo', 'Sexo', ['class' => 'label-required']) }}
 								{{ Form::select('sexo', [
 									'' => 'Seleccione una opción',
-									'M' => 'Masculino',
-									'F' => 'Femenino'
+									'M' => 'Macho',
+									'F' => 'Hembra'
 								], null, ['required', 'class' => 'form-control']) }}
 								{!! $errors->first('sexo', '<p class="help-block">:message</p>') !!}
 							</div>
@@ -74,7 +80,7 @@
 							<img class="hidden" style="width: 180px; height: 150px;">
 						@endif
 						<div class="custom-file">
-							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1', 'required']) }}
+							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1'] + (!$mascota->toArray() ? ['required'] : [])) }}
 							{{ Form::label('foto[]', 'Foto frontal', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>

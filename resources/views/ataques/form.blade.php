@@ -338,6 +338,13 @@
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									{{ Form::label('ataque_victima[razon_social_unidad]', 'Razón social de la unidad primaria generadora del dato de donde fue atendido el paciente', ['class' => 'label-required']) }}
+									{{ Form::text('ataque_victima[razon_social_unidad]', null, ['class' => 'form-control razon_social_unidad', 'data-error' => 'Ingresa la razón social', 'required' => true]) }}
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

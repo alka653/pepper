@@ -7,14 +7,14 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class CheckIdUser{
-	public function handle($request, Closure $next, $resource = null){
+	public function handle($request, Closure $next, $resource = ''){
 		$user = null;
 		switch($resource){
 			case 'solicitud':
 				$user = User::where('persona_id', $request->solicitud->mascota->propietario_id)->first();
 				break;
 			default:
-				$user = User::where('persona_id', $request->persona)->first();
+				$user = User::where('persona_id', $request->persona->id)->first();
 				break;
 		}
 		if(Auth::user()->perfil == 'U' && $user->id != Auth::user()->id){

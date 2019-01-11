@@ -26,6 +26,9 @@ class Ataques extends Model{
 	public function ataqueVictima(){
 		return $this->hasOne('App\AtaquesVictima', 'ataque_id');
 	}
+	public function seguimientos(){
+		return $this->hasMany('App\AtaquesSeguimientos', 'ataque_id');
+	}
 	public function modoMordedura($ataque_mordedura){
 		switch($ataque_mordedura){
 			case 'C':

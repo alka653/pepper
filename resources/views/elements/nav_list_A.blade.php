@@ -12,7 +12,7 @@
 		<a href="#" class="sf-with-ul">Configuración</a>
 		<ul>
 			<li>
-				<a href="{{ route('listar_razas') }}">Razas</a>
+				<a href="{{ route('listar_razas_with_auth') }}">Razas</a>
 			</li>
 			<li>
 				<a href="{{ route('listar_tipos_ataques') }}">Tipos de ataques</a>

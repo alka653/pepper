@@ -8,12 +8,63 @@ use App\Http\Requests\RazaFormRequest;
 
 class RazasController extends Controller{
 	const DIR_TEMPLATE = 'razas.';
-	public function list(Request $request){
+	public function listWithOutAuth(Request $request){
+		return view(self::DIR_TEMPLATE.'list_without_auth', [
+			'razas' => [
+				(object) [
+					'nombre' => 'Dogo Argentido'
+				],
+				(object) [
+					'nombre' => 'Dogo de Burdeos'
+				],
+				(object) [
+					'nombre' => 'Akita Inu'
+				],
+				(object) [
+					'nombre' => 'Mastín Napolitano'
+				],
+				(object) [
+					'nombre' => 'Dóberman'
+				],
+				(object) [
+					'nombre' => 'Bull Terrier'
+				],
+				(object) [
+					'nombre' => 'Rottweiler'
+				],
+				(object) [
+					'nombre' => 'Pitbull Terrier'
+				],
+				(object) [
+					'nombre' => 'Presa Canario'
+				],
+				(object) [
+					'nombre' => 'American Staffordshire Terrier'
+				],
+				(object) [
+					'nombre' => 'Bullmastiff'
+				],
+				(object) [
+					'nombre' => 'Fila Brasileiro'
+				],
+				(object) [
+					'nombre' => 'American Pitbull Terrier'
+				],
+				(object) [
+					'nombre' => 'Staffordshire Terrier'
+				],
+				(object) [
+					'nombre' => 'Tosa Japonés'
+				]
+			]
+		]);
+	}
+	public function listWithAuth(Request $request){
 		$query = $request->input('query');
-		$razas = $query != null && $query != '' ? Razas::where('nombre', 'LIKE', "%$query%") : new Razas();
-		return view(self::DIR_TEMPLATE.'list', [
+		$razas = $query != null && $query != '' ? Razas::whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%']) : new Razas();
+		return view(self::DIR_TEMPLATE.'list_with_auth', [
 			'query' => $query,
-			'url' => route('listar_razas'),
+			'url' => route('listar_razas_with_auth'),
 			'placeholder' => 'Busca una raza',
 			'razas' => $razas->paginate(10)
 		]);
@@ -34,7 +85,7 @@ class RazasController extends Controller{
 			'method' => 'put'
 		]);
 	}
-	public function saveOrUpdateData(RazaFormRequest $razaRequest){
+	public function saveOrUpdateData(Request $razaRequest){
 		$message = '';
 		if($razaRequest->raza){
 			Razas::updateData($razaRequest);
@@ -46,10 +97,9 @@ class RazasController extends Controller{
 			]);
 			$message = 'Raza guardada con éxito';
 		}
-		return response()->json([
-			'message' => $message
-		]);
-		return redirect()->route('listar_razas');
+		$razaRequest->session()->flash('message.level', 'success');
+		$razaRequest->session()->flash('message.content', $message);
+		return redirect()->route('listar_razas_with_auth');
 	}
 	public function delete(Razas $raza){
 		return view('elements.delete_form', [
@@ -69,6 +119,6 @@ class RazasController extends Controller{
 		}
 		$request->session()->flash('message.level', 'success');
 		$request->session()->flash('message.content', $message);
-		return redirect()->route('listar_razas');
+		return redirect()->route('listar_razas_with_auth');
 	}
 }

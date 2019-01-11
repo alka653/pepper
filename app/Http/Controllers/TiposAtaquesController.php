@@ -10,7 +10,7 @@ class TiposAtaquesController extends Controller{
 	const DIR_TEMPLATE = 'tipos_ataques.';
 	public function list(Request $request){
 		$query = $request->input('query');
-		$tipos_ataques = $query != null && $query != '' ? TiposAtaques::where('nombre', 'LIKE', "%$query%") : new TiposAtaques();
+		$tipos_ataques = $query != null && $query != '' ? TiposAtaques::whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%']) : new TiposAtaques();
 		return view(self::DIR_TEMPLATE.'list', [
 			'query' => $query,
 			'url' => route('listar_tipos_ataques'),

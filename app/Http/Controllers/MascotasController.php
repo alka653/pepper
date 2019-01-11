@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Razas;
 use App\Mascotas;
+use App\Personas;
 use App\MascotasFotos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +18,38 @@ class MascotasController extends Controller{
 		]);
 	}
 	public function list(Request $request){
+		$mascotas = new Mascotas();
 		$query = $request->input('query');
-		$mascotas = $query != null && $query != '' ? Mascotas::where('nombre', 'LIKE', "%$query%") : new Mascotas();
+		$estado = $request->input('estado');
+		$raza_id = $request->input('raza_id');
+		$color = $request->input('color');
+		$sexo = $request->input('sexo');
+
+		if($query != null){
+			$mascotas = $mascotas->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%']);
+		}
+		if($estado != null){
+			$mascotas = $mascotas->where('estado', $estado);
+		}
+		if($raza_id != null){
+			$mascotas = $mascotas->where('raza_id', $raza_id);
+		}
+		if($sexo != null){
+			$mascotas = $mascotas->where('sexo', $sexo);
+		}
+		if($color != null){
+			$mascotas = $mascotas->whereRaw('LOWER(color) LIKE ?', ['%'.strtolower($color).'%']);
+		}
 		return view(self::DIR_TEMPLATE.'list', [
 			'query' => $query,
+			'extraQuery' => [
+				'estado' => $estado,
+				'raza_id' => $raza_id,
+				'color' => $color,
+				'sexo' => $sexo
+			],
 			'url' => route('listar_mascota'),
+			'razas' => Razas::lista('Por raza'),
 			'placeholder' => 'Busca una mascota',
 			'mascotas' => Auth::user()->perfil == 'U' ? $mascotas->where('propietario_id', Auth::user()->persona->id)->paginate(10) : $mascotas->paginate(10)
 		]);
@@ -47,27 +75,32 @@ class MascotasController extends Controller{
 			'razas' => ['' => 'Seleccione una raza'] + Razas::get()->mapWithKeys(function($raza){
 				return [$raza['id'] => $raza['nombre']];
 			})->toArray(),
+			'propietarios' => ['' => 'Selecciona un propietario'] + Personas::get()->mapWithKeys(function($persona){
+				return [$persona['id'] => $persona['nombre'].' '.$persona['apellido']];
+			})->toArray(),
 			'route' => ['editar_mascota.post', $mascota->id],
 			'method' => 'put'
 		]);
 	}
-	public function saveOrUpdateData(MascotaFormRequest $mascotaRequest){
+	public function saveOrUpdateData(MascotaFormRequest $mascotaRequest, Mascotas $mascota){
 		$mascota = null;
 		$message = '';
 		if($mascotaRequest->mascota){
 			$mascota = Mascotas::updateData($mascotaRequest);
 			$mascotasFotos = MascotasFotos::where('mascota_id', $mascotaRequest->mascota)->get();
-			foreach($mascotaRequest->foto as $key => $foto){
-				$foto = $foto->store('mascotas');
-				if(isset($mascotasFotos[$key])){
-					$mascotasFotos[$key]->fecha = date('Y-m-d');
-					$mascotasFotos[$key]->foto = $foto;
-					$mascotasFotos[$key]->save();
-				}else{
-					MascotasFotos::saveData([
-						'foto' => $foto,
-						'mascota_id' => $mascota->id
-					]);
+			if($mascotaRequest->foto != null){
+				foreach($mascotaRequest->foto as $key => $foto){
+					$foto = $foto->store('mascotas');
+					if(isset($mascotasFotos[$key])){
+						$mascotasFotos[$key]->fecha = date('Y-m-d');
+						$mascotasFotos[$key]->foto = $foto;
+						$mascotasFotos[$key]->save();
+					}else{
+						MascotasFotos::saveData([
+							'foto' => $foto,
+							'mascota_id' => $mascota->id
+						]);
+					}
 				}
 			}
 			$message = 'Los datos de tu mascota se han actualizado con éxito.';

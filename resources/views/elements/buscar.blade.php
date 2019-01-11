@@ -5,4 +5,7 @@
 	<div class="col-1">
 		{!! Form::button('<i class="fa fa-search"></i>', ['type' => 'submit', 'class' => 'btn btn-default']) !!}
 	</div>
+	@if(isset($extra))
+		@include($extra)
+	@endif
 {{ Form::close() }}

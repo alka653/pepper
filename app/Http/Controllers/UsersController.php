@@ -44,7 +44,6 @@ class UsersController extends Controller{
 			'perfil' => 'U'
 		]);
 		$usuario->assignRole('guest');
-		/*
 		try{
 			$userData = new \stdClass();
 			$userData->email = $usuario->email;
@@ -57,7 +56,6 @@ class UsersController extends Controller{
 			$request->session()->flash('message.level', 'danger');
 			$request->session()->flash('message.content', 'El correo electrónico ingresado no es correcto.');
 		}
-		*/
 		Auth::login($usuario);
 		return redirect()->route('home');
 	}
