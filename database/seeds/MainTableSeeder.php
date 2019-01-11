@@ -3,6 +3,7 @@
 use App\TiposAtaques;
 use Illuminate\Database\Seeder;
 use App\LocalizacionesAnatomicas;
+use App\Razas;
 
 class MainTableSeeder extends Seeder{
 	public function run(){
@@ -50,6 +51,66 @@ class MainTableSeeder extends Seeder{
 		]);
 		LocalizacionesAnatomicas::create([
 			'nombre' => 'Genitales externos'
+		]);
+		Razas::create([
+			'nombre' => 'American Staffordshire Terrier',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Bullmastiff',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Dóberman',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Dogo Argentino',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Dogo de Burdeos',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Fila Brasileiro',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Mastín Napolitano',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'PitBull Terrier',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'American Pit Bull Terrier',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'De presa canario',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Rottweiler',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Staffordshire Terrier',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Tosa Japonés',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Bull Terrier',
+			'especie' => 'C'
+		]);
+		Razas::create([
+			'nombre' => 'Akita Inu',
+			'especie' => 'C'
 		]);
 	}
 }
