@@ -153,4 +153,5 @@ Route::group(['middleware' => 'auth'], function(){
 });
 Route::prefix('/razas')->group(function(){
 	Route::get('/', 'RazasController@listWithOutAuth')->name('listar_razas_without_auth');
+	Route::get('/detalle/{raza}/{mode}', 'RazasController@detail')->name('detalle_raza_without_auth');
 });

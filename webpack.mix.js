@@ -14,5 +14,6 @@ mix.js('resources/js/app.js', 'public/js')
 	.styles('resources/css/ionicons/css/ionicons.min.css', 'public/css/ionicons/ionicons.min.css')
 	.styles('resources/css/theme.css', 'public/css/theme.css')
 	.styles('resources/css/smart_wizard.css', 'public/css/smart_wizard.css')
+	.styles('resources/css/portafolio.css', 'public/css/portafolio.css')
    	
    	.stylus('resources/stylus/app.min.styl', 'public/css')
