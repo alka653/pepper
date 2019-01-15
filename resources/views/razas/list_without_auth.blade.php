@@ -17,7 +17,7 @@
 				<div class="row">
 					@foreach($razas as $raza)
 						<div class="col-md-4" style="margin: 5px 0px">
-							<section class="portafolio-item">
+							<section class="portafolio-item text-center">
 								<img src="{{ $raza->image }}" class="img-fluid">
 								<section class="portafolio-text">
 									<h2 style="color:#00BFFF; font-size:18px;: Georgia, 'Times New Roman', serif;"><b>{{ $raza->nombre }}</b></h2>

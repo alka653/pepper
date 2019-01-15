@@ -10,46 +10,58 @@
 
 @section('content')
 	<div class="container" style="margin-bottom: 50px">
-		<h2>Lista de mascotas</h2>
-		<div class="row justify-content-md-center">
-			<div class="col-12 text-center">
-				@include('elements.buscar', ['extra' => 'mascotas.filters'])
-				<br>
-				@can('crear_mascota')
-					<a href="{{ route('crear_mascota') }}" class="btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 10px;">Agregar mascota</a>
-				@endcan
-			</div>
-			@forelse($mascotas as $mascota)
-				<div class="col-md-4">
-					<div class="block">
-						<div class="row">
-							<div class="col-3">
-								<img src="{{ Storage::url($mascota->fotos[0]->foto) }}" alt="{{ $mascota->nombre }}" class="img-fluid rounded">
-							</div>
-							<div class="col-9">
-								<h3 class="no-margin">{{ $mascota->nombre }}</h3>
-								<h6 class="no-margin"><b>Sexo:</b> {{ $mascota->getSexo($mascota->sexo) }}</h6>
+		<h2>
+			Lista de mascotas
+			@can('crear_mascota')
+				<a href="{{ route('crear_mascota') }}" class="btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 10px;">Agregar mascota</a>
+			@endcan
+		</h2>
+		@include('elements.buscar', ['extra' => 'mascotas.filters'])
+		<div class="block">
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Mascota</th>
+							<th>Género</th>
+							<th>Raza</th>
+							@unlessrole('guest')
+								<th>Propietario</th>
+							@endunlessrole
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						@forelse($mascotas as $mascota)
+							<tr>
+								<td>{{ $mascota->nombre }}</td>
+								<td>{{ $mascota->getSexo($mascota->sexo) }}</td>
+								<td>{{ $mascota->raza->nombre }}</td>
 								@unlessrole('guest')
-									<h6 class="no-margin"><b>Propietario:</b> {{ $mascota->propietario_id != null ? $mascota->propietario->nombre.' '.$mascota->propietario->apellido : 'Sin propietario' }}</h6>
+									<td>{{ $mascota->propietario_id != null ? $mascota->propietario->nombre.' '.$mascota->propietario->apellido : 'Sin propietario' }}</td>
 								@endunlessrole
-								<a href="{{ route('detalle_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-info">Detalle</a>
-								<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			@empty
-				<div class="col-12 text-center">
-					@role('guest')
-						<h5>No tienes una mascota agregada. Da <a href="{{ route('crear_mascota') }}">clic aquí</a> para agregar tu mascota</h5>
-					@else
-						<h5>Aún no han registrado mascotas</h5>
-					@endrole
-				</div>
-			@endforelse
-			<div class="col-12">
-				{{ $mascotas->links() }}
+								<td>
+									<a href="{{ route('detalle_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-info">Detalle</a>
+									<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
+								</td>
+							</tr>
+						@empty
+							<tr>
+								@role('guest')
+									<td colspan="4">
+										No se encuentra la mascota agregada. Da <a href="{{ route('crear_mascota') }}">clic aquí</a> para agregar una mascota
+									</td>
+								@else
+									<td colspan="5">
+										No se enontraron resultados
+									</td>
+								@endrole
+							</tr>
+						@endforelse
+					</tbody>
+				</table>
 			</div>
 		</div>
+		{{ $mascotas->links() }}
 	</div>
 @endsection

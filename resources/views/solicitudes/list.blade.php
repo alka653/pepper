@@ -54,7 +54,7 @@
 							<tr class="text-center">
 								<td colspan="@role('guest') 5 @else 6 @endcan">
 									@role('guest')
-										Aún no tienes solicitudes de certificados para tus mascotas. Da <a href="{{ route('crear_solicitud') }}">clic aquí</a> para realizar el trámite
+										No se han encontrado solicitudes. Da <a href="{{ route('crear_solicitud') }}">clic aquí</a> para realizar el trámite
 									@else
 										Aún no han realizado solicitudes
 									@endrole

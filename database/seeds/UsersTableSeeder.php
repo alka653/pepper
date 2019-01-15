@@ -134,6 +134,7 @@ class UsersTableSeeder extends Seeder{
 
 		$zootecnico = User::create([
 			'email' => 'zootecnico@gmail.com',
+			'username' => 'zootecnico',
 			'password' => bcrypt('12345'),
 			'persona_id' => $zootecnico->id,
 			'perfil' => 'Z',
@@ -141,6 +142,7 @@ class UsersTableSeeder extends Seeder{
 		]);
 		$coordinador = User::create([
 			'email' => 'coordinador@gmail.com',
+			'username' => 'coordinador',
 			'password' => bcrypt('12345'),
 			'persona_id' => $coordinador->id,
 			'perfil' => 'C',
@@ -148,6 +150,7 @@ class UsersTableSeeder extends Seeder{
 		]);
 		$jefe = User::create([
 			'email' => 'jefe@gmail.com',
+			'username' => 'jefe',
 			'password' => bcrypt('12345'),
 			'persona_id' => $jefe->id,
 			'perfil' => 'J',

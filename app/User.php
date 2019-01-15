@@ -9,15 +9,32 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable{
 	use Notifiable, HasRoles;
-	protected $fillable = ['email', 'password', 'estado', 'perfil', 'persona_id'];
+	protected $fillable = ['email', 'password', 'estado', 'perfil', 'persona_id', 'username'];
 	protected $hidden = [
 		'password', 'remember_token',
 	];
 	public function persona(){
 		return $this->hasOne('App\Personas', 'id', 'persona_id');
 	}
+	public static function getPerfil($perfil){
+		switch($perfil){
+			case 'Z':
+				$perfil = 'Zootécnico';
+				break;
+			case 'C':
+				$perfil = 'Coordinador';
+				break;
+			case 'J':
+				$perfil = 'Jefe';
+				break;
+			case 'U':
+				$perfil = 'Propietario';
+				break;
+		}
+		return $perfil;
+	}
 	public static function saveData($data){
-		$data['password'] = bcrypt(12345);
+		$data['password'] = bcrypt($data['password']);
 		$data['estado'] = 'A';
 		return User::create($data);
 	}

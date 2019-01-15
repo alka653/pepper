@@ -14,7 +14,7 @@
 		{{ Form::model($solicitud, ['route' => $route, 'method' => $method, 'enctype' => 'multipart/form-data', 'autocomplete' => 'off']) }}
 			<br>
 			@if($mascotas)
-				<h4>Selecciona la mascota a realizar la solicitud</h4>
+				<h4>Seleccionar una mascota</h4>
 				<div class="row justify-content-md-center">
 					@foreach($mascotas as $mascota)
 						<div class="col-md-4">
@@ -29,7 +29,7 @@
 				</div>
 				<br>
 			@endif
-			<h4>Sube la documentación requerida</h4>
+			<h4>Subir la documentación requerida</h4>
 			<div class="row" style="margin-bottom: 100px;">
 				<div class="col-md-4">
 					<div class="block">

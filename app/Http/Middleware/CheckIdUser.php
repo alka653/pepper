@@ -14,7 +14,7 @@ class CheckIdUser{
 				$user = User::where('persona_id', $request->solicitud->mascota->propietario_id)->first();
 				break;
 			default:
-				$user = User::where('persona_id', $request->persona->id)->first();
+				$user = User::where('persona_id', (is_object($request->persona) ? $request->persona->id : $request->persona))->first();
 				break;
 		}
 		if(Auth::user()->perfil == 'U' && $user->id != Auth::user()->id){

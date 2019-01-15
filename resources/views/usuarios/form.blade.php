@@ -65,13 +65,6 @@
 						{{ Form::select('municipio_residencia_id', [], null, ['required', 'class' => 'form-control select2'] + ($persona->toArray() ? ['data-id' => $persona->municipio_residencia_id] : [])) }}
 						{!! $errors->first('municipio_residencia_id', '<p class="help-block">:message</p>') !!}
 					</div>
-					@if(!$persona->toArray())
-						<div class="col-md-6 form-group">
-							{{ Form::label('email', 'Correo electrónico', ['class' => 'label-required']) }}
-							{{ Form::email('email', null, ['required', 'class' => 'form-control']) }}
-							{!! $errors->first('email', '<p class="help-block">:message</p>') !!}
-						</div>
-					@endif
 					<div class="col-md-6 form-group">
 						{{ Form::label('sexo', 'Sexo', ['class' => 'label-required']) }}
 						{{ Form::select('sexo', [
@@ -96,7 +89,8 @@
 						{{ Form::text('ocupacion', null, ['required', 'class' => 'form-control']) }}
 						{!! $errors->first('ocupacion', '<p class="help-block">:message</p>') !!}
 					</div>
-					<div class="col-md-6 form-group text-center">
+					<div class="col-md-6 form-group">
+						<label>Foto</label>
 						@if($persona->toArray())
 							<img src="{{ $persona->foto }}" alt="{{ $persona->nombre }}" class="img-fluid rounded" width="100">
 						@else
@@ -108,6 +102,28 @@
 							{!! $errors->first('foto', '<p class="help-block">:message</p>') !!}
 						</div>
 					</div>
+					@if(!$persona->toArray())
+						<div class="col-md-6 form-group">
+							{{ Form::label('email', 'Correo electrónico', ['class' => 'label-required']) }}
+							{{ Form::email('email', null, ['required', 'class' => 'form-control']) }}
+							{!! $errors->first('email', '<p class="help-block">:message</p>') !!}
+						</div>
+						<div class="col-md-6 form-group">
+							{{ Form::label('username', 'Nombre de usuario', ['class' => 'label-required']) }}
+							{{ Form::text('username', null, ['required', 'class' => 'form-control']) }}
+							{!! $errors->first('username', '<p class="help-block">:message</p>') !!}
+						</div>
+						<div class="col-md-6 form-group">
+							{{ Form::label('password', 'Contraseña', ['class' => 'label-required']) }}
+							<input type="password" name="password" id="password" class="form-control" />
+							{!! $errors->first('password', '<p class="help-block">:message</p>') !!}
+						</div>
+						<div class="col-md-6 form-group">
+							{{ Form::label('password_confirmation', 'Confirmación de contraseña', ['class' => 'label-required']) }}
+							<input type="password" name="password_confirmation" id="password_confirmation" class="form-control" />
+							{!! $errors->first('password_confirmation', '<p class="help-block">:message</p>') !!}
+						</div>
+					@endif
 					<div class="col-12 form-group text-center">
 						{!! Form::button('Enviar datos', ['type' => 'submit', 'class' => 'btn btn-primary']) !!}
 					</div>
@@ -119,13 +135,28 @@
 
 @section('script')
 	<script>
-		@if($persona->toArray())
-			$(document).ready(function(){
-				$('.departamento_change').each(function(){
+		const localStorage = window.localStorage
+		$(document).on('submit', 'form', function(){
+			localStorage.setItem('municipio_residencia_id', $('#municipio_residencia_id').val())
+			localStorage.setItem('municipio_expedicion_id', $('#municipio_expedicion_id').val())
+		})
+		$(document).ready(function(){
+			if(localStorage.getItem('municipio_expedicion_id')){
+				$('#municipio_expedicion_id').attr('data-id', localStorage.getItem('municipio_expedicion_id'))
+			}
+			if(localStorage.getItem('municipio_residencia_id')){
+				$('#municipio_residencia_id').attr('data-id', localStorage.getItem('municipio_residencia_id'))
+			}
+			$('.departamento_change').each(function(){
+				@if($persona->toArray())
 					$(this).val($(this).attr('data-id')).trigger('change')
-				})
+				@else
+					if($(this).val() != ''){
+						$(this).trigger('change')
+					}
+				@endif
 			})
-		@endif
+		})
 		function readURL(input){
 			if(input.files && input.files[0]){
 				if(input.files[0].size <= 500000){

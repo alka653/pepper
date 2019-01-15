@@ -50,7 +50,7 @@ class MascotasController extends Controller{
 			],
 			'url' => route('listar_mascota'),
 			'razas' => Razas::lista('Por raza'),
-			'placeholder' => 'Busca una mascota',
+			'placeholder' => 'Buscar una mascota',
 			'mascotas' => Auth::user()->perfil == 'U' ? $mascotas->where('propietario_id', Auth::user()->persona->id)->paginate(10) : $mascotas->paginate(10)
 		]);
 	}
@@ -62,7 +62,7 @@ class MascotasController extends Controller{
 	public function new(){
 		return view(self::DIR_TEMPLATE.'form', [
 			'mascota' => new Mascotas(),
-			'title' => 'Registra tu mascota',
+			'title' => 'Registrar una mascota',
 			'razas' => Razas::lista(),
 			'route' => ['crear_mascota.post'],
 			'method' => 'post'
@@ -71,7 +71,7 @@ class MascotasController extends Controller{
 	public function edit(Mascotas $mascota){
 		return view(self::DIR_TEMPLATE.'form', [
 			'mascota' => $mascota,
-			'title' => 'Edita la información de tu mascota',
+			'title' => 'Edita la información de la mascota',
 			'razas' => ['' => 'Seleccione una raza'] + Razas::get()->mapWithKeys(function($raza){
 				return [$raza['id'] => $raza['nombre']];
 			})->toArray(),

@@ -16,10 +16,10 @@
 		<div class="row justify-content-md-center">
 			<div class="col-md-5">
 				<div class="block">
-					<h4>Ingresa a PEPPER</h4>
+					<h4>Ingreso a PEPPER</h4>
 					{{ Form::open(['url' => route('login.post'), 'method' => 'post']) }}
 						<div class="form-group">
-							{{ Form::label('email', 'Correo electrónico') }}
+							{{ Form::label('email', 'Nombre de usuario') }}
 							{{ Form::text('email', null, ['required', 'class' => 'form-control']) }}
 							{!! $errors->first('email', '<p class="help-block">:message</p>') !!}
 						</div>
@@ -39,8 +39,17 @@
 						</div>
 					{{ Form::close() }}
 				</div>
-				<p class="text-center">¿Aún no tienes cuenta? <a href="{{ route('crear_cuenta') }}">Registrate aquí</a></p>
+				<p class="text-center"><a href="{{ route('crear_cuenta') }}">Crear cuenta</a></p>
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('script')
+	<script>
+		$(document).ready(function(){
+			localStorage.removeItem('municipio_expedicion_id')
+			localStorage.removeItem('municipio_residencia_id')
+		})
+	</script>
 @endsection

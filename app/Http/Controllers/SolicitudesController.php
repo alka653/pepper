@@ -44,7 +44,7 @@ class SolicitudesController extends Controller{
 		if(count($mascotas) > 0){
 			return view(self::DIR_TEMPLATE.'form', [
 				'solicitud' => new Solicitudes(),
-				'title' => 'Haz una solicitud para el certificado de tu mascota',
+				'title' => 'Crear nueva solicitud',
 				'mascotas' => $mascotas,
 				'route' => ['crear_solicitud.post'],
 				'method' => 'post'

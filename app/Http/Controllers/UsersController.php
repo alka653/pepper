@@ -17,7 +17,7 @@ class UsersController extends Controller{
 	public function signup(){
 		return view(self::DIR_TEMPLATE.'form', [
 			'departamentoLista' => Departamentos::lista(),
-			'title' => 'Regístrate en Pepper',
+			'title' => 'Registro en Pepper',
 			'route' => ['crear_cuenta.post'],
 			'persona' => new Personas,
 			'method' => 'post'
@@ -41,7 +41,9 @@ class UsersController extends Controller{
 		$usuario = User::saveData([
 			'email' => $request->email,
 			'persona_id' => $persona->id,
-			'perfil' => 'U'
+			'perfil' => 'U',
+			'username' => $request->username,
+			'password' => $request->password
 		]);
 		$usuario->assignRole('guest');
 		try{
@@ -56,8 +58,7 @@ class UsersController extends Controller{
 			$request->session()->flash('message.level', 'danger');
 			$request->session()->flash('message.content', 'El correo electrónico ingresado no es correcto.');
 		}
-		Auth::login($usuario);
-		return redirect()->route('home');
+		return redirect()->route('login');
 	}
 	public function profile($persona = ''){
 		$usuario = null;
@@ -85,6 +86,8 @@ class UsersController extends Controller{
 	}
 	public function updateData(Request $request){
 		Personas::updateData($request);
+		$request->session()->flash('message.level', 'success');
+		$request->session()->flash('message.content', 'Datos actualizados con éxito.');
 		return redirect()->route('perfil_usuario', ['persona' => $request->persona]);
 	}
 	public function changePassword(){

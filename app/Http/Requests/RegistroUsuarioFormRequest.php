@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\UserPasswordFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\UsuarioFormRequest;
 use App\Http\Requests\PersonaFormRequest;
@@ -15,6 +16,7 @@ class RegistroUsuarioFormRequest extends FormRequest{
 		$formRequests = [
 			PersonaFormRequest::class,
 			UsuarioFormRequest::class,
+			UserPasswordFormRequest::class
 		];
 		foreach ($formRequests as $source) {
 			$rules = array_merge($rules, (new $source)->rules());
@@ -26,6 +28,7 @@ class RegistroUsuarioFormRequest extends FormRequest{
 		$formRequests = [
 			PersonaFormRequest::class,
 			UsuarioFormRequest::class,
+			UserPasswordFormRequest::class,
 		];
 		foreach ($formRequests as $source) {
 			$messages = array_merge($messages, (new $source)->messages());
