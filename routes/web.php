@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth'], function(){
 				Route::put('/', 'SolicitudesController@saveOrUpdateData')->name('editar_solicitud.post')->middleware('permission:editar_solicitud.post');
 			});
 			Route::group(['prefix' => 'revisiones', 'middleware' => 'permission:crear_revision.post'], function(){
-				Route::post('/{solicitud}', 'RevisionesController@saveOrUpdateData')->name('crear_revision.post');
+				Route::post('/', 'RevisionesController@saveOrUpdateData')->name('crear_revision.post');
 				Route::prefix('/{revision}')->group(function(){
 					Route::prefix('/editar')->group(function(){
 						Route::get('/', 'RevisionesController@edit')->name('editar_revision');
