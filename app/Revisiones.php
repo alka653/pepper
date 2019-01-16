@@ -29,4 +29,11 @@ class Revisiones extends Model{
 		$data['fecha'] = date('Y-m-d');
 		return Revisiones::create($data);
 	}
+	public static function updateData($request){
+		$revision = Revisiones::find($request->revision);
+		$revision->observacion = $request->input('observacion');
+		$revision->estado = $request->input('estado');
+		$revision->save();
+		return $revision;
+	}
 }

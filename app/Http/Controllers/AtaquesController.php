@@ -66,6 +66,8 @@ class AtaquesController extends Controller{
 					'sexo' => $request->propietario['sexo'],
 				])->id;
 			}
+		}else{
+			$duenio_mascota = $duenio_mascota->id;
 		}
 		$mascota = $request->ataque_animal['mascota_id'];
 		if($mascota == null){

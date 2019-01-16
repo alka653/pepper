@@ -423,7 +423,7 @@
 							<div class="col-md-6 hidden">
 								<div class="form-group">
 									{{ Form::label('ataque_animal[mascota_id]', 'Mascota', ['class' => 'label-required']) }}
-									{{ Form::select('ataque_animal[mascota_id]', [], null, ['required', 'class' => 'form-control mascota_id', 'data-error' => 'Selecciona un elemento de la lista']) }}
+									{{ Form::select('ataque_animal[mascota_id]', [], null, ['class' => 'form-control mascota_id', 'data-error' => 'Selecciona un elemento de la lista']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>

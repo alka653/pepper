@@ -19,9 +19,13 @@
 				</small>
 			@endif
 		</h2>
-		<p>
-			<b>Fecha de solicitud</b>
+		<p class="no-margin">
+			<b>Fecha de solicitud:</b>
 			{{ $solicitud->fecha_solicitud }}
+		</p>
+		<p>
+			<b>Propietario:</b>
+			{{ $solicitud->mascota->propietario->nombre.' '.$solicitud->mascota->propietario->apellido }}
 		</p>
 		<div class="row justify-content-md-center">
 			@foreach($solicitud->documentos as $documento)
@@ -43,8 +47,8 @@
 				</div>
 			@endif
 			@unlessrole('guest')
-				@if($solicitud->revisionesInspector($solicitud->id, Auth::user()->id)->count() == 0 || $solicitud->estado == 'P')
-					{{ Form::open(['url' => route('crear_revision.post', ['solicitud' => $solicitud->id]), 'method' => 'post', 'autocomplete' => 'off']) }}
+				@if($solicitud->revisionesInspector($solicitud->id, Auth::user()->id)->count() == 0 && $solicitud->estado == 'P')
+					{{ Form::model($revisionModel, ['route' => ['crear_revision.post', $solicitud->id], 'method' => 'post', 'autocomplete' => 'off']) }}
 						<div class="form-group">
 							{{ Form::label('observacion', 'Observación', ['class' => 'label-required']) }}
 							{{ Form::textarea('observacion', null, ['required', 'rows' => 2, 'class' => 'form-control']) }}
@@ -88,6 +92,9 @@
 							<th>Inspector</th>
 							<th>Observación</th>
 							<th>Estado</th>
+							@unlessrole('guest')
+								<th></th>
+							@endunlessrole
 						</tr>
 					</thead>
 					<tbody>
@@ -98,11 +105,16 @@
 									<td>{{ $revision->inspector->persona->nombre.' '.$revision->inspector->persona->apellido }}</td>
 									<td>{{ $revision->observacion }}</td>
 									<td>{{ $revision->getEstado($revision->estado) }}</td>
+									@unlessrole('guest')
+										<td>
+											<a href="{{ route('editar_revision', ['solicitud' => $revision->solicitud_id, 'revision' => $revision->id]) }}" class="btn btn-warning open-modal">Editar</a>
+										</td>
+									@endunlessrole
 								</tr>
 							@endif
 						@empty
 							<tr class="text-center">
-								<td colspan="4">Sin revisiones</td>
+								<td colspan="@unlessrole('guest') 5 @elseunlessrole 4 @endunlessrole">Sin revisiones</td>
 							</tr>
 						@endforelse
 					</tbody>

@@ -34,7 +34,7 @@
 						<a href="#">
 							<div class="row align-items-center">
 								<div class="col-3">
-									<img src="{{ Auth::user()->persona->foto }}" width="30">
+									<img src="{{ Auth::user()->persona->foto }}" width="25">
 								</div>
 								<div class="col-9">
 									{{ Auth::user()->persona->nombre }}, {{ Auth::user()->getPerfil(Auth::user()->perfil) }}

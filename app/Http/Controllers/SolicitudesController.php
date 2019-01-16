@@ -24,6 +24,7 @@ class SolicitudesController extends Controller{
 	}
 	public function detail(Solicitudes $solicitud){
 		return view(self::DIR_TEMPLATE.'detail', [
+			'revisionModel' => new Revisiones(),
 			'solicitud' => $solicitud
 		]);
 	}
