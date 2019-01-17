@@ -12,7 +12,7 @@ class RazasController extends Controller{
 	public function __construct(){
 		$this->razasList = [
 			(object) [
-				'nombre' => 'Dogo Argentido',
+				'nombre' => 'Dogo Argentino',
 				'image' => '/img/dogs/dogoargentino.jpg',
 				'historia' => '
 					<p>El Dogo Argentino es un cazador de piezas de caza mayor que es capaz de seguirle el rastro a la presa a través de bosques de densas praderas y de arbustos. La exuberante musculatura y su poderosa estructura le confieren una  gran fuerza y  extraordinaria agilidad, rapidez y resistencia. Esta  raza ha conocido el éxito no sólo en la caza sino también en las pruebas de obediencia, el trabajo militar y policial, el Schutzhund y la búsqueda y rescate, además de utilizarse como perro lazarillo.</p>

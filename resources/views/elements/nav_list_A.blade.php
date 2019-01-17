@@ -4,8 +4,16 @@
 <li>
 	<a href="{{ route('listar_solicitudes') }}">Solicitudes</a>
 </li>
-<li>
-	<a href="{{ route('listar_ataques') }}">Ataques</a>
+<li class="menu-has-children">
+	<a href="#" class="sf-with-ul">Ataques</a>
+	<ul>
+		<li>
+			<a href="{{ route('registrar_ataque') }}">Registrar</a>
+		</li>
+		<li>
+			<a href="{{ route('listar_ataques') }}">Listar</a>
+		</li>
+	</ul>
 </li>
 @role('administrator')
 	<li class="menu-has-children">

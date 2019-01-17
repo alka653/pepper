@@ -107,7 +107,9 @@
 									<td>{{ $revision->getEstado($revision->estado) }}</td>
 									@unlessrole('guest')
 										<td>
-											<a href="{{ route('editar_revision', ['solicitud' => $revision->solicitud_id, 'revision' => $revision->id]) }}" class="btn btn-warning open-modal">Editar</a>
+											@if($revision->inspector_id == Auth::user()->id)
+												<a href="{{ route('editar_revision', ['solicitud' => $revision->solicitud_id, 'revision' => $revision->id]) }}" class="btn btn-warning open-modal">Editar</a>
+											@endif
 										</td>
 									@endunlessrole
 								</tr>
