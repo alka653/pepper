@@ -14,6 +14,7 @@ class MascotaFormRequest extends FormRequest{
 			'fecha_nacimiento' => 'required',
 			'sexo' => 'required|max:1',
 			'color' => 'required|max:20',
+			'color_otro' => 'nullable',
 			'vacunado' => 'nullable|max:1',
 			'fecha_vacunacion' => 'nullable|date',
 			'raza_id' => 'required',

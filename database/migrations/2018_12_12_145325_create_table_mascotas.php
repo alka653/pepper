@@ -20,7 +20,7 @@ class CreateTableMascotas extends Migration
             $table->foreign('propietario_id')->references('id')->on('personas');
             $table->date('fecha_nacimiento')->nullable();
             $table->enum('sexo', ['M','F'])->nullable();
-            $table->string('color', 20)->nullable();
+            $table->string('color', 100)->nullable();
             $table->longText('descripcion')->nullable();
             $table->enum('estado', ['V','M'])->nullable();
             $table->boolean('vacunado');

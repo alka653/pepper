@@ -9,6 +9,9 @@
 		</li>
 	</ul>
 </li>
+<li>
+	<a href="{{ route('listar_ataques') }}">Ataques</a>
+</li>
 <li class="menu-has-children">
 	<a href="#" class="sf-with-ul">Solicitudes</a>
 	<ul>

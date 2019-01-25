@@ -48,9 +48,10 @@ class UsersController extends Controller{
 		$usuario->assignRole('guest');
 		try{
 			$userData = new \stdClass();
-			$userData->email = $usuario->email;
+			$userData->username = $usuario->username;
 			$userData->nombre = $usuario->persona->nombre;
 			$userData->apellido = $usuario->persona->apellido;
+			$userData->password = $usuario->password;
 			$userData->sender = 'Pepper';
 			$userData->receiver = $usuario->persona->nombre.' '.$usuario->persona->apellido;
 			Mail::to($usuario->email)->send(new UserRegisterEmail($userData));

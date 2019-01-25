@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Razas;
 use App\Mascotas;
 use App\Personas;
+use App\Certificados;
 use App\MascotasFotos;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\MascotaFormRequest;
 
 class MascotasController extends Controller{
@@ -64,6 +67,9 @@ class MascotasController extends Controller{
 			'mascota' => new Mascotas(),
 			'title' => 'Registrar una mascota',
 			'razas' => Razas::lista(),
+			'propietarios' => ['' => 'Selecciona un propietario'] + Personas::get()->mapWithKeys(function($persona){
+				return [$persona['id'] => $persona['nombre'].' '.$persona['apellido']];
+			})->toArray(),
 			'route' => ['crear_mascota.post'],
 			'method' => 'post'
 		]);
@@ -72,9 +78,7 @@ class MascotasController extends Controller{
 		return view(self::DIR_TEMPLATE.'form', [
 			'mascota' => $mascota,
 			'title' => 'Edita la información de la mascota',
-			'razas' => ['' => 'Seleccione una raza'] + Razas::get()->mapWithKeys(function($raza){
-				return [$raza['id'] => $raza['nombre']];
-			})->toArray(),
+			'razas' => ['' => 'Seleccione una raza'] + Razas::lista(),
 			'propietarios' => ['' => 'Selecciona un propietario'] + Personas::get()->mapWithKeys(function($persona){
 				return [$persona['id'] => $persona['nombre'].' '.$persona['apellido']];
 			})->toArray(),
@@ -85,9 +89,12 @@ class MascotasController extends Controller{
 	public function saveOrUpdateData(MascotaFormRequest $mascotaRequest, Mascotas $mascota){
 		$mascota = null;
 		$message = '';
+		if($mascotaRequest->color == 'Mixto'){
+			$mascotaRequest->color = $mascotaRequest->color_otro;
+		}
 		if($mascotaRequest->mascota){
 			$mascota = Mascotas::updateData($mascotaRequest);
-			$mascotasFotos = MascotasFotos::where('mascota_id', $mascotaRequest->mascota)->get();
+			$mascotasFotos = MascotasFotos::where('mascota_id', $mascota->id)->get();
 			if($mascotaRequest->foto != null){
 				foreach($mascotaRequest->foto as $key => $foto){
 					$foto = $foto->store('mascotas');
@@ -129,5 +136,17 @@ class MascotasController extends Controller{
 		$mascotaRequest->session()->flash('message.level', 'success');
 		$mascotaRequest->session()->flash('message.content', $message);
 		return redirect()->route('detalle_mascota', ['mascota' => $mascota->id]);
+	}
+	public function certificadoMascota(Mascotas $mascota, Certificados $certificado){
+		$filename = 'certificado-'.$mascota->nombre.'.pdf';
+		$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.certificado', [
+			'title' => $filename,
+			'mascota' => $mascota,
+			'foto_canino' => 'data:image/png;base64,'.base64_encode(file_get_contents('storage/'.$mascota->fotos[0]->foto)),
+			'certificado' => $certificado
+		]);
+		$pdf->save(storage_path().'/app/public/pdf/'.$filename);
+		//return $pdf->download($filename);
+		return response()->file('storage/pdf/'.$filename);
 	}
 }

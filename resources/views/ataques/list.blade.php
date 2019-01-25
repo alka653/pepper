@@ -12,9 +12,11 @@
 	<div class="container" style="margin-bottom: 50px">
 		<h2>
 			Lista de ataques registrados
-			<small>
-				<a href="{{ route('registrar_ataque') }}" class="btn btn-sm btn-primary">Registrar ataque</a>
-			</small>
+			@can('gestionar_ataques')
+				<small>
+					<a href="{{ route('registrar_ataque') }}" class="btn btn-sm btn-primary">Registrar ataque</a>
+				</small>
+			@endcan
 		</h2>
 		<div class="block">
 			<div class="table-responsive">
@@ -35,7 +37,9 @@
 								<td>{{ $ataque->agresorRaza($ataque->mascota->raza_id)->nombre }}</td>
 								<td>
 									<a href="{{ route('detalle_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-success">Ver detalle</a>
-									<a href="{{ route('seguimiento_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-info">Seguimiento</a>
+									@can('seguimiento_ataque')
+										<a href="{{ route('seguimiento_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-info">Seguimiento</a>
+									@endcan
 								</td>
 							</tr>
 						@empty

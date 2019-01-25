@@ -27,7 +27,7 @@
 				<div class="row align-items-center">
 					<div class="col-12 col-md-5">
 						<p class="no-margin">
-							<b>Nombreres y apellidos del paciente</b>
+							<b>Nombres y apellidos del paciente</b>
 						</p>
 						<p class="no-margin">{{ $ataque->victima->nombre.' '.$ataque->victima->apellido }}</p>
 					</div>

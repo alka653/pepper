@@ -24,31 +24,34 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::prefix('/mascotas')->group(function(){
 		Route::get('/', 'MascotasController@list')->name('listar_mascota');
 		Route::get('/verificar', 'MascotasController@verifyCountPets')->name('verificar_usuario_mascotas');
-		Route::prefix('/crear')->group(function(){
-			Route::get('/', 'MascotasController@new')->name('crear_mascota')->middleware('permission:crear_mascota');
-			Route::post('/', 'MascotasController@saveOrUpdateData')->name('crear_mascota.post')->middleware('permission:crear_mascota.post');
+		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestionar_mascota'], function(){
+			Route::get('/', 'MascotasController@new')->name('crear_mascota');
+			Route::post('/', 'MascotasController@saveOrUpdateData')->name('crear_mascota.post');
 		});
-		Route::prefix('/{mascota}')->group(function(){
-			Route::get('/', 'MascotasController@detail')->name('detalle_mascota')->middleware('check_own_pet');
-			Route::group(['middleware' => 'check_own_pet', 'prefix' => 'editar'], function(){
-				Route::get('/', 'MascotasController@edit')->name('editar_mascota');
-				Route::put('/', 'MascotasController@saveOrUpdateData')->name('editar_mascota.post');
+		Route::group(['middleware' => 'check_own_pet', 'prefix' => '{mascota}'], function(){
+			Route::get('/', 'MascotasController@detail')->middleware('permission:detalle_mascota')->name('detalle_mascota');
+			Route::group(['middleware' => 'permission:gestionar_mascota'], function(){
+				Route::prefix('editar')->group(function(){
+					Route::get('/', 'MascotasController@edit')->name('editar_mascota');
+					Route::put('/', 'MascotasController@saveOrUpdateData')->name('editar_mascota.post');
+				});
+				Route::get('/certificado/{certificado}', 'MascotasController@certificadoMascota')->name('certificado.pdf');
 			});
 		});
 	});
 	Route::prefix('/solicitudes')->group(function(){
 		Route::get('/', 'SolicitudesController@list')->name('listar_solicitudes');
-		Route::prefix('/crear')->group(function(){
-			Route::get('/', 'SolicitudesController@new')->name('crear_solicitud')->middleware('permission:crear_solicitud');
-			Route::post('/', 'SolicitudesController@saveOrUpdateData')->name('crear_solicitud.post')->middleware('permission:crear_solicitud.post');
+		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestionar_solicitud'], function(){
+			Route::get('/', 'SolicitudesController@new')->name('crear_solicitud');
+			Route::post('/', 'SolicitudesController@saveOrUpdateData')->name('crear_solicitud.post');
 		});
 		Route::group(['prefix' => '{solicitud}', 'middleware' => 'check_id_user:solicitud'], function(){
 			Route::get('/', 'SolicitudesController@detail')->name('detalle_solicitud');
-			Route::prefix('/editar')->group(function(){
-				Route::get('/', 'SolicitudesController@edit')->name('editar_solicitud')->middleware('permission:editar_solicitud');
-				Route::put('/', 'SolicitudesController@saveOrUpdateData')->name('editar_solicitud.post')->middleware('permission:editar_solicitud.post');
+			Route::group(['prefix' => 'editar', 'middleware' => 'permission:gestionar_solicitud'], function(){
+				Route::get('/', 'SolicitudesController@edit')->name('editar_solicitud');
+				Route::put('/', 'SolicitudesController@saveOrUpdateData')->name('editar_solicitud.post');
 			});
-			Route::group(['prefix' => 'revisiones', 'middleware' => 'permission:crear_revision.post'], function(){
+			Route::group(['prefix' => 'revisiones', 'middleware' => 'permission:gestionar_revision'], function(){
 				Route::post('/', 'RevisionesController@saveOrUpdateData')->name('crear_revision.post');
 				Route::prefix('/{revision}')->group(function(){
 					Route::prefix('/editar')->group(function(){
@@ -75,85 +78,89 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::prefix('/razas')->group(function(){
 		Route::get('/lista', 'RazasController@listWithAuth')->name('listar_razas_with_auth')->middleware('permission:listar_razas');
-		Route::prefix('/crear')->group(function(){
-			Route::get('/', 'RazasController@new')->name('crear_raza')->middleware('permission:crear_raza');
-			Route::post('/', 'RazasController@saveOrUpdateData')->name('crear_raza.post')->middleware('permission:crear_raza.post');
-		});
-		Route::prefix('{raza}')->group(function(){
-			Route::prefix('/editar')->group(function(){
-				Route::get('/', 'RazasController@edit')->name('editar_raza')->middleware('permission:editar_raza');
-				Route::put('/', 'RazasController@saveOrUpdateData')->name('editar_raza.post')->middleware('permission:editar_raza.post');
+		Route::group(['middleware' => 'permission:gestionar_raza'], function(){
+			Route::prefix('/crear')->group(function(){
+				Route::get('/', 'RazasController@new')->name('crear_raza');
+				Route::post('/', 'RazasController@saveOrUpdateData')->name('crear_raza.post');
 			});
-			Route::prefix('/eliminar')->group(function(){
-				Route::get('/', 'RazasController@delete')->name('eliminar_raza')->middleware('permission:eliminar_raza');
-				Route::delete('/', 'RazasController@deleteData')->name('eliminar_raza.delete')->middleware('permission:eliminar_raza.delete');
+			Route::prefix('{raza}')->group(function(){
+				Route::prefix('/editar')->group(function(){
+					Route::get('/', 'RazasController@edit')->name('editar_raza');
+					Route::put('/', 'RazasController@saveOrUpdateData')->name('editar_raza.post');
+				});
+				Route::prefix('/eliminar')->group(function(){
+					Route::get('/', 'RazasController@delete')->name('eliminar_raza');
+					Route::delete('/', 'RazasController@deleteData')->name('eliminar_raza.delete');
+				});
 			});
 		});
 	});
-	Route::prefix('/tipos-ataques')->group(function(){
-		Route::get('/', 'TiposAtaquesController@list')->name('listar_tipos_ataques')->middleware('permission:listar_tipos_ataques');
+	Route::group(['prefix' => 'tipos-ataques', 'middleware' => 'permission:modulo_tipos_ataques'], function(){
+		Route::get('/', 'TiposAtaquesController@list')->name('listar_tipos_ataques');
 		Route::prefix('/crear')->group(function(){
-			Route::get('/', 'TiposAtaquesController@new')->name('crear_tipo_ataque')->middleware('permission:crear_tipo_ataque');
-			Route::post('/', 'TiposAtaquesController@saveOrUpdateData')->name('crear_tipo_ataque.post')->middleware('permission:crear_tipo_ataque.post');
+			Route::get('/', 'TiposAtaquesController@new')->name('crear_tipo_ataque');
+			Route::post('/', 'TiposAtaquesController@saveOrUpdateData')->name('crear_tipo_ataque.post');
 		});
 		Route::prefix('{tipo_ataque}')->group(function(){
 			Route::prefix('/editar')->group(function(){
-				Route::get('/', 'TiposAtaquesController@edit')->name('editar_tipo_ataque')->middleware('permission:editar_tipo_ataque');
-				Route::put('/', 'TiposAtaquesController@saveOrUpdateData')->name('editar_tipo_ataque.post')->middleware('permission:editar_tipo_ataque.post');
+				Route::get('/', 'TiposAtaquesController@edit')->name('editar_tipo_ataque');
+				Route::put('/', 'TiposAtaquesController@saveOrUpdateData')->name('editar_tipo_ataque.post');
 			});
 			Route::prefix('/eliminar')->group(function(){
-				Route::get('/', 'TiposAtaquesController@delete')->name('eliminar_tipo_ataque')->middleware('permission:eliminar_tipo_ataque');
-				Route::delete('/', 'TiposAtaquesController@deleteData')->name('eliminar_tipo_ataque.delete')->middleware('permission:eliminar_tipo_ataque.delete');
+				Route::get('/', 'TiposAtaquesController@delete')->name('eliminar_tipo_ataque');
+				Route::delete('/', 'TiposAtaquesController@deleteData')->name('eliminar_tipo_ataque.delete');
 			});
 		});
 	});
-	Route::prefix('/localizaciones-anatomicas')->group(function(){
-		Route::get('/', 'LocalizacionesAnatomicasController@list')->name('listar_localizaciones_anatomicas')->middleware('permission:listar_localizaciones_anatomicas');
+	Route::group(['prefix' => 'localizaciones-anatomicas', 'middleware' => 'permission:modulo_localizaciones_anatomicas'], function(){
+		Route::get('/', 'LocalizacionesAnatomicasController@list')->name('listar_localizaciones_anatomicas');
 		Route::prefix('/crear')->group(function(){
-			Route::get('/', 'LocalizacionesAnatomicasController@new')->name('crear_localizacion_anatomica')->middleware('permission:crear_localizacion_anatomica');
-			Route::post('/', 'LocalizacionesAnatomicasController@saveOrUpdateData')->name('crear_localizacion_anatomica.post')->middleware('permission:crear_localizacion_anatomica.post');
+			Route::get('/', 'LocalizacionesAnatomicasController@new')->name('crear_localizacion_anatomica');
+			Route::post('/', 'LocalizacionesAnatomicasController@saveOrUpdateData')->name('crear_localizacion_anatomica.post');
 		});
 		Route::prefix('{localizacion_anatomica}')->group(function(){
 			Route::prefix('/editar')->group(function(){
-				Route::get('/', 'LocalizacionesAnatomicasController@edit')->name('editar_localizacion_anatomica')->middleware('permission:editar_localizacion_anatomica');
-				Route::put('/', 'LocalizacionesAnatomicasController@saveOrUpdateData')->name('editar_localizacion_anatomica.post')->middleware('permission:editar_localizacion_anatomica.post');
+				Route::get('/', 'LocalizacionesAnatomicasController@edit')->name('editar_localizacion_anatomica');
+				Route::put('/', 'LocalizacionesAnatomicasController@saveOrUpdateData')->name('editar_localizacion_anatomica.post');
 			});
 			Route::prefix('/eliminar')->group(function(){
-				Route::get('/', 'LocalizacionesAnatomicasController@delete')->name('eliminar_localizacion_anatomica')->middleware('permission:eliminar_localizacion_anatomica');
-				Route::delete('/', 'LocalizacionesAnatomicasController@deleteData')->name('eliminar_localizacion_anatomica.delete')->middleware('permission:eliminar_localizacion_anatomica.delete');
+				Route::get('/', 'LocalizacionesAnatomicasController@delete')->name('eliminar_localizacion_anatomica');
+				Route::delete('/', 'LocalizacionesAnatomicasController@deleteData')->name('eliminar_localizacion_anatomica.delete');
 			});
 		});
 	});
-	Route::group(['middleware' => 'permission:modulo_ataques'], function(){
-		Route::prefix('/propietarios')->group(function(){
-			Route::get('/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario');
+	Route::get('/propietarios/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario')->middleware('permission:gestion_ataques');
+	Route::prefix('/ataques')->group(function(){
+		Route::get('/', 'AtaquesController@list')->name('listar_ataques');
+		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestion_ataques'], function(){
+			Route::get('/', 'AtaquesController@new')->name('registrar_ataque');
+			Route::post('/', 'AtaquesController@saveOrUpdateData')->name('registrar_ataque.post');
 		});
-		Route::prefix('/ataques')->group(function(){
-			Route::get('/', 'AtaquesController@list')->name('listar_ataques');
-			Route::prefix('/crear')->group(function(){
-				Route::get('/', 'AtaquesController@new')->name('registrar_ataque');
-				Route::post('/', 'AtaquesController@saveOrUpdateData')->name('registrar_ataque.post');
-			});
-			Route::prefix('/{ataque}')->group(function(){
-				Route::get('/', 'AtaquesController@detail')->name('detalle_ataque');
-				Route::prefix('/seguimiento')->group(function(){
-					Route::get('/', 'AtaquesSeguimientosController@list')->name('seguimiento_ataque');
-					Route::prefix('/crear')->group(function(){
-						Route::get('/', 'AtaquesSeguimientosController@new')->name('crear_seguimiento_ataque');
-						Route::post('/', 'AtaquesSeguimientosController@saveOrUpdateData')->name('crear_seguimiento_ataque.post');
+		Route::prefix('/{ataque}')->group(function(){
+			Route::get('/', 'AtaquesController@detail')->name('detalle_ataque');
+			Route::group(['prefix' => 'seguimiento', 'middleware' => 'permission:seguimiento_ataque'], function(){
+				Route::get('/', 'AtaquesSeguimientosController@list')->name('seguimiento_ataque');
+				Route::prefix('/crear')->group(function(){
+					Route::get('/', 'AtaquesSeguimientosController@new')->name('crear_seguimiento_ataque');
+					Route::post('/', 'AtaquesSeguimientosController@saveOrUpdateData')->name('crear_seguimiento_ataque.post');
+				});
+				Route::prefix('/{seguimiento}')->group(function(){
+					Route::prefix('/editar')->group(function(){
+						Route::get('/', 'AtaquesSeguimientosController@edit')->name('editar_seguimiento_ataque');
+						Route::put('/', 'AtaquesSeguimientosController@saveOrUpdateData')->name('editar_seguimiento_ataque.post');
 					});
-					Route::prefix('/{seguimiento}')->group(function(){
-						Route::prefix('/editar')->group(function(){
-							Route::get('/', 'AtaquesSeguimientosController@edit')->name('editar_seguimiento_ataque');
-							Route::put('/', 'AtaquesSeguimientosController@saveOrUpdateData')->name('editar_seguimiento_ataque.post');
-						});
-						Route::prefix('/eliminar')->group(function(){
-							Route::get('/', 'AtaquesSeguimientosController@delete')->name('eliminar_seguimiento_ataque');
-							Route::delete('/', 'AtaquesSeguimientosController@deleteData')->name('eliminar_seguimiento_ataque.delete');
-						});
+					Route::prefix('/eliminar')->group(function(){
+						Route::get('/', 'AtaquesSeguimientosController@delete')->name('eliminar_seguimiento_ataque');
+						Route::delete('/', 'AtaquesSeguimientosController@deleteData')->name('eliminar_seguimiento_ataque.delete');
 					});
 				});
 			});
+		});
+	});
+	Route::group(['middleware' => 'permission:modulo_reportes', 'prefix' => 'reportes'], function(){
+		Route::prefix('/solicitudes')->group(function(){
+			Route::get('/', 'ReportesController@solicitudes')->name('reporte_solicitud');
+			Route::get('/pdf', 'ReportesController@solicitudes')->name('reporte_solicitud_pdf');
 		});
 	});
 });

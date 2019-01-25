@@ -44,8 +44,20 @@
 							</div>
 							<div class="col-md-6 form-group">
 								{{ Form::label('color', 'Color', ['class' => 'label-required']) }}
-								{{ Form::text('color', null, ['required', 'class' => 'form-control']) }}
+								{{ Form::select('color', [
+									'' => 'Seleccione una opción',
+									'Negro' => 'Negro',
+									'Blanco' => 'Blanco',
+									'Café' => 'Café',
+									'Gris' => 'Gris',
+									'Mixto' => 'Mixto'
+								], null, ['required', 'class' => 'form-control']) }}
 								{!! $errors->first('color', '<p class="help-block">:message</p>') !!}
+							</div>
+							<div class="col-md-6 form-grou hidden" id="color_otro_div">
+								{{ Form::label('color_otro', 'Especifique el color', ['class' => 'label-required']) }}
+								{{ Form::text('color_otro', null, ['class' => 'form-control']) }}
+								{!! $errors->first('color_otro', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group">
 								{{ Form::label('vacunado', 'Vacunado', ['class' => 'label-required']) }}
@@ -54,6 +66,7 @@
 									'0' => 'No',
 									'1' => 'Si'
 								], null, ['required', 'class' => 'form-control']) }}
+								{!! $errors->first('vacunado', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group hidden" id="fecha_vacunacion_div">
 								{{ Form::label('fecha_vacunacion', 'Fecha de vacunación', ['class' => 'label-required']) }}
@@ -63,6 +76,7 @@
 							<div class="col-md-6 form-group">
 								{{ Form::label('raza_id', 'Raza', ['class' => 'label-required']) }}
 								{{ Form::select('raza_id', $razas, null, ['required', 'class' => 'form-control select2']) }}
+								{!! $errors->first('raza_id', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-12 form-group">
 								{{ Form::label('descripcion', 'Descripción', ['class' => 'label-required']) }}
@@ -123,10 +137,19 @@
 	<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 	<script>
 		$('#fecha_nacimiento').datepicker({
-			uiLibrary: 'bootstrap4'
+			uiLibrary: 'bootstrap4',
+			maxDate: new Date()
 		})
 		$('#fecha_vacunacion').datepicker({
-			uiLibrary: 'bootstrap4'
+			uiLibrary: 'bootstrap4',
+			maxDate: new Date()
+		})
+		$(document).on('change', '#color', function(){
+			if($(this).val() == 'Mixto'){
+				$('#color_otro_div').removeClass('hidden').find('input').attr('required', true)
+			}else{
+				$('#color_otro_div').addClass('hidden').find('input').removeAttr('required', true)
+			}
 		})
 		$(document).on('change', '#vacunado', function(){
 			if($(this).val() == '1'){

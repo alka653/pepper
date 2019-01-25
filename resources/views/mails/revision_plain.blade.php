@@ -1,5 +1,5 @@
-Hola, {{ $user->nombre }} {{ $user->apellido }}
+Estimado usuario
 
 {!! $user->message !!}
 
-{{ route('login') }}
+{{ route('/') }}

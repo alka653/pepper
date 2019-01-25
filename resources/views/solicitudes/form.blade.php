@@ -39,7 +39,7 @@
 							</div>
 						@endif
 						<div class="custom-file">
-							{{ Form::file('documento[]', ['class' => 'custom-file-input', 'onchange' => 'readURL(this)', 'data-name' => 'carnet_vacunacion'] + (!isset($solicitud->documentos[0]) ? ['required'] : [])) }}
+							{{ Form::file('documento[]', ['class' => 'custom-file-input', 'onchange' => 'readURL(this)', 'accept' => 'image/*,application/pdf,application/msword', 'data-name' => 'carnet_vacunacion'] + (!isset($solicitud->documentos[0]) ? ['required'] : [])) }}
 							{{ Form::label('documento[]', 'Carnet de vacunación', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
@@ -88,7 +88,7 @@
 		}
 		function readURL(input){
 			if(input.files && input.files[0]){
-				if(input.files[0].size <= 1000000){
+				if(input.files[0].size <= 100000){
 					$parent = $(`[data-name="${input.getAttribute('data-name')}"]`).parent().parent()
 					$parent.find('a').remove()
 					$parent.find('p').remove()
@@ -96,7 +96,7 @@
 						<p class="text-center no-margin">${input.files[0].name}</p>
 					`)
 				}else{
-					alert('El archivo no puede superar los 10Mb')
+					alert('El archivo no puede superar los 1Mb')
 				}
 			}
 		}

@@ -33,18 +33,3 @@
 		{{ Form::close() }}
 	</div>
 </div>
-<script>
-	function readURL(input){
-		if(input.files && input.files[0]){
-			if(input.files[0].size <= 500000){
-				var reader = new FileReader()
-				reader.onload = function(e){
-					$(`[data-id="${input.getAttribute('data-id')}"]`).parent().parent().find('img').attr('src', e.target.result).removeClass('hide')
-				}
-				reader.readAsDataURL(input.files[0])
-			}else{
-				alert('La foto no puede superar los 5Mb')
-			}
-		}
-	}
-</script>

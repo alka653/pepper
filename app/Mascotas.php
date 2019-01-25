@@ -26,6 +26,10 @@ class Mascotas extends Model{
 	public function getEstadoAttribute($estado){
 		return $estado == 'V' ? 'Vivo' : 'Fallecido';
 	}
+	public static function getEdad($fecha_nacimiento){
+		$edad = intval(date('Y', time() - strtotime($fecha_nacimiento))) - 1970;
+		return $edad > 1 ? $edad.' años' : ($edad < 1 ? (explode('/', $fecha_nacimiento)[1] - date('m')).' meses' : $edad.' año');
+	}
 	public static function listaMascotasByUser($propietario){
 		return Mascotas::where('propietario_id', $propietario)->get()->map(function($mascota){
 			return $mascota->only(['id']);

@@ -1,7 +1,8 @@
-Hola, {{ $user->nombre }} {{ $user->apellido }}
+Bienvenido, {{ $user->nombre }} {{ $user->apellido }}
 
-Gracias por registrarse en Pepper.
-Recuerda que el correo es {{ $user->email }} y la contraseña es 12345.
-Ingresa ya para registrar a una mascota.
+Gracias por registrarse en nuestro sistema. Recuerda que puede acceder a nuestro sitio web en la siguiente direccion {{ route('login') }}
 
-{{ route('login') }}
+Sus datos de ingreso son los siguientes:
+
+Nombre de usuario: {{ $user->username }}.
+Contraseña: {{ $user->password }}.

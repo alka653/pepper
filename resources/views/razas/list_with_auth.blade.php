@@ -15,7 +15,9 @@
 			<div class="col-12 text-center">
 				@include('elements.buscar')
 				<br>
-				<a href="{{ route('crear_raza') }}" class="btn btn-primary btn-sm open-modal" style="margin-top: 10px; margin-bottom: 10px;">Agregar raza</a>
+				@can('gestionar_raza')
+					<a href="{{ route('crear_raza') }}" class="btn btn-primary btn-sm open-modal" style="margin-top: 10px; margin-bottom: 10px;">Agregar raza</a>
+				@endcan
 			</div>
 			<div class="col-12">
 				<div class="block">
@@ -34,8 +36,10 @@
 										<td>{{ $raza->nombre }}</td>
 										<td>{{ $raza->getEspecie($raza->especie) }}</td>
 										<td>
-											<a href="{{ route('editar_raza', ['raza' => $raza->id]) }}" class="btn btn-sm btn-warning open-modal">Editar</a>
-											<a href="{{ route('eliminar_raza', ['raza' => $raza->id]) }}" class="btn btn-sm btn-danger open-modal">Eliminar</a>
+											@can('gestionar_raza')
+												<a href="{{ route('editar_raza', ['raza' => $raza->id]) }}" class="btn btn-sm btn-warning open-modal">Editar</a>
+												<a href="{{ route('eliminar_raza', ['raza' => $raza->id]) }}" class="btn btn-sm btn-danger open-modal">Eliminar</a>
+											@endcan
 										</td>
 									</tr>
 								@empty

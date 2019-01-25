@@ -29,7 +29,7 @@
 						<a href="{{ route('login') }}">Iniciar sesión</a>
 					</li>
 				@else
-					@include('elements.nav_list_'.(Auth::user()->perfil != 'U' ? 'A' : Auth::user()->perfil))
+					@include('elements.nav_list_'.Auth::user()->perfil)
 					<li class="menu-has-children">
 						<a href="#">
 							<div class="row align-items-center">
