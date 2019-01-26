@@ -76,6 +76,9 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
+	Route::group(['middleware' => 'permission:modulo_usuarios', 'prefix' => 'usuarios'], function(){
+		Route::get('/', 'UsersController@list')->name('listar_usuarios');
+	});
 	Route::prefix('/razas')->group(function(){
 		Route::get('/lista', 'RazasController@listWithAuth')->name('listar_razas_with_auth')->middleware('permission:listar_razas');
 		Route::group(['middleware' => 'permission:gestionar_raza'], function(){
@@ -129,7 +132,10 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
-	Route::get('/propietarios/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario')->middleware('permission:gestion_ataques');
+	Route::prefix('/propietarios')->group(function(){
+		Route::get('/', 'UsersController@listPropietarios')->name('listar_propietarios')->middleware('permission:listar_propietarios');
+		Route::get('/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario')->middleware('permission:gestion_ataques');
+	});
 	Route::prefix('/ataques')->group(function(){
 		Route::get('/', 'AtaquesController@list')->name('listar_ataques');
 		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestion_ataques'], function(){
@@ -159,8 +165,20 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::group(['middleware' => 'permission:modulo_reportes', 'prefix' => 'reportes'], function(){
 		Route::prefix('/solicitudes')->group(function(){
-			Route::get('/', 'ReportesController@solicitudes')->name('reporte_solicitud');
-			Route::get('/pdf', 'ReportesController@solicitudes')->name('reporte_solicitud_pdf');
+			Route::get('/', 'ReportesController@request')->name('reporte_solicitud');
+			Route::get('/pdf', 'ReportesController@requestPDF')->name('reporte_solicitud_pdf');
+		});
+		Route::prefix('/usuarios')->group(function(){
+			Route::get('/', 'ReportesController@users')->name('reporte_usuario');
+			Route::get('/pdf', 'ReportesController@usersPDF')->name('reporte_usuario_pdf');
+		});
+		Route::prefix('/mascotas')->group(function(){
+			Route::get('/', 'ReportesController@pets')->name('reporte_mascota');
+			Route::get('/pdf', 'ReportesController@petsPDF')->name('reporte_mascota_pdf');
+		});
+		Route::prefix('/ataques')->group(function(){
+			Route::get('/', 'ReportesController@atacks')->name('reporte_ataque');
+			Route::get('/pdf', 'ReportesController@atacksPDF')->name('reporte_ataque_pdf');
 		});
 	});
 });

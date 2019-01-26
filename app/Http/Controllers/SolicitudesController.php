@@ -19,6 +19,11 @@ class SolicitudesController extends Controller{
 			$solicitudes = $solicitudes->whereIn('mascota_id', $mascotas);
 		}
 		return view(self::DIR_TEMPLATE.'list', [
+			'solicitudCount' => [
+				'finalizados' => $solicitudes->where('estado', 'F')->count(),
+				'pendientes' => $solicitudes->where('estado', 'P')->count(),
+				'cancelados' => $solicitudes->where('estado', 'C')->count()
+			],
 			'solicitudes' => $solicitudes->paginate(10)
 		]);
 	}

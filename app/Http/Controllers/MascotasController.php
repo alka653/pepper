@@ -22,12 +22,11 @@ class MascotasController extends Controller{
 	}
 	public function list(Request $request){
 		$mascotas = new Mascotas();
-		$query = $request->input('query');
-		$estado = $request->input('estado');
-		$raza_id = $request->input('raza_id');
-		$color = $request->input('color');
-		$sexo = $request->input('sexo');
-
+		$query = $request->query;
+		$estado = $request->estado;
+		$raza_id = $request->raza_id;
+		$color = $request->color;
+		$sexo = $request->sexo;
 		if($query != null){
 			$mascotas = $mascotas->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%']);
 		}
@@ -55,7 +54,10 @@ class MascotasController extends Controller{
 			'razas' => Razas::lista('Por raza'),
 			'placeholder' => 'Buscar una mascota',
 			'mascotas' => Auth::user()->perfil == 'U' ? $mascotas->where('propietario_id', Auth::user()->persona->id)->paginate(10) : $mascotas->paginate(10)
-		]);
+		] + (Auth::user()->perfil != 'U' ? ['mascotaCount' => [
+			'macho' => Mascotas::where('sexo', 'M')->count(),
+			'hembra' => Mascotas::where('sexo', 'F')->count()
+		]] : []));
 	}
 	public function detail(Mascotas $mascota){
 		return view(self::DIR_TEMPLATE.'detail', [
@@ -122,7 +124,8 @@ class MascotasController extends Controller{
 				'estado' => 'V',
 				'vacunado' => $mascotaRequest->vacunado,
 				'fecha_vacunacion' => $mascotaRequest->fecha_vacunacion,
-				'raza_id' => $mascotaRequest->raza_id
+				'raza_id' => $mascotaRequest->raza_id,
+				'ocupacion' => $mascotaRequest->ocupacion
 			]);
 			foreach($mascotaRequest->foto as $foto){
 				$pathFoto = $foto->store('mascotas');

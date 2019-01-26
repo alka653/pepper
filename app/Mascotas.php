@@ -23,6 +23,9 @@ class Mascotas extends Model{
 	public static function getSexo($sexo){
 		return $sexo == 'M' ? 'Macho' : 'Hembra';
 	}
+	public static function getAnimalVacunado($animal_vacunado){
+		return $animal_vacunado ? 'Si' : 'No';
+	}
 	public function getEstadoAttribute($estado){
 		return $estado == 'V' ? 'Vivo' : 'Fallecido';
 	}
@@ -36,6 +39,7 @@ class Mascotas extends Model{
 		})->toArray();
 	}
 	public static function saveData($data){
+		$data['fecha_registro'] = date('Y-m-d');
 		$data['fecha_nacimiento'] = $data['fecha_nacimiento'] != null ? date('Y-m-d', strtotime($data['fecha_nacimiento'])) : null;
 		$data['fecha_vacunacion'] = $data['fecha_vacunacion'] != null ? date('Y-m-d', strtotime($data['fecha_vacunacion'])) : null;
 		return Mascotas::create($data);
@@ -50,6 +54,7 @@ class Mascotas extends Model{
 		$mascota->vacunado = $request->input('vacunado');
 		$mascota->fecha_vacunacion = $request->input('fecha_vacunacion');
 		$mascota->raza_id = $request->input('raza_id');
+		$mascota->ocupacion = $request->input('ocupacion');
 		if(Auth::user()->perfil != 'U'){
 			$mascota->propietario_id = $request->input('propietario_id');
 		}

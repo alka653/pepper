@@ -17,19 +17,23 @@ class Solicitudes extends Model{
 	public function revisiones(){
 		return $this->hasMany('App\Revisiones', 'solicitud_id')->orderBy('fecha', 'DESC')->orderBy('id', 'DESC');
 	}
-	public function getEstado($estado){
+	public function getEstado($estado, $withHtml = true){
+		$estadoHtml = '';
 		switch($estado){
 			case 'P':
-				$estado = '<span class="badge badge-info">Pendiente</span>';
+				$estadoHtml = 'info';
+				$estado = 'Radicado';
 				break;
 			case 'F':
-				$estado = '<span class="badge badge-success">Finalizado</span>';
+				$estadoHtml = 'success';
+				$estado = 'Aprobado';
 				break;
 			case 'C':
-				$estado = '<span class="badge badge-danger">Cancelado</span>';
+				$estadoHtml = 'danger';
+				$estado = 'Rechazado';
 				break;
 		}
-		return $estado;
+		return $withHtml ? '<span class="badge badge-'.$estadoHtml.'">'.$estado.'</span>' : $estado;
 	}
 	public static function revisionesInspector($solicitud_id, $inspector_id = null, $estado = 'R'){
 		$revisiones = Revisiones::where(['solicitud_id' => $solicitud_id, 'estado' => $estado]);

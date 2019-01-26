@@ -14,16 +14,16 @@
 	<a href="#" class="sf-with-ul">Reportes</a>
 	<ul>
 		<li>
-			<a href="{{ route('reportes_solicitudes') }}">Solicitudes</a>
+			<a href="{{ route('reporte_solicitud') }}">Solicitudes</a>
 		</li>
 		<li>
-			<a href="#">Usuarios del sistema</a>
+			<a href="{{ route('reporte_usuario') }}">Usuarios del sistema</a>
 		</li>
 		<li>
-			<a href="#">Mascotas</a>
+			<a href="{{ route('reporte_mascota') }}">Mascotas</a>
 		</li>
 		<li>
-			<a href="#">Ataques</a>
+			<a href="{{ route('reporte_ataque') }}">Ataques</a>
 		</li>
 	</ul>
 </li>
@@ -40,10 +40,10 @@
 			<a href="{{ route('listar_localizaciones_anatomicas') }}">Localizaciones anatómicas</a>
 		</li>
 		<li>
-			<a href="#">Usuarios</a>
+			<a href="{{ route('listar_usuarios') }}">Usuarios</a>
 		</li>
 		<li>
-			<a href="#">Propietarios</a>
+			<a href="{{ route('listar_propietarios') }}">Propietarios</a>
 		</li>
 	</ul>
 </li>

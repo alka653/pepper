@@ -94,6 +94,53 @@ class UsersController extends Controller{
 	public function changePassword(){
 		return view(self::DIR_TEMPLATE.'modal_password');
 	}	
+	public function list(Request $request){
+		$query = $request->input('query');
+		$perfil = $request->input('perfil');
+		$estado = $request->input('estado');
+		$usuarios = new User();
+		if($query != null){
+			$personas = Personas::whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%'])->orwhereRaw('LOWER(apellido) LIKE ?', ['%'.strtolower($query).'%']);
+			if(is_numeric($query)){
+				$personas = $personas->orWhereRaw('numero_documento LIKE ?', ['%'.$query.'%']);
+			}
+			$usuarios = $usuarios->whereIn('persona_id', $personas->get()->pluck('id')->toArray());
+		}
+		if($perfil != null){
+			$usuarios = $usuarios->where('perfil', $perfil);
+		}
+		if($estado != null){
+			$usuarios = $usuarios->where('estado', $estado);
+		}
+		return view(self::DIR_TEMPLATE.'list', [
+			'query' => $query,
+			'extraQuery' => [
+				'perfil' => $perfil,
+				'estado' => $estado
+			],
+			'url' => route('listar_usuarios'),
+			'placeholder' => 'Buscar un usuario',
+			'usuarios' => $usuarios->paginate(10)
+		]);
+	}
+	public function listPropietarios(Request $request){
+		$query = $request->input('query');
+		$personas = new Personas();
+		$usuarios = User::where('perfil', 'U');
+		if($query != null){
+			$personas = $personas->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%'])->orwhereRaw('LOWER(apellido) LIKE ?', ['%'.strtolower($query).'%']);
+			if(is_numeric($query)){
+				$personas = $personas->orWhereRaw('numero_documento LIKE ?', ['%'.$query.'%']);
+			}
+			$usuarios = $usuarios->whereIn('persona_id', $personas->get()->pluck('id')->toArray());
+		}
+		return view(self::DIR_TEMPLATE.'list_propietario', [
+			'query' => $query,
+			'url' => route('listar_propietarios'),
+			'placeholder' => 'Buscar un propietario',
+			'usuarios' => $usuarios->paginate(10)
+		]);
+	}
 	public function updatePassword(ChangePasswordFormRequest $request){
 		User::updatePassword($request->password, Auth::user()->id);
 		return response()->json([

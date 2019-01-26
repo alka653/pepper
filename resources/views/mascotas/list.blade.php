@@ -18,6 +18,7 @@
 		</h2>
 		@include('elements.buscar', ['extra' => 'mascotas.filters'])
 		<div class="block">
+			<div id="chart_div"></div>
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
@@ -64,4 +65,32 @@
 		</div>
 		{{ $mascotas->links() }}
 	</div>
+@endsection
+
+@section('script')
+	@if(isset($mascotaCount))
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script>
+			google.charts.load('current', {packages: ['corechart', 'bar']});
+			google.charts.setOnLoadCallback(drawChart);
+			function drawChart(){
+				const data = new google.visualization.arrayToDataTable([
+					['Sexualidad', 'Cantidad', { role: 'style' }],
+					['Macho', {{ $mascotaCount['macho'] }}, '#3498db'],
+					['Hembra', {{ $mascotaCount['hembra'] }}, '#2ecc71']
+				]);
+				const options = {
+					title: 'Total de mascotas',
+					hAxis: {
+						title: 'Sexualidad'
+					},
+					vAxis: {
+						title: 'Cantidad'
+					}
+				};
+				const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+				chart.draw(data, options);
+			}
+		</script>
+	@endif
 @endsection

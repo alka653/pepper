@@ -17,7 +17,6 @@ use App\LocalizacionesAnatomicas;
 class AtaquesController extends Controller{
 	const DIR_TEMPLATE = 'ataques.';
 	public function list(Request $request){
-		$query = $request->input('query');
 		$ataques = Ataques::orderBy('fecha_ataque', 'DESC');
 		return view(self::DIR_TEMPLATE.'list', [
 			'ataques' => $ataques->paginate(10),

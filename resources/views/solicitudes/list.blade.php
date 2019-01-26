@@ -19,6 +19,7 @@
 			@endcan
 		</h2>
 		<div class="block">
+			<div id="chart_div"></div>
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
@@ -67,4 +68,31 @@
 		</div>
 		{{ $solicitudes->links() }}
 	</div>
+@endsection
+
+@section('script')
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		google.charts.load('current', {packages: ['corechart', 'bar']});
+		google.charts.setOnLoadCallback(drawChart);
+		function drawChart(){
+			const data = new google.visualization.arrayToDataTable([
+				['Estado de casos', 'Cantidad', { role: 'style' }],
+				['Radicado', {{ $solicitudCount['pendientes'] }}, '#3498db'],
+				['Aprobado', {{ $solicitudCount['finalizados'] }}, '#2ecc71'],
+				['Rechazado', {{ $solicitudCount['cancelados'] }}, '#e74c3c']
+			]);
+			const options = {
+				title: 'Total de solicitudes',
+				hAxis: {
+					title: 'Estado de casos'
+				},
+				vAxis: {
+					title: 'Cantidad'
+				}
+			};
+			const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+			chart.draw(data, options);
+		}
+	</script>
 @endsection

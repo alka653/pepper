@@ -33,6 +33,9 @@ class User extends Authenticatable{
 		}
 		return $perfil;
 	}
+	public static function getEstado($estado){
+		return $estado == 'A' ? 'Activo' : 'Inactivo';
+	}
 	public static function saveData($data){
 		$data['password'] = bcrypt($data['password']);
 		$data['estado'] = 'A';

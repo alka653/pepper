@@ -78,6 +78,10 @@
 								{{ Form::select('raza_id', $razas, null, ['required', 'class' => 'form-control select2']) }}
 								{!! $errors->first('raza_id', '<p class="help-block">:message</p>') !!}
 							</div>
+							<div class="col-md-6 form-group">
+								{{ Form::label('ocupacion', 'Ocupación') }}
+								{{ Form::select('ocupacion', $razas, null, ['class' => 'form-control select2']) }}
+							</div>
 							<div class="col-12 form-group">
 								{{ Form::label('descripcion', 'Descripción', ['class' => 'label-required']) }}
 								{{ Form::textarea('descripcion', null, ['required', 'rows' => 5, 'class' => 'form-control']) }}

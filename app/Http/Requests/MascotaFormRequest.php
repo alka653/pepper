@@ -17,6 +17,7 @@ class MascotaFormRequest extends FormRequest{
 			'color_otro' => 'nullable',
 			'vacunado' => 'nullable|max:1',
 			'fecha_vacunacion' => 'nullable|date',
+			'ocupacion' => 'nullable',
 			'raza_id' => 'required',
 			'descripcion' => 'required',
 			'foto[]' => 'nullable|image'
