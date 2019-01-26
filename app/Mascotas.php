@@ -31,7 +31,7 @@ class Mascotas extends Model{
 	}
 	public static function getEdad($fecha_nacimiento){
 		$edad = intval(date('Y', time() - strtotime($fecha_nacimiento))) - 1970;
-		return $edad > 1 ? $edad.' años' : ($edad < 1 ? (explode('/', $fecha_nacimiento)[1] - date('m')).' meses' : $edad.' año');
+		return $edad > 1 ? $edad.' años' : ($edad < 1 ? (explode('-', $fecha_nacimiento)[1] - date('m')).' meses' : $edad.' año');
 	}
 	public static function listaMascotasByUser($propietario){
 		return Mascotas::where('propietario_id', $propietario)->get()->map(function($mascota){

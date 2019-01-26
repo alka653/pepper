@@ -22,11 +22,11 @@ class MascotasController extends Controller{
 	}
 	public function list(Request $request){
 		$mascotas = new Mascotas();
-		$query = $request->query;
-		$estado = $request->estado;
-		$raza_id = $request->raza_id;
-		$color = $request->color;
-		$sexo = $request->sexo;
+		$query = $request->input('query');
+		$estado = $request->input('estado');
+		$raza_id = $request->input('raza_id');
+		$color = $request->input('color');
+		$sexo = $request->input('sexo');
 		if($query != null){
 			$mascotas = $mascotas->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%']);
 		}
