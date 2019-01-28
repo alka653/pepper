@@ -54,7 +54,6 @@
 					<span class="badge badge-light">{{ $seguimiento->fecha }}</span>
 					<span class="badge badge-dark">{{ $seguimiento->getTipo($seguimiento->tipo) }}</span>
 					<a href="{{ route('editar_seguimiento_ataque', ['ataque' => $ataque->id, 'seguimmiento' => $seguimiento->id]) }}" class="btn btn-sm btn-warning open-modal">Editar</a>
-					<a href="{{ route('eliminar_seguimiento_ataque', ['ataque' => $ataque->id, 'seguimmiento' => $seguimiento->id]) }}" class="btn btn-sm btn-danger open-modal">Eliminar</a>
 				</small>
 			</div>
 		@empty

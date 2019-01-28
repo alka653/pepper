@@ -37,7 +37,7 @@
 							<tr>
 								<td height="38" style="background-color:#79c60b;font-size:14px" valign="middle">
 									<a class="m_304056208632991473action-btn-middle" href="{{ route('login') }}" style="color:#ffffff;font-weight:700;text-decoration:none;font-size:14px!important;padding:10px" target="_blank" data-saferedirecturl="https://www.google.com/url?q={{ route('login') }}">
-										{{ route('/') }}
+										{{ route('home') }}
 									</a>
 								</td>
 							</tr>

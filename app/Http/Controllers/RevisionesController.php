@@ -38,7 +38,7 @@ class RevisionesController extends Controller{
 			}
 			$revision = Revisiones::where(['solicitud_id' => $solicitud->id, 'observacion' => null])->first();
 			if(!$revision){
-				Revisiones::saveData([
+				$revision = Revisiones::saveData([
 					'fecha' => date('Y-m-d'),
 					'solicitud_id' => $solicitud->id,
 					'inspector_id' => Auth::user()->id,
@@ -48,15 +48,15 @@ class RevisionesController extends Controller{
 				]);
 			}else{
 				$revision->inspector_id = Auth::user()->id;
-				$revision->estado = $request->remitir == 'S' ? 'R' : 'N';
+				$revision->estado = $request->remitir == 'S' ? 'R' : ($request->certificado == 'S' ? 'R' : 'N');
 				$revision->observacion = $request->observacion;
 				$revision->save();
 			}
 			if($request->remitir == 'N'){
-				$message = 'Su solicitud No. '.$revision->id.' de su mascota '.$revision->solicitud->mascota->nombre.' ha sido rechazada. Por favor ingrese a nuestro sitio web con sus credenciales y gestione nuevamente su solicitud de acuerdo a la observación indicada por el funcionario, recuerde que cuenta con 8 días hábiles para corregir lo solicitudo de lo contrario si excede el plazo deberá iniciar nuevamente con el proceso.';
+				$message = 'Su solicitud No. '.$revision->id.' de su mascota '.$solicitud->mascota->nombre.' ha sido rechazada. Por favor ingrese a nuestro sitio web con sus credenciales y gestione nuevamente su solicitud de acuerdo a la observación indicada por el funcionario, recuerde que cuenta con 8 días hábiles para corregir lo solicitudo de lo contrario si excede el plazo deberá iniciar nuevamente con el proceso.';
 			}
 			if($modo < 3 && $request->remitir == 'S'){
-				Revisiones::saveData([
+				$revision = Revisiones::saveData([
 					'fecha' => date('Y-m-d'),
 					'solicitud_id' => $solicitud->id,
 					'estado' => 'P',
@@ -71,7 +71,7 @@ class RevisionesController extends Controller{
 				Certificados::saveData([
 					'mascota_id' => $solicitud->mascota_id
 				]);
-				$message = 'Su solicitud No. '.$revision->id.' de su mascota '.$revision->solicitud->mascota->nombre.' ha sido aprobada. Ya puede descargar el certificado.';
+				$message = 'Su solicitud No. '.$revision->id.' de su mascota '.$solicitud->mascota->nombre.' ha sido aprobada. Ya puede descargar el certificado.';
 			}
 			try{
 				$usuario = User::where('persona_id', $solicitud->mascota->propietario_id)->first();

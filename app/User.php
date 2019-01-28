@@ -41,6 +41,12 @@ class User extends Authenticatable{
 		$data['estado'] = 'A';
 		return User::create($data);
 	}
+	public static function updatePerfilByPersona($perfil, $persona_id){
+		$user = User::where('persona_id', $persona_id)->first();
+		$user->perfil = $perfil;
+		$user->save();
+		return $user;
+	}
 	public static function updatePassword($password, $user_id){
 		$user = User::find($user_id);
 		$user->password = bcrypt($password);

@@ -89,6 +89,18 @@
 						{{ Form::text('ocupacion', null, ['required', 'class' => 'form-control']) }}
 						{!! $errors->first('ocupacion', '<p class="help-block">:message</p>') !!}
 					</div>
+					@can('modulo_usuarios')
+						<div class="col-md-6 form-group">
+							{{ Form::label('perfil', 'Perfil', ['class' => 'label-required']) }}
+							{{ Form::select('perfil', [
+								'' => 'Seleccione una opción',
+								'U' => 'Propietario',
+								'Z' => 'Zootecnico',
+								'C' => 'Coordinador',
+								'J' => 'Jefe'
+							], $usuario->perfil, ['required', 'class' => 'form-control select2']) }}
+						</div>
+					@endcan
 					<div class="col-md-6 form-group">
 						<label>Foto</label>
 						@if($persona->toArray())

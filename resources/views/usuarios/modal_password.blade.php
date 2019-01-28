@@ -6,8 +6,11 @@
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
-		{{ Form::open(['url' => route('cambiar_password.post'), 'method' => 'post', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data', 'id' => 'form-modal']) }}
+		{{ Form::open(['url' => route('cambiar_password.post', ['usuario' => $usuario]), 'method' => 'post', 'autocomplete' => 'off', 'enctype' => 'multipart/form-data', 'id' => 'form-modal']) }}
 			<div class="modal-body">
+				@if(Auth::user()->perfil == 'J')
+					{{ Form::hidden('usuario', $usuario) }}
+				@endif
 				<div class="form-group">
 					{{ Form::label('password', 'Contraseña') }}
 					{{ Form::password('password', ['required', 'class' => 'form-control']) }}

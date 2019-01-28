@@ -34,7 +34,7 @@
                                 <td>{{ $usuario->persona->apellido }}</td>
                                 <td>{{ $usuario->persona->numero_documento }}</td>
                                 <td>
-                                    <a href="{{ route('perfil_usuario', ['persona' => $usuario->persona->id]) }}" class="btn btn-primary">Perfil</a>
+                                    <a href="{{ route('perfil_usuario', ['persona' => $usuario->persona->id]) }}" class="btn btn-primary">Ver</a>
                                 </td>
 							</tr>
 						@endforeach

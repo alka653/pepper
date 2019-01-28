@@ -94,6 +94,9 @@ class MascotasController extends Controller{
 		if($mascotaRequest->color == 'Mixto'){
 			$mascotaRequest->color = $mascotaRequest->color_otro;
 		}
+		if($mascotaRequest->ocupacion == 'Otro'){
+			$mascotaRequest->ocupacion = $mascotaRequest->ocupacion_otro;
+		}
 		if($mascotaRequest->mascota){
 			$mascota = Mascotas::updateData($mascotaRequest);
 			$mascotasFotos = MascotasFotos::where('mascota_id', $mascota->id)->get();

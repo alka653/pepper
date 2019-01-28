@@ -79,20 +79,26 @@ class UsersController extends Controller{
 				'title' => 'Edición de datos',
 				'route' => ['editar_perfil.post', $persona->id],
 				'method' => 'put',
-				'persona' => $persona
+				'persona' => $persona,
+				'usuario' => User::where('persona_id', $persona->id)->first()
 			]);
 		}else{
 			return redirect()->route('editar_perfil', ['persona' => Auth::user()->id]);
 		}
 	}
 	public function updateData(Request $request){
-		Personas::updateData($request);
+		$persona = Personas::updateData($request);
+		if($request->perfil != null){
+			User::updatePerfilByPersona($request->perfil, $persona->id);
+		}
 		$request->session()->flash('message.level', 'success');
 		$request->session()->flash('message.content', 'Datos actualizados con éxito.');
 		return redirect()->route('perfil_usuario', ['persona' => $request->persona]);
 	}
-	public function changePassword(){
-		return view(self::DIR_TEMPLATE.'modal_password');
+	public function changePassword($usuario){
+		return view(self::DIR_TEMPLATE.'modal_password', [
+			'usuario' => $usuario
+		]);
 	}	
 	public function list(Request $request){
 		$query = $request->input('query');
@@ -142,7 +148,7 @@ class UsersController extends Controller{
 		]);
 	}
 	public function updatePassword(ChangePasswordFormRequest $request){
-		User::updatePassword($request->password, Auth::user()->id);
+		User::updatePassword($request->password, $request->usuario);
 		return response()->json([
 			'message' => 'Contraseña actualizada con éxito'
 		]);

@@ -12,7 +12,7 @@
 	<div class="container" style="margin-bottom: 50px">
 		<h2>
 			Lista de mascotas
-			@can('crear_mascota')
+			@can('gestionar_mascota')
 				<a href="{{ route('crear_mascota') }}" class="btn btn-primary btn-sm" style="margin-top: 10px; margin-bottom: 10px;">Agregar mascota</a>
 			@endcan
 		</h2>
@@ -42,8 +42,12 @@
 									<td>{{ $mascota->propietario_id != null ? $mascota->propietario->nombre.' '.$mascota->propietario->apellido : 'Sin propietario' }}</td>
 								@endunlessrole
 								<td>
-									<a href="{{ route('detalle_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-info">Detalle</a>
-									<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
+									@can('detalle_mascota')
+										<a href="{{ route('detalle_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-info">Detalle</a>
+									@endcan
+									@can('gestionar_mascota')
+										<a href="{{ route('editar_mascota', ['mascota' => $mascota->id]) }}" class="btn btn-sm btn-warning">Editar</a>
+									@endcan
 								</td>
 							</tr>
 						@empty

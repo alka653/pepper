@@ -5,4 +5,4 @@ Gracias por registrarse en nuestro sistema. Recuerda que puede acceder a nuestro
 Sus datos de ingreso son los siguientes:
 
 Nombre de usuario: {{ $user->username }}.
-ContraseÃ±a: {{ $user->password }}.
+Contrase«Ða: {{ $user->password }}.

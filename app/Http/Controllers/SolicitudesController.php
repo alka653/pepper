@@ -19,13 +19,12 @@ class SolicitudesController extends Controller{
 			$solicitudes = $solicitudes->whereIn('mascota_id', $mascotas);
 		}
 		return view(self::DIR_TEMPLATE.'list', [
-			'solicitudCount' => [
-				'finalizados' => $solicitudes->where('estado', 'F')->count(),
-				'pendientes' => $solicitudes->where('estado', 'P')->count(),
-				'cancelados' => $solicitudes->where('estado', 'C')->count()
-			],
 			'solicitudes' => $solicitudes->paginate(10)
-		]);
+		] + (Auth::user()->perfil != 'U' ? ['solicitudCount' => [
+			'finalizados' => $solicitudes->where('estado', 'F')->count(),
+			'pendientes' => $solicitudes->where('estado', 'P')->count(),
+			'cancelados' => $solicitudes->where('estado', 'C')->count()
+		]] : [] ));
 	}
 	public function detail(Solicitudes $solicitud){
 		return view(self::DIR_TEMPLATE.'detail', [
@@ -76,18 +75,20 @@ class SolicitudesController extends Controller{
 		if($request->solicitud){
 			$solicitud = $request->solicitud;
 			$solicitudesDocumentos = Documentos::where('solicitud_id', $request->solicitud)->get();
-			foreach($request->documento as $key => $documento){
-				$documento = $documento->store('mascotas');
-				if(isset($solicitudesDocumentos[$key])){
-					$solicitudesDocumentos[$key]->documento = $documento;
-					$solicitudesDocumentos[$key]->tipo = Constants::TIPO_DOCUMENTO_LISTA[$key];
-					$solicitudesDocumentos[$key]->save();
-				}else{
-					Documentos::saveData([
-						'documento' => $documento,
-						'solicitud_id' => $request->solicitud,
-						'tipo' => Constants::TIPO_DOCUMENTO_LISTA[$key]
-					]);
+			if($request->documento != null){
+				foreach($request->documento as $key => $documento){
+					$documento = $documento->store('mascotas');
+					if(isset($solicitudesDocumentos[$key])){
+						$solicitudesDocumentos[$key]->documento = $documento;
+						$solicitudesDocumentos[$key]->tipo = Constants::TIPO_DOCUMENTO_LISTA[$key];
+						$solicitudesDocumentos[$key]->save();
+					}else{
+						Documentos::saveData([
+							'documento' => $documento,
+							'solicitud_id' => $request->solicitud,
+							'tipo' => Constants::TIPO_DOCUMENTO_LISTA[$key]
+						]);
+					}
 				}
 			}
 			$message = 'Solicitud actualizado con éxito.';

@@ -116,7 +116,7 @@
 							@endif
 						@empty
 							<tr class="text-center">
-								<td colspan="@unlessrole('guest') 5 @elseunlessrole 4 @endunlessrole">Sin revisiones</td>
+								<td colspan="4">Sin revisiones</td>
 							</tr>
 						@endforelse
 					</tbody>

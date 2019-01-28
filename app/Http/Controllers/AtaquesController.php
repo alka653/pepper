@@ -13,13 +13,18 @@ use App\AtaquesVictima;
 use App\AtaquesAnatomicas;
 use Illuminate\Http\Request;
 use App\LocalizacionesAnatomicas;
+use Illuminate\Support\Facades\Auth;
 
 class AtaquesController extends Controller{
 	const DIR_TEMPLATE = 'ataques.';
 	public function list(Request $request){
-		$ataques = Ataques::orderBy('fecha_ataque', 'DESC');
+		$ataques = new Ataques();
+		if(Auth::user()->perfil == 'U'){
+			$mascotasList = Mascotas::where('propietario_id', Auth::user()->persona_id)->get()->pluck('id')->toArray();
+			$ataques = $ataques->whereIn('mascota_id', $mascotasList);
+		}
 		return view(self::DIR_TEMPLATE.'list', [
-			'ataques' => $ataques->paginate(10),
+			'ataques' => $ataques->orderBy('fecha_ataque', 'DESC')->paginate(10),
 			'item_ataque' => null
 		]);
 	}

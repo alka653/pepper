@@ -21,7 +21,7 @@
 					{{ Form::select('tipo', [
 						'' => 'Seleccione una opción',
 						'V' => 'Victima',
-						'A' => 'Ataque'
+						'A' => 'Agresor'
 					], null, ['required', 'class' => 'form-control']) }}
 				</div>
 			</div>

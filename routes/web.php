@@ -1,5 +1,21 @@
 <?php
 
+use App\User;
+use App\Mail\RevisionEmail;
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/exec', function(){
+    $usuario = User::where('email', 'nelsonlinares502043@gmail.com')->first();
+	$userData = new \stdClass();
+	$userData->email = $usuario->email;
+	$userData->nombre = $usuario->persona->nombre;
+	$userData->apellido = $usuario->persona->apellido;
+	$userData->message = 'Prueba';
+	$userData->sender = 'Pepper';
+	$userData->receiver = $usuario->persona->nombre.' '.$usuario->persona->apellido;
+	Mail::to($usuario->email)->send(new RevisionEmail($userData));
+    //echo exec('php ../artisan pepper:fix-users');
+});
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/ley', function(){
 	return view('home.law');
@@ -64,7 +80,7 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::prefix('/perfil')->group(function(){
 		Route::get('/', 'UsersController@profile')->name('perfil');
-		Route::prefix('/cambiar-credencial')->group(function(){
+		Route::prefix('/cambiar-credencial/{usuario}')->group(function(){
 			Route::get('/', 'UsersController@changePassword')->name('cambiar_password');
 			Route::post('/', 'UsersController@updatePassword')->name('cambiar_password.post');
 		});
@@ -134,11 +150,11 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::prefix('/propietarios')->group(function(){
 		Route::get('/', 'UsersController@listPropietarios')->name('listar_propietarios')->middleware('permission:listar_propietarios');
-		Route::get('/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario')->middleware('permission:gestion_ataques');
+		Route::get('/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario')->middleware('permission:gestionar_ataques');
 	});
 	Route::prefix('/ataques')->group(function(){
 		Route::get('/', 'AtaquesController@list')->name('listar_ataques');
-		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestion_ataques'], function(){
+		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestionar_ataques'], function(){
 			Route::get('/', 'AtaquesController@new')->name('registrar_ataque');
 			Route::post('/', 'AtaquesController@saveOrUpdateData')->name('registrar_ataque.post');
 		});

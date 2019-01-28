@@ -2,4 +2,4 @@ Estimado usuario
 
 {!! $user->message !!}
 
-{{ route('/') }}
+{{ route('home') }}

@@ -28,7 +28,7 @@
 	</ul>
 </li>
 <li class="menu-has-children">
-	<a href="#" class="sf-with-ul">Configuración</a>
+	<a href="#" class="sf-with-ul">Parametrización</a>
 	<ul>
 		<li>
 			<a href="{{ route('listar_razas_with_auth') }}">Razas</a>

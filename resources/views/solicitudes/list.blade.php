@@ -24,6 +24,7 @@
 				<table class="table table-striped">
 					<thead>
 						<tr>
+						    <th>No.</th>
 							<th>Fecha solicitud</th>
 							<th>Fecha finalizado</th>
 							<th>Mascota</th>
@@ -37,6 +38,7 @@
 					<tbody>
 						@forelse($solicitudes as $solicitud)
 							<tr>
+							    <td>{{ $solicitud->id }}</td>
 								<td>{{ $solicitud->fecha_solicitud }}</td>
 								<td>{{ $solicitud->fecha_finalizado }}</td>
 								<td>{{ $solicitud->mascota->nombre }}</td>
@@ -71,28 +73,30 @@
 @endsection
 
 @section('script')
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<script>
-		google.charts.load('current', {packages: ['corechart', 'bar']});
-		google.charts.setOnLoadCallback(drawChart);
-		function drawChart(){
-			const data = new google.visualization.arrayToDataTable([
-				['Estado de casos', 'Cantidad', { role: 'style' }],
-				['Radicado', {{ $solicitudCount['pendientes'] }}, '#3498db'],
-				['Aprobado', {{ $solicitudCount['finalizados'] }}, '#2ecc71'],
-				['Rechazado', {{ $solicitudCount['cancelados'] }}, '#e74c3c']
-			]);
-			const options = {
-				title: 'Total de solicitudes',
-				hAxis: {
-					title: 'Estado de casos'
-				},
-				vAxis: {
-					title: 'Cantidad'
-				}
-			};
-			const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-			chart.draw(data, options);
-		}
-	</script>
+	@if(isset($solicitudCount))
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script>
+			google.charts.load('current', {packages: ['corechart', 'bar']});
+			google.charts.setOnLoadCallback(drawChart);
+			function drawChart(){
+				const data = new google.visualization.arrayToDataTable([
+					['Estado de casos', 'Cantidad', { role: 'style' }],
+					['Radicado', {{ $solicitudCount['pendientes'] }}, '#3498db'],
+					['Aprobado', {{ $solicitudCount['finalizados'] }}, '#2ecc71'],
+					['Rechazado', {{ $solicitudCount['cancelados'] }}, '#e74c3c']
+				]);
+				const options = {
+					title: 'Total de solicitudes',
+					hAxis: {
+						title: 'Estado de casos'
+					},
+					vAxis: {
+						title: 'Cantidad'
+					}
+				};
+				const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+				chart.draw(data, options);
+			}
+		</script>
+	@endif
 @endsection

@@ -15,14 +15,14 @@
 							<tr>
 								<td style="text-align:center">
 									<span style="font-size:14px;color:#999999;font-weight:300;text-align:center">
-										Gracias por registrarse en nuestro sistema. Recuerda que puede acceder a nuestro sitio web en la siguiente direccion <a href="{{ route('/') }}">{{ route('login') }}</a>.<br/>
+										Gracias por registrarse en nuestro sistema. Recuerda que puede acceder a nuestro sitio web en la siguiente direccion <a href="{{ route('home') }}">{{ route('login') }}</a>.<br/>
 										Sus datos de ingreso son los siguientes:
 										<ul>
 											<li>
 												<b>Nombre de usuario:</b> {{ $user->username }}.
 											</li>
 											<li>
-												<b>Contrase√±a: </b> {{ $user->password }}.
+												<b>Contraseè´–a: </b> {{ $user->password }}.
 											</li>
 										</ul>
 									</span>

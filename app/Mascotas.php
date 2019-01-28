@@ -39,7 +39,7 @@ class Mascotas extends Model{
 		})->toArray();
 	}
 	public static function saveData($data){
-		$data['fecha_registro'] = date('Y-m-d');
+		$data['fecha_ingreso'] = date('Y-m-d');
 		$data['fecha_nacimiento'] = $data['fecha_nacimiento'] != null ? date('Y-m-d', strtotime($data['fecha_nacimiento'])) : null;
 		$data['fecha_vacunacion'] = $data['fecha_vacunacion'] != null ? date('Y-m-d', strtotime($data['fecha_vacunacion'])) : null;
 		return Mascotas::create($data);
@@ -47,14 +47,14 @@ class Mascotas extends Model{
 	public static function updateData($request){
 		$mascota = Mascotas::find($request->mascota->id);
 		$mascota->nombre = $request->input('nombre');
-		$mascota->fecha_nacimiento = $request->input('fecha_nacimiento');
+		$mascota->fecha_nacimiento = $request->input('fecha_nacimiento') != null ? date('Y-m-d', strtotime($request->input('fecha_nacimiento'))) : null;
 		$mascota->sexo = $request->input('sexo');
-		$mascota->color = $request->input('color');
+		$mascota->color = $request->input('color') == 'Mixto' ? $request->input('color_otro') : $request->input('color');
 		$mascota->descripcion = $request->input('descripcion');
 		$mascota->vacunado = $request->input('vacunado');
-		$mascota->fecha_vacunacion = $request->input('fecha_vacunacion');
+		$mascota->fecha_vacunacion = $request->input('fecha_vacunacion') != null ? date('Y-m-d', strtotime($request->input('fecha_vacunacion'))) : null;
 		$mascota->raza_id = $request->input('raza_id');
-		$mascota->ocupacion = $request->input('ocupacion');
+		$mascota->ocupacion = $request->input('ocupacion') == 'Otro' ? $request->input('ocupacion_otro') : $request->input('ocupacion');
 		if(Auth::user()->perfil != 'U'){
 			$mascota->propietario_id = $request->input('propietario_id');
 		}

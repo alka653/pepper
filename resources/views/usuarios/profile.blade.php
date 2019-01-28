@@ -61,14 +61,16 @@
 						<b>Ocupación:</b>
 						{{ $usuario->persona->ocupacion }}
 					</h5>
-					<div class="text-center">
-						<a href="{{ route('editar_perfil', ['persona' => $usuario->persona_id]) }}" class="btn btn-sm btn-success">
-							Actualizar datos
-						</a>
-						<a href="{{ route('cambiar_password') }}" class="btn btn-sm btn-warning open-modal">
-							Cambiar contraseña
-						</a>
-					</div>
+					@if(Auth::user()->perfil == 'J' || (Auth::user()->id == $usuario->id))
+    					<div class="text-center">
+    						<a href="{{ route('editar_perfil', ['persona' => $usuario->persona_id]) }}" class="btn btn-sm btn-success">
+    							Actualizar datos
+    						</a>
+    						<a href="{{ route('cambiar_password', ['usuario' => $usuario->id]) }}" class="btn btn-sm btn-warning open-modal">
+    							Cambiar contraseña
+    						</a>
+    					</div>
+    				@endif
 				</div>
 			</div>
 		</div>

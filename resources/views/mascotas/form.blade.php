@@ -79,8 +79,24 @@
 								{!! $errors->first('raza_id', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group">
-								{{ Form::label('ocupacion', 'Ocupación') }}
-								{{ Form::select('ocupacion', $razas, null, ['class' => 'form-control select2']) }}
+								{{ Form::label('ocupacion', 'Ocupación', ['class' => 'label-required']) }}
+								{{ Form::select('ocupacion', [
+									'' => 'Seleccione una opción',
+									'Perro de búsqueda y rescate' => 'Perro de búsqueda y rescate',
+									'Perro de detección' => 'Perro de detección',
+									'Perro de terapia' => 'Perro de terapia',
+									'Perro asistencial' => 'Perro asistencial',
+									'Perro Policia' => 'Perro Policia',
+									'Perro de pastoreo' => 'Perro de pastoreo',
+									'Perro guía' => 'Perro guía',
+									'Perro de hogar' => 'Perro de hogar',
+									'Otro' => 'Otro'
+								], null, ['required', 'class' => 'form-control date']) }}
+							</div>
+							<div class="col-md-6 form-group hidden" id="ocupacion_otro_div">
+								{{ Form::label('ocupacion_otro', 'Especifique la ocupación', ['class' => 'label-required']) }}
+								{{ Form::text('ocupacion_otro', null, ['class' => 'form-control']) }}
+								{!! $errors->first('ocupacion_otro', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-12 form-group">
 								{{ Form::label('descripcion', 'Descripción', ['class' => 'label-required']) }}
@@ -98,7 +114,7 @@
 							<img class="hidden" style="width: 180px; height: 150px;">
 						@endif
 						<div class="custom-file">
-							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1'] + (!$mascota->toArray() ? ['required'] : [])) }}
+							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1'] + (!$mascota->toArray() || !isset($mascota->fotos[0]) ? ['required'] : [])) }}
 							{{ Form::label('foto[]', 'Foto frontal', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
@@ -140,6 +156,18 @@
 @section('script')
 	<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 	<script>
+		@if($mascota->toArray())
+			$(document).ready(function(){
+				@if($mascota->color != 'Mixto')
+					$('#color_otro').val('{{ $mascota->color }}')
+					$('#color').val('Mixto').trigger('change')
+				@endif
+				@if($mascota->ocupacion != 'Otro')
+					$('#ocupacion_otro').val('{{ $mascota->ocupacion }}')
+					$('#ocupacion').val('Otro').trigger('change')
+				@endif
+			})
+		@endif
 		$('#fecha_nacimiento').datepicker({
 			uiLibrary: 'bootstrap4',
 			maxDate: new Date()
@@ -153,6 +181,13 @@
 				$('#color_otro_div').removeClass('hidden').find('input').attr('required', true)
 			}else{
 				$('#color_otro_div').addClass('hidden').find('input').removeAttr('required', true)
+			}
+		})
+		$(document).on('change', '#ocupacion', function(){
+			if($(this).val() == 'Otro'){
+				$('#ocupacion_otro_div').removeClass('hidden').find('input').attr('required', true)
+			}else{
+				$('#ocupacion_otro_div').addClass('hidden').find('input').removeAttr('required', true)
 			}
 		})
 		$(document).on('change', '#vacunado', function(){

@@ -317,8 +317,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="text-center">
-			<a href="{{ route('seguimiento_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-info">Realizar seguimiento</a>
-		</div>
+		@can('seguimiento_ataque')
+			<div class="text-center">
+				<a href="{{ route('seguimiento_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-info">Realizar seguimiento</a>
+			</div>
+		@endcan
 	</div>
 @endsection
