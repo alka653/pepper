@@ -66,7 +66,7 @@
 						{!! $errors->first('municipio_residencia_id', '<p class="help-block">:message</p>') !!}
 					</div>
 					<div class="col-md-6 form-group">
-						{{ Form::label('sexo', 'Sexo', ['class' => 'label-required']) }}
+						{{ Form::label('sexo', 'Género', ['class' => 'label-required']) }}
 						{{ Form::select('sexo', [
 							'' => 'Seleccione una opción',
 							'M' => 'Masculino',
@@ -86,8 +86,13 @@
 					</div>
 					<div class="col-md-6 form-group">
 						{{ Form::label('ocupacion', 'Ocupación', ['class' => 'label-required']) }}
-						{{ Form::text('ocupacion', null, ['required', 'class' => 'form-control']) }}
+						{{ Form::select('ocupacion', $ocupacionLista, null, ['required', 'class' => 'form-control select2']) }}
 						{!! $errors->first('ocupacion', '<p class="help-block">:message</p>') !!}
+					</div>
+					<div class="col-md-6 form-group hidden" id="ocupacion_otro_div">
+						{{ Form::label('ocupacion_otro', 'Digite la ocupación') }}
+						{{ Form::text('ocupacion_otro', null, ['class' => 'form-control']) }}
+						{!! $errors->first('ocupacion_otro', '<p class="help-block">:message</p>') !!}
 					</div>
 					@can('modulo_usuarios')
 						<div class="col-md-6 form-group">
@@ -148,9 +153,22 @@
 @section('script')
 	<script>
 		const localStorage = window.localStorage
+		@if($persona->toArray())
+			$(document).ready(function(){
+				$('#ocupacion_otro').val('{{ $persona->ocupacion }}')
+				$('#ocupacion').trigger('change')
+			})
+		@endif
 		$(document).on('submit', 'form', function(){
 			localStorage.setItem('municipio_residencia_id', $('#municipio_residencia_id').val())
 			localStorage.setItem('municipio_expedicion_id', $('#municipio_expedicion_id').val())
+		})
+		$(document).on('change', '#ocupacion', function(){
+			if($(this).val() == 'Otro'){
+				$('#ocupacion_otro_div').removeClass('hidden').find('input').attr('required', true)
+			}else{
+				$('#ocupacion_otro_div').addClass('hidden').find('input').removeAttr('required', true)
+			}
 		})
 		$(document).ready(function(){
 			if(localStorage.getItem('municipio_expedicion_id')){

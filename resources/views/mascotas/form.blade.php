@@ -34,7 +34,7 @@
 								{!! $errors->first('fecha_nacimiento', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group">
-								{{ Form::label('sexo', 'Sexo', ['class' => 'label-required']) }}
+								{{ Form::label('sexo', 'Género', ['class' => 'label-required']) }}
 								{{ Form::select('sexo', [
 									'' => 'Seleccione una opción',
 									'M' => 'Macho',
@@ -80,18 +80,7 @@
 							</div>
 							<div class="col-md-6 form-group">
 								{{ Form::label('ocupacion', 'Ocupación', ['class' => 'label-required']) }}
-								{{ Form::select('ocupacion', [
-									'' => 'Seleccione una opción',
-									'Perro de búsqueda y rescate' => 'Perro de búsqueda y rescate',
-									'Perro de detección' => 'Perro de detección',
-									'Perro de terapia' => 'Perro de terapia',
-									'Perro asistencial' => 'Perro asistencial',
-									'Perro Policia' => 'Perro Policia',
-									'Perro de pastoreo' => 'Perro de pastoreo',
-									'Perro guía' => 'Perro guía',
-									'Perro de hogar' => 'Perro de hogar',
-									'Otro' => 'Otro'
-								], null, ['required', 'class' => 'form-control date']) }}
+								{{ Form::select('ocupacion', $ocupacionesMascota, null, ['required', 'class' => 'form-control date']) }}
 							</div>
 							<div class="col-md-6 form-group hidden" id="ocupacion_otro_div">
 								{{ Form::label('ocupacion_otro', 'Especifique la ocupación', ['class' => 'label-required']) }}
@@ -162,10 +151,8 @@
 					$('#color_otro').val('{{ $mascota->color }}')
 					$('#color').val('Mixto').trigger('change')
 				@endif
-				@if($mascota->ocupacion != 'Otro')
-					$('#ocupacion_otro').val('{{ $mascota->ocupacion }}')
-					$('#ocupacion').val('Otro').trigger('change')
-				@endif
+				$('#ocupacion_otro').val('{{ $mascota->ocupacion }}')
+				$('#ocupacion').trigger('change')
 			})
 		@endif
 		$('#fecha_nacimiento').datepicker({

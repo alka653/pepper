@@ -88,7 +88,7 @@
 		}
 		function readURL(input){
 			if(input.files && input.files[0]){
-				if(input.files[0].size <= 100000){
+				if(input.files[0].size <= 500000){
 					$parent = $(`[data-name="${input.getAttribute('data-name')}"]`).parent().parent()
 					$parent.find('a').remove()
 					$parent.find('p').remove()
@@ -96,7 +96,7 @@
 						<p class="text-center no-margin">${input.files[0].name}</p>
 					`)
 				}else{
-					alert('El archivo no puede superar los 1Mb')
+					alert('El archivo no puede superar los 5Mb')
 				}
 			}
 		}

@@ -12,18 +12,34 @@ use Illuminate\Support\Facades\Auth;
 
 class SolicitudesController extends Controller{
 	const DIR_TEMPLATE = 'solicitudes.';
-	public function list(){
+	public function list(Request $request){
+		$estado = $request->input('estado');
 		$solicitudes = new Solicitudes();
 		if(Auth::user()->perfil == 'U'){
 			$mascotas = Mascotas::listaMascotasByUser(Auth::user()->persona_id);
 			$solicitudes = $solicitudes->whereIn('mascota_id', $mascotas);
 		}
+		if($estado != null && $estado != ''){
+			switch($estado){
+				case 'PE':
+					$solicitudes_pendientes = Revisiones::where(['inspector_id' => Auth::user()->id, 'estado' => 'R'])->groupBy('solicitud_id')->pluck('solicitud_id')->toArray();
+					$solicitudes = $solicitudes::whereNotIn('id', $solicitudes_pendientes);
+					break;
+				case 'RE':
+					$solicitudes_revisadas = Revisiones::where(['inspector_id' => Auth::user()->id, 'estado' => 'R'])->groupBy('solicitud_id')->pluck('solicitud_id')->toArray();
+					$solicitudes = $solicitudes::whereIn('id', $solicitudes_revisadas);
+					break;
+				default:
+					$solicitudes = $solicitudes->where('estado', $estado);
+					break;
+			}
+		}
 		return view(self::DIR_TEMPLATE.'list', [
 			'solicitudes' => $solicitudes->paginate(10)
 		] + (Auth::user()->perfil != 'U' ? ['solicitudCount' => [
-			'finalizados' => $solicitudes->where('estado', 'F')->count(),
-			'pendientes' => $solicitudes->where('estado', 'P')->count(),
-			'cancelados' => $solicitudes->where('estado', 'C')->count()
+			'finalizados' => Solicitudes::where('estado', 'F')->count(),
+			'pendientes' => Solicitudes::where('estado', 'P')->count(),
+			'cancelados' => Solicitudes::where('estado', 'C')->count()
 		]] : [] ));
 	}
 	public function detail(Solicitudes $solicitud){

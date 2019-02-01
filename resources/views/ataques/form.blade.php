@@ -134,7 +134,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									{{ Form::label('victima[sexo]', 'Sexo', ['class' => 'label-required']) }}
+									{{ Form::label('victima[sexo]', 'Género', ['class' => 'label-required']) }}
 									{{ Form::select('victima[sexo]', [
 										'' => 'Seleccione una opción',
 										'M' => 'Masculino',
@@ -407,7 +407,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[sexo]', 'Sexo', ['class' => 'label-required']) }}
+								{{ Form::label('propietario[sexo]', 'Género', ['class' => 'label-required']) }}
 								{{ Form::select('propietario[sexo]', [
 									'' => 'Seleccione una opción',
 									'M' => 'Masculino',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Personas;
+use App\Constants;
 use App\Departamentos;
 use Illuminate\Http\Request;
 use App\Mail\UserRegisterEmail;
@@ -17,6 +18,7 @@ class UsersController extends Controller{
 	public function signup(){
 		return view(self::DIR_TEMPLATE.'form', [
 			'departamentoLista' => Departamentos::lista(),
+			'ocupacionLista' => Constants::getOcupaciones(),
 			'title' => 'Registro en Pepper',
 			'route' => ['crear_cuenta.post'],
 			'persona' => new Personas,
@@ -24,6 +26,9 @@ class UsersController extends Controller{
 		]);
 	}
 	public function signupSave(RegistroUsuarioFormRequest $request){
+		if($request->ocupacion == 'Otro'){
+			$request->ocupacion = $request->ocupacion_otro;
+		}
 		$persona = Personas::saveData([
 			'nombre' => $request->nombre,
 			'apellido' => $request->apellido,
@@ -77,6 +82,7 @@ class UsersController extends Controller{
 			return view(self::DIR_TEMPLATE.'form', [
 				'departamentoLista' => Departamentos::lista(),
 				'title' => 'Edición de datos',
+				'ocupacionLista' => Constants::getOcupaciones(),
 				'route' => ['editar_perfil.post', $persona->id],
 				'method' => 'put',
 				'persona' => $persona,

@@ -7,6 +7,7 @@ use App\Razas;
 use App\Ataques;
 use App\Mascotas;
 use App\Personas;
+use App\Constants;
 use App\Solicitudes;
 use App\TiposAtaques;
 use App\AtaquesAnatomicas;
@@ -101,9 +102,10 @@ class ReportesController extends Controller{
 				[
 					'name' => 'Ocupación',
 					'field' => 'ocupacion',
-					'type' => 'text',
+					'type' => 'select',
 					'required' => false,
-					'extra_class' => ''
+					'extra_class' => '',
+					'options' => Constants::OCUPACIONES_MASCOTA_LISTA
 				],
 				[
 					'name' => 'Fecha de registro',
@@ -190,6 +192,8 @@ class ReportesController extends Controller{
 				});
 			}
 			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.solicitud', [
+				'logo' => Constants::ESCUCUDO_B64,
+				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
 				'title' => $filename,
 				'solicitudes' => $solicitudes->get()
 			])->setPaper('Letter', 'landscape');
@@ -218,6 +222,8 @@ class ReportesController extends Controller{
 				});
 			}
 			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.usuario', [
+				'logo' => Constants::ESCUCUDO_B64,
+				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
 				'title' => $filename,
 				'usuarios' => $usuarios->get()
 			])->setPaper('Letter', 'landscape');
@@ -234,7 +240,7 @@ class ReportesController extends Controller{
 				$mascotas = $mascotas->whereRaw('LOWER(ocupacion) LIKE ?', ['%'.strtolower($request->tipo_usuario).'%']);
 			}
 			if($request->fecha_registro != null){
-				$mascotas = $mascotas->where('fecha_registro', $request->fecha_registro);
+				$mascotas = $mascotas->where('fecha_ingreso', $request->fecha_registro);
 			}
 			if($request->estado != null){
 				$mascotas = $mascotas->where('estado', $request->estado);
@@ -255,6 +261,8 @@ class ReportesController extends Controller{
 				});
 			}
 			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.mascota', [
+				'logo' => Constants::ESCUCUDO_B64,
+				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
 				'title' => $filename,
 				'mascotas' => $mascotas->get()
 			])->setPaper('Letter', 'landscape');
@@ -278,6 +286,8 @@ class ReportesController extends Controller{
 				$ataques->whereId('id', $ataquesLocalizacionesAnatomicas);
 			}
 			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.ataque', [
+				'logo' => Constants::ESCUCUDO_B64,
+				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
 				'title' => $filename,
 				'ataques' => $ataques->get()
 			])->setPaper('Letter', 'landscape');

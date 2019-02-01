@@ -59,7 +59,7 @@
 									@role('guest')
 										No se han encontrado solicitudes. Da <a href="{{ route('crear_solicitud') }}">clic aquí</a> para realizar el trámite
 									@else
-										Aún no han realizado solicitudes
+										No se encontraron solicitudes.
 									@endrole
 								</td>
 							</tr>

@@ -29,7 +29,7 @@
 								<td>{{ $mascota->fecha_nacimiento }}</td>
 							</tr>
 							<tr>
-								<th>Sexo</th>
+								<th>Género</th>
 								<td>{{ $mascota->getSexo($mascota->sexo) }}</td>
 							</tr>
 							<tr>

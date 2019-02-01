@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Razas;
 use App\Mascotas;
 use App\Personas;
+use App\Constants;
 use App\Certificados;
 use App\MascotasFotos;
 use Illuminate\Http\Request;
@@ -67,6 +68,7 @@ class MascotasController extends Controller{
 	public function new(){
 		return view(self::DIR_TEMPLATE.'form', [
 			'mascota' => new Mascotas(),
+			'ocupacionesMascota' => Constants::OCUPACIONES_MASCOTA_LISTA,
 			'title' => 'Registrar una mascota',
 			'razas' => Razas::lista(),
 			'propietarios' => ['' => 'Selecciona un propietario'] + Personas::get()->mapWithKeys(function($persona){
@@ -79,6 +81,7 @@ class MascotasController extends Controller{
 	public function edit(Mascotas $mascota){
 		return view(self::DIR_TEMPLATE.'form', [
 			'mascota' => $mascota,
+			'ocupacionesMascota' => Constants::OCUPACIONES_MASCOTA_LISTA,
 			'title' => 'Edita la información de la mascota',
 			'razas' => ['' => 'Seleccione una raza'] + Razas::lista(),
 			'propietarios' => ['' => 'Selecciona un propietario'] + Personas::get()->mapWithKeys(function($persona){
@@ -148,6 +151,7 @@ class MascotasController extends Controller{
 		$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.certificado', [
 			'title' => $filename,
 			'mascota' => $mascota,
+			'escudoFondo' => Constants::ESCUDO_FONDO_B64,
 			'foto_canino' => 'data:image/png;base64,'.base64_encode(file_get_contents('storage/'.$mascota->fotos[0]->foto)),
 			'certificado' => $certificado
 		]);

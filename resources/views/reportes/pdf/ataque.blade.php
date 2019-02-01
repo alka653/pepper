@@ -1,6 +1,7 @@
 @extends('layouts.app_pdf')
 
 @section('content')
+	@include('elements.pdf.header')
 	<h4 class="text-center">Reporte de ataques</h4>
 	<br />
 	<table class="table table-striped table-bordered">
@@ -29,4 +30,5 @@
 			@endforeach
 		</tbody>
 	</table>
+	@include('elements.pdf.footer')
 @endsection

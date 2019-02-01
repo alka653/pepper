@@ -46,7 +46,7 @@
 						{{ $usuario->persona->direccion_residencia }}. {{ $usuario->persona->lugar($usuario->persona->municipio_residencia_id) }}
 					</h5>
 					<h5 class="no-margin">
-						<b>Sexo:</b>
+						<b>Género:</b>
 						{{ $usuario->persona->getSexo($usuario->persona->sexo) }}
 					</h5>
 					<h5 class="no-margin">

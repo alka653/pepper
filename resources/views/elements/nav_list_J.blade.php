@@ -1,8 +1,25 @@
 <li>
 	<a href="{{ route('listar_mascota') }}">Mascotas</a>
 </li>
-<li>
-	<a href="{{ route('listar_solicitudes') }}">Solicitudes</a>
+<li class="menu-has-children">
+	<a href="#" class="sf-with-ul">Solicitudes</a>
+	<ul>
+		<li>
+			<a href="{{ route('listar_solicitudes') }}?estado=P">Radicados</a>
+		</li>
+		<li>
+			<a href="{{ route('listar_solicitudes') }}?estado=F">Aprobados</a>
+		</li>
+		<li>
+			<a href="{{ route('listar_solicitudes') }}?estado=C">Cancelados</a>
+		</li>
+		<li>
+			<a href="{{ route('listar_solicitudes') }}?estado=PE">Pendientes</a>
+		</li>
+		<li>
+			<a href="{{ route('listar_solicitudes') }}?estado=RE">Revisados</a>
+		</li>
+	</ul>
 </li>
 <li>
 	<a href="{{ route('listar_ataques') }}">Ataques</a>

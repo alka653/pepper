@@ -1,6 +1,7 @@
 @extends('layouts.app_pdf')
 
 @section('content')
+	@include('elements.pdf.header')
 	<h4 class="text-center">Reporte de mascotas</h4>
 	<br />
 	<table class="table table-striped table-bordered">
@@ -17,7 +18,7 @@
 		<tbody>
 			@foreach($mascotas as $mascota)
 				<tr>
-                    <td>{{ $mascota->fecha_registro }}</td>
+                    <td>{{ $mascota->fecha_ingreso }}</td>
                     <td>{{ $mascota->nombre }}</td>
                     <td>{{ $mascota->raza->nombre }}</td>
                     <td>{{ $mascota->color }}</td>
@@ -27,4 +28,5 @@
 			@endforeach
 		</tbody>
 	</table>
+	@include('elements.pdf.footer')
 @endsection

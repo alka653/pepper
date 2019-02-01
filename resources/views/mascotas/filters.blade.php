@@ -3,7 +3,7 @@
 </div>
 <div class="col-md-3 form-group">
 	{{ Form::select('sexo', [
-		'' => 'Por sexo',
+		'' => 'Por Género',
 		'M' => 'Macho',
 		'F' => 'Hembra'
 	], $extraQuery['sexo'], ['class' => 'form-control']) }}
