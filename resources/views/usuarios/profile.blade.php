@@ -68,9 +68,20 @@
     						</a>
     						<a href="{{ route('cambiar_password', ['usuario' => $usuario->id]) }}" class="btn btn-sm btn-warning open-modal">
     							Cambiar contraseña
-    						</a>
+							</a>
+							@can('modulo_usuarios')
+								@if($usuario->estado == 'A')
+									<a href="{{ route('cambiar_estado', ['persona' => $usuario->persona_id, 'estado' => 'I']) }}" class="btn btn-sm btn-info">
+										Desactivar cuenta
+									</a>
+								@else
+									<a href="{{ route('cambiar_estado', ['persona' => $usuario->persona_id, 'estado' => 'A']) }}" class="btn btn-sm btn-info">
+										Activar cuenta
+									</a>
+								@endif
+							@endcan
     					</div>
-    				@endif
+					@endif
 				</div>
 			</div>
 		</div>

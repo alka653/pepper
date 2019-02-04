@@ -283,7 +283,7 @@ class ReportesController extends Controller{
 			}
 			if($request->localizacion_anatomica_id != ''){
 				$ataquesLocalizacionesAnatomicas = AtaquesAnatomicas::where('localizacion_anatomica_id', $request->localizacion_anatomica_id)->get()->pluck('ataque_id')->toArray();
-				$ataques->whereId('id', $ataquesLocalizacionesAnatomicas);
+				$ataques = $ataques->whereIn('id', $ataquesLocalizacionesAnatomicas);
 			}
 			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.ataque', [
 				'logo' => Constants::ESCUCUDO_B64,

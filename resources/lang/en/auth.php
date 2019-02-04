@@ -15,5 +15,7 @@ return [
 
     'failed' => 'Las credenciales no son correctas.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'blocked' => 'La cuenta ha sido bloqueada por exceso de intentos de ingreso. Por favor, comunicarse con la entidad responsable',
+    'notactivated' => 'La cuenta ha sido inactivada. Por favor, comunicarse con la entidad responsable.'
 
 ];

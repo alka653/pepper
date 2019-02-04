@@ -28,7 +28,7 @@
 														Si recibió este correo por error, por favor ignorarlo.
 													</div>
 													<div style="margin:0;font-size:11px;text-align:center;color:#bbbbbb">
-														© 2018 Pepper
+														© 2019 Pepper
 													</div>
 												</td>
 											</tr>

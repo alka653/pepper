@@ -15,7 +15,7 @@
 							<tr>
 								<td style="text-align:center">
 									<span style="font-size:14px;color:#999999;font-weight:300;text-align:center">
-										{!! $user->message !!}
+                                        Se ha recibido una solicitud de cambio de contraseña. Para cambiar La contraseña ingresa en el siguiente botón
 									</span>
 								</td>
 							</tr>
@@ -28,16 +28,9 @@
 					<table border="0" cellpadding="0" cellspacing="0" class="m_304056208632991473action-btn" style="line-height:22px;margin:0 auto;height:34px">
 						<tbody>
 							<tr>
-								<td style="text-align:center">
-									<span style="font-size:14px;color:#999999;font-weight:300;text-align:center">
-										Ingrese a nuestro sitio web aquí:
-									</span>
-								</td>
-							</tr>
-							<tr>
 								<td height="38" style="background-color:#79c60b;font-size:14px" valign="middle">
-									<a class="m_304056208632991473action-btn-middle" href="{{ route('login') }}" style="color:#ffffff;font-weight:700;text-decoration:none;font-size:14px!important;padding:10px" target="_blank" data-saferedirecturl="https://www.google.com/url?q={{ route('login') }}">
-										Iniciar sesión
+									<a class="m_304056208632991473action-btn-middle" href="{{ $actionUrl }}" style="color:#ffffff;font-weight:700;text-decoration:none;font-size:14px!important;padding:10px" target="_blank" data-saferedirecturl="https://www.google.com/url?q={{ route('login') }}">
+										Cambiar contraseña
 									</a>
 								</td>
 							</tr>

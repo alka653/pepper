@@ -4,7 +4,7 @@ use App\User;
 use App\Mail\RevisionEmail;
 use Illuminate\Support\Facades\Mail;
 
-Route::get('/exec', function(){
+/*Route::get('/exec', function(){
     $usuario = User::where('email', 'nelsonlinares502043@gmail.com')->first();
 	$userData = new \stdClass();
 	$userData->email = $usuario->email;
@@ -15,7 +15,7 @@ Route::get('/exec', function(){
 	$userData->receiver = $usuario->persona->nombre.' '.$usuario->persona->apellido;
 	Mail::to($usuario->email)->send(new RevisionEmail($userData));
     //echo exec('php ../artisan pepper:fix-users');
-});
+});*/
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/ley', function(){
 	return view('home.law');
@@ -32,7 +32,15 @@ Route::prefix('/crear-cuenta')->group(function(){
 });
 Route::prefix('/ingresar')->group(function(){
 	Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
-	Route::post('/', 'Auth\LoginController@login')->name('login.post');
+	Route::post('/', 'Auth\LoginController@login')->name('login.post')->middleware('make_user_log:login');
+});
+Route::prefix('/recuperar-cuenta')->group(function(){
+	Route::get('/', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+	Route::post('/', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+	Route::prefix('/token')->group(function(){
+		Route::get('/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset.token');
+    	Route::post('/', 'Auth\ResetPasswordController@reset')->name('password.update');
+	});
 });
 Route::get('/municipios/obtener-by-departamento/{departamento}', 'MunicipíosController@getByDepartament')->name('obtener_municipio');
 Route::group(['middleware' => 'auth'], function(){
@@ -89,6 +97,9 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::prefix('/editar')->group(function(){
 				Route::get('/', 'UsersController@edit')->name('editar_perfil');
 				Route::put('/', 'UsersController@updateData')->name('editar_perfil.post');
+			});
+			Route::group(['middleware' => 'permission:modulo_usuarios', 'prefix' => 'estado'], function(){
+				Route::get('/{estado}', 'UsersController@changeState')->name('cambiar_estado');
 			});
 		});
 	});

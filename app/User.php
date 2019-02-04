@@ -2,17 +2,22 @@
 
 namespace App;
 
+use Laravel\Passport\HasApiTokens;
+use App\Notifications\ChangePassword;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable{
-	use Notifiable, HasRoles;
+	use Notifiable, HasRoles, HasApiTokens;
 	protected $fillable = ['email', 'password', 'estado', 'perfil', 'persona_id', 'username'];
 	protected $hidden = [
 		'password', 'remember_token',
 	];
+	public function sendPasswordResetNotification($token){
+        $this->notify(new ChangePassword($token));
+    }
 	public function persona(){
 		return $this->hasOne('App\Personas', 'id', 'persona_id');
 	}
@@ -34,7 +39,18 @@ class User extends Authenticatable{
 		return $perfil;
 	}
 	public static function getEstado($estado){
-		return $estado == 'A' ? 'Activo' : 'Inactivo';
+		switch($estado){
+			case 'A':
+				$estado = 'Activo';
+				break;
+			case 'I':
+				$estado = 'Inactivo';
+				break;
+			case 'B':
+				$estado = 'Bloqueado';
+				break;
+		}
+		return $estado;
 	}
 	public static function saveData($data){
 		$data['password'] = bcrypt($data['password']);

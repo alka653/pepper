@@ -22,7 +22,7 @@
 												<b>Nombre de usuario:</b> {{ $user->username }}.
 											</li>
 											<li>
-												<b>Contrase«Ğa: </b> {{ $user->password }}.
+												<b>ContraseÃ±a: </b> {{ $user->password }}.
 											</li>
 										</ul>
 									</span>

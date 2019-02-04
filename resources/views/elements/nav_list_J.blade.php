@@ -57,10 +57,7 @@
 			<a href="{{ route('listar_localizaciones_anatomicas') }}">Localizaciones anatómicas</a>
 		</li>
 		<li>
-			<a href="{{ route('listar_usuarios') }}">Usuarios</a>
-		</li>
-		<li>
-			<a href="{{ route('listar_propietarios') }}">Propietarios</a>
+			<a href="{{ route('listar_usuarios') }}">Funcionarios</a>
 		</li>
 	</ul>
 </li>

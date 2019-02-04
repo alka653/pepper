@@ -169,4 +169,15 @@ class UsersController extends Controller{
 			'data' => $data
 		]);
 	}
+	public function changeState(Request $request, $persona, $estado){
+		$user = User::where('persona_id', $persona)->first();
+		if($estado == 'A'){
+			$user->intentos_ingreso = '0';
+		}
+		$user->estado = $estado;
+		$user->save();
+		$request->session()->flash('message.level', 'success');
+		$request->session()->flash('message.content', 'Estado cambiado con éxito.');
+		return redirect()->route('perfil_usuario', ['persona' => $persona]);
+	}
 }

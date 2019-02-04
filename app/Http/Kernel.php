@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'check_own_pet' => \App\Http\Middleware\CheckOwnPet::class,
         'check_id_user' => \App\Http\Middleware\CheckIdUser::class,
+        'make_user_log' => \App\Http\Middleware\MakeUserLog::class,
     ];
 
     /**

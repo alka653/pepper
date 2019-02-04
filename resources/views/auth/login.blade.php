@@ -39,7 +39,12 @@
 						</div>
 					{{ Form::close() }}
 				</div>
-				<p class="text-center"><a href="{{ route('crear_cuenta') }}">Crear cuenta</a></p>
+				<p class="text-center no-margin">
+					¿No tiene cuenta? <a href="{{ route('crear_cuenta') }}">Crear cuenta</a>
+				</p>
+				<p class="text-center">
+					<a href="{{ route('password.reset') }}">Recuperar cuenta</a>
+				</p>
 			</div>
 		</div>
 	</div>
