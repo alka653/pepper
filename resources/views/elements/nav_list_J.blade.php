@@ -59,5 +59,8 @@
 		<li>
 			<a href="{{ route('listar_usuarios') }}">Funcionarios</a>
 		</li>
+		<li>
+			<a href="{{ route('log') }}">Log de usuarios</a>
+		</li>
 	</ul>
 </li>

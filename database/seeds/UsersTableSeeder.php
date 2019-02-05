@@ -79,6 +79,8 @@ class UsersTableSeeder extends Seeder{
 		Permission::create(['name' => 'modulo_tipos_ataques']);
 		Permission::create(['name' => 'modulo_localizaciones_anatomicas']);
 
+		Permission::create(['name' => 'log']);
+
 		Permission::create(['name' => 'listar_propietarios']);
 		
 		$roleGuest->givePermissionTo([
@@ -93,7 +95,8 @@ class UsersTableSeeder extends Seeder{
 			'gestionar_revision',
 			'modulo_reportes',
 			'modulo_tipos_ataques',
-			'modulo_localizaciones_anatomicas'
+			'modulo_localizaciones_anatomicas',
+			'log'
 		]);
 		$roleCoor->givePermissionTo([
 			'listar_razas',

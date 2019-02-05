@@ -14,7 +14,7 @@ class AddRowToUserToLogin extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('intentos_ingreso', 1);
+            $table->string('intentos_ingreso', 1)->default('0');
             $table->dropColumn('estado');
         });
     }

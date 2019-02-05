@@ -12,8 +12,13 @@ use App\Solicitudes;
 use App\TiposAtaques;
 use App\AtaquesAnatomicas;
 use Illuminate\Http\Request;
+use App\Exports\AtaquesExport;
+use App\Exports\UsuariosExport;
+use App\Exports\MascotasExport;
 use App\LocalizacionesAnatomicas;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\Exports\SolicitudesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportesController extends Controller{
 	const DIR_TEMPLATE = 'reportes.';
@@ -191,14 +196,19 @@ class ReportesController extends Controller{
 					$mascota->whereIn('propietario_id', $propietarios->get()->pluck('id')->toArray());
 				});
 			}
-			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.solicitud', [
-				'logo' => Constants::ESCUCUDO_B64,
-				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
-				'title' => $filename,
-				'solicitudes' => $solicitudes->get()
-			])->setPaper('Letter', 'landscape');
-			$pdf->save(storage_path().'/app/public/pdf/'.$filename);
-			return response()->file('storage/pdf/'.$filename);
+			if($request->exportar == 'pdf'){
+				$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.solicitud', [
+					'logo' => Constants::ESCUCUDO_B64,
+					'escudo' => Constants::ESCUDO_GIRARDOT_B64,
+					'title' => $filename,
+					'solicitudes' => $solicitudes->get()
+				])->setPaper('Letter', 'landscape');
+				$pdf->save(storage_path().'/app/public/pdf/'.$filename);
+				return response()->file('storage/pdf/'.$filename);
+			}else{
+				$excel = new SolicitudesExport($solicitudes->get());
+				return Excel::download($excel, 'solicitudes.xlsx');
+			}
 		}
 		return redirect()->route('reporte_solicitud');
 	}
@@ -221,14 +231,19 @@ class ReportesController extends Controller{
 					$usuario->whereIn('persona_id', $personas->get()->pluck('id')->toArray());
 				});
 			}
-			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.usuario', [
-				'logo' => Constants::ESCUCUDO_B64,
-				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
-				'title' => $filename,
-				'usuarios' => $usuarios->get()
-			])->setPaper('Letter', 'landscape');
-			$pdf->save(storage_path().'/app/public/pdf/'.$filename);
-			return response()->file('storage/pdf/'.$filename);
+			if($request->exportar == 'pdf'){
+				$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.usuario', [
+					'logo' => Constants::ESCUCUDO_B64,
+					'escudo' => Constants::ESCUDO_GIRARDOT_B64,
+					'title' => $filename,
+					'usuarios' => $usuarios->get()
+				])->setPaper('Letter', 'landscape');
+				$pdf->save(storage_path().'/app/public/pdf/'.$filename);
+				return response()->file('storage/pdf/'.$filename);
+			}else{
+				$excel = new UsuariosExport($usuarios->get());
+				return Excel::download($excel, 'usuarios.xlsx');
+			}
 		}
 		return redirect()->route('reporte_usuario');
 	}
@@ -260,14 +275,19 @@ class ReportesController extends Controller{
 					$propietario->whereIn('propietario_id', $personas->get()->pluck('id')->toArray());
 				});
 			}
-			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.mascota', [
-				'logo' => Constants::ESCUCUDO_B64,
-				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
-				'title' => $filename,
-				'mascotas' => $mascotas->get()
-			])->setPaper('Letter', 'landscape');
-			$pdf->save(storage_path().'/app/public/pdf/'.$filename);
-			return response()->file('storage/pdf/'.$filename);
+			if($request->exportar == 'pdf'){
+				$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.mascota', [
+					'logo' => Constants::ESCUCUDO_B64,
+					'escudo' => Constants::ESCUDO_GIRARDOT_B64,
+					'title' => $filename,
+					'mascotas' => $mascotas->get()
+				])->setPaper('Letter', 'landscape');
+				$pdf->save(storage_path().'/app/public/pdf/'.$filename);
+				return response()->file('storage/pdf/'.$filename);
+			}else{
+				$excel = new MascotasExport($mascotas->get());
+				return Excel::download($excel, 'mascotas.xlsx');
+			}
 		}
 		return redirect()->route('reporte_mascota');
 	}
@@ -285,14 +305,19 @@ class ReportesController extends Controller{
 				$ataquesLocalizacionesAnatomicas = AtaquesAnatomicas::where('localizacion_anatomica_id', $request->localizacion_anatomica_id)->get()->pluck('ataque_id')->toArray();
 				$ataques = $ataques->whereIn('id', $ataquesLocalizacionesAnatomicas);
 			}
-			$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.ataque', [
-				'logo' => Constants::ESCUCUDO_B64,
-				'escudo' => Constants::ESCUDO_GIRARDOT_B64,
-				'title' => $filename,
-				'ataques' => $ataques->get()
-			])->setPaper('Letter', 'landscape');
-			$pdf->save(storage_path().'/app/public/pdf/'.$filename);
-			return response()->file('storage/pdf/'.$filename);
+			if($request->exportar == 'pdf'){
+				$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.ataque', [
+					'logo' => Constants::ESCUCUDO_B64,
+					'escudo' => Constants::ESCUDO_GIRARDOT_B64,
+					'title' => $filename,
+					'ataques' => $ataques->get()
+				])->setPaper('Letter', 'landscape');
+				$pdf->save(storage_path().'/app/public/pdf/'.$filename);
+				return response()->file('storage/pdf/'.$filename);
+			}else{
+				$excel = new AtaquesExport($ataques->get());
+				return Excel::download($excel, 'ataques.xlsx');
+			}
 		}
 		return redirect()->route('reporte_ataque');
 	}
