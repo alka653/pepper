@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Mail;
 	Mail::to($usuario->email)->send(new RevisionEmail($userData));
     //echo exec('php ../artisan pepper:fix-users');
 });*/
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', function(){
+	return view('home.index');
+})->name('home');
 Route::get('/ley', function(){
 	return view('home.law');
 })->name('ley_746');
@@ -192,9 +194,13 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 	});
 	Route::group(['middleware' => 'permission:modulo_reportes', 'prefix' => 'reportes'], function(){
+		Route::get('/graficas', function(){
+			return view('home.graph');
+		})->name('graficas');
 		Route::prefix('/solicitudes')->group(function(){
 			Route::get('/', 'ReportesController@request')->name('reporte_solicitud');
 			Route::get('/pdf', 'ReportesController@requestPDF')->name('reporte_solicitud_pdf');
+			Route::get('/json', 'SolicitudesController@json')->name('solicitud.json');
 		});
 		Route::prefix('/usuarios')->group(function(){
 			Route::get('/', 'ReportesController@users')->name('reporte_usuario');
@@ -203,10 +209,14 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::prefix('/mascotas')->group(function(){
 			Route::get('/', 'ReportesController@pets')->name('reporte_mascota');
 			Route::get('/pdf', 'ReportesController@petsPDF')->name('reporte_mascota_pdf');
+			Route::get('/json', 'MascotasController@json')->name('mascota.json');
+			Route::get('/json-ocupacion', 'MascotasController@jsonOcupacion')->name('mascota.ocupacion.json');
 		});
 		Route::prefix('/ataques')->group(function(){
 			Route::get('/', 'ReportesController@atacks')->name('reporte_ataque');
 			Route::get('/pdf', 'ReportesController@atacksPDF')->name('reporte_ataque_pdf');
+			Route::get('/json-localizacion-anatomica', 'AtaquesController@jsonLocalizacionAnatomica')->name('ataques.localizaciones_anatomicas.json');
+			Route::get('/json-tipo-ataque', 'AtaquesController@jsonTipoAtaque')->name('ataques.tipo_ataque.json');
 		});
 	});
 });

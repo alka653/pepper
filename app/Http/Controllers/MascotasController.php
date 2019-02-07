@@ -159,4 +159,28 @@ class MascotasController extends Controller{
 		//return $pdf->download($filename);
 		return response()->file('storage/pdf/'.$filename);
 	}
+	public function json(Request $request){
+		$mascotas = new Mascotas();
+		if($request->fecha_inicio != '' && $request->fecha_final != ''){
+			$mascotas = $mascotas->whereBetween('fecha_ingreso', [date('Y-m-d', strtotime($request->fecha_inicial)), date('Y-m-d', strtotime($request->fecha_final))]);
+		}
+		return response()->json([
+			'machos' => $mascotas->where('sexo', 'M')->count(),
+			'hembras' => $mascotas->where('sexo', 'F')->count()
+		]);
+	}
+	public function jsonOcupacion(Request $request){
+		$data = [];
+		$mascotas = new Mascotas();
+		$lista_ocupaciones = Constants::OCUPACIONES_MASCOTA_LISTA;
+		unset($lista_ocupaciones[''], $lista_ocupaciones['Otro']);
+		if($request->fecha_inicio != '' && $request->fecha_final != ''){
+			$mascotas = $mascotas->whereBetween('fecha_ingreso', [date('Y-m-d', strtotime($request->fecha_inicial)), date('Y-m-d', strtotime($request->fecha_final))]);
+		}
+		foreach($lista_ocupaciones as $key => $ocupacion){
+			$data[$ocupacion] = $mascotas->where('ocupacion', $ocupacion)->count();
+		}
+		$data['Otro'] = $mascotas->whereNotIn('ocupacion', $lista_ocupaciones)->count();
+		return response()->json($data);
+	}
 }

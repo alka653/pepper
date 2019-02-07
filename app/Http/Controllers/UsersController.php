@@ -56,7 +56,7 @@ class UsersController extends Controller{
 			$userData->username = $usuario->username;
 			$userData->nombre = $usuario->persona->nombre;
 			$userData->apellido = $usuario->persona->apellido;
-			$userData->password = $usuario->password;
+			$userData->password = $request->password;
 			$userData->sender = 'Pepper';
 			$userData->receiver = $usuario->persona->nombre.' '.$usuario->persona->apellido;
 			Mail::to($usuario->email)->send(new UserRegisterEmail($userData));

@@ -26,7 +26,7 @@ class PersonaFormRequest extends FormRequest{
 			'sexo' => 'required|max:2,sexo,'.$persona,
 			'numero_celular' => 'required|max:10,numero_celular,'.$persona,
 			'numero_telefonico' => 'max:10,numero_telefonico,'.$persona,
-			'ocupacion' => 'required,ocupacion,'.$persona,
+			'ocupacion' => 'required|max:200,ocupacion,'.$persona,
 			'ocupacion_otro' => 'nullable',
 			'foto' => 'nullable|image'
 		];
@@ -51,7 +51,8 @@ class PersonaFormRequest extends FormRequest{
 			'numero_celular.required' => 'Debe ingrresar el número de celular',
 			'numero_celular.max' => 'El número de celular no puede superar los :max caracteres',
 			'numero_telefonico.max' => 'El número de teléfono no puede superar los :max caracteres',
-			'ocupacion.required' => 'Debes ingresar tu ocupación',
+			'ocupacion.max' => 'La ocupación no debe superar los :max caracteres',
+			'ocupacion.required' => 'Debe ingresar tu ocupación',
 			'foto.image' => 'Archivo inválido'
 		];
 	}

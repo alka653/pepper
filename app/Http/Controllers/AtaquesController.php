@@ -130,4 +130,18 @@ class AtaquesController extends Controller{
 			'ataque' => $ataque
 		]);
 	}
+	public function jsonLocalizacionAnatomica(Request $request){
+		$data = [];
+		foreach(LocalizacionesAnatomicas::all() as $localizacion_anatomica){
+			$data[$localizacion_anatomica->nombre] = AtaquesAnatomicas::where('localizacion_anatomica_id', $localizacion_anatomica->id)->count();
+		}
+		return response()->json($data);
+	}
+	public function jsonTipoAtaque(Request $request){
+		$data = [];
+		foreach(TiposAtaques::all() as $tipo_ataque){
+			$data[$tipo_ataque->nombre] = Ataques::where('tipo_ataque_id', $tipo_ataque->id)->count();
+		}
+		return response()->json($data);
+	}
 }

@@ -126,4 +126,15 @@ class SolicitudesController extends Controller{
 		$request->session()->flash('message.content', $message);
 		return redirect()->route('detalle_solicitud', ['solicitud' => $solicitud]);
 	}
+	public function json(Request $request){
+		$solicitudes = new Solicitudes();
+		if($request->fecha_inicio != '' && $request->fecha_final){
+			$solicitudes = $solicitudes->whereBetween('fecha_solicitud', [date('Y-m-d', strtotime($request->fecha_inicial)), date('Y-m-d', strtotime($request->fecha_final))]);
+		}
+		return response()->json([
+			'finalizados' => $solicitudes->where('estado', 'F')->count(),
+			'pendientes' => $solicitudes->where('estado', 'P')->count(),
+			'cancelados' => $solicitudes->where('estado', 'C')->count()
+		]);
+	}
 }
