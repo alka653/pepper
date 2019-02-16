@@ -146,6 +146,12 @@ class MascotasController extends Controller{
 		$mascotaRequest->session()->flash('message.content', $message);
 		return redirect()->route('detalle_mascota', ['mascota' => $mascota->id]);
 	}
+	public function listCertificado(){
+		$mascotas = Mascotas::where('propietario_id', Auth::user()->persona->id)->get()->pluck('id');
+		return view(self::DIR_TEMPLATE.'list_certificado', [
+			'certificados' => Certificados::whereIn('mascota_id', $mascotas)->paginate(10)
+		]);
+	}
 	public function certificadoMascota(Mascotas $mascota, Certificados $certificado){
 		$filename = 'certificado-'.$mascota->nombre.'.pdf';
 		$pdf = PDF::loadView(self::DIR_TEMPLATE.'pdf.certificado', [

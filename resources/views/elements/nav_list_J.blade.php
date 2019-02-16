@@ -62,5 +62,8 @@
 		<li>
 			<a href="{{ route('log') }}">Log de usuarios</a>
 		</li>
+		<li>
+			<a href="{{ route('permisos') }}">Permisos</a>
+		</li>
 	</ul>
 </li>

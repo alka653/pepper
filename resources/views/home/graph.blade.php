@@ -7,16 +7,30 @@
 			background-color: #f2f5f8;
 		}
 	</style>
+    <style type="text/css" media="print">
+        @media print body {
+            margin-top: 2cm;
+            margin-right: 2cm;
+            margin-bottom: 1.5cm;
+            margin-left: 2cm;
+        }
+        .noprint {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('content')
     <div class="container" style="margin-bottom: 100px">
-        <h2 class="text-center">Gráficas</h2>
+        <h2 class="text-center noprint">
+            Gráficas
+            <button class="btn btn-default btn-sm" id="printer" onclick="window.print()">Imprimir</button>
+        </h2>
         <div class="block">
             <div class="row">
                 <div class="col-12">
                     <h4>Solicitudes</h4>
-                    {{ Form::open(['url' => route('solicitud.json'), 'method' => 'get', 'id' => 'form-solicitud']) }}
+                    {{ Form::open(['url' => route('solicitud.json'), 'method' => 'get', 'class' => 'noprint', 'id' => 'form-solicitud']) }}
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -61,7 +75,7 @@
             <div class="row">
                 <div class="col-12">
                     <h4>Género sexual de las mascotas</h4>
-                    {{ Form::open(['url' => route('mascota.json'), 'method' => 'get', 'id' => 'form-mascota']) }}
+                    {{ Form::open(['url' => route('mascota.json'), 'method' => 'get', 'class' => 'noprint', 'id' => 'form-mascota']) }}
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -106,7 +120,7 @@
             <div class="row">
                 <div class="col-12">
                     <h4>Ocupaciones de las mascotas</h4>
-                    {{ Form::open(['url' => route('mascota.ocupacion.json'), 'method' => 'get', 'id' => 'form-mascota-ocupacion']) }}
+                    {{ Form::open(['url' => route('mascota.ocupacion.json'), 'method' => 'get', 'class' => 'noprint', 'id' => 'form-mascota-ocupacion']) }}
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -151,7 +165,7 @@
             <div class="row">
                 <div class="col-12">
                     <h4>Localizaciones anatómicas de los ataques</h4>
-                    {{ Form::open(['url' => route('ataques.localizaciones_anatomicas.json'), 'method' => 'get', 'id' => 'form-mascota-localizacion-anatomica']) }}
+                    {{ Form::open(['url' => route('ataques.localizaciones_anatomicas.json'), 'method' => 'get', 'class' => 'noprint', 'id' => 'form-mascota-localizacion-anatomica']) }}
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -196,7 +210,7 @@
             <div class="row">
                 <div class="col-12">
                     <h4>Tipos de ataques</h4>
-                    {{ Form::open(['url' => route('ataques.tipo_ataque.json'), 'method' => 'get', 'id' => 'form-tipo-ataque']) }}
+                    {{ Form::open(['url' => route('ataques.tipo_ataque.json'), 'method' => 'get', 'class' => 'noprint', 'id' => 'form-tipo-ataque']) }}
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -362,9 +376,18 @@
                             title: 'Cantidad'
                         }
                     }
-                    const chart = new google.visualization.ColumnChart(document.getElementById('graph_bar_solicitud'));
+                    const div_bar = document.getElementById('graph_bar_solicitud');
+                    const chart = new google.visualization.ColumnChart(div_bar);
+                    google.visualization.events.addListener(chart, 'ready', function () {
+                        div_bar.innerHTML = `<img src="${chart.getImageURI()}">`;
+                    });
 				    chart.draw(data, options);
-                    const pie = new google.visualization.PieChart(document.getElementById('graph_pie_solicitud'));
+
+                    const div_pie = document.getElementById('graph_pie_solicitud');
+                    const pie = new google.visualization.PieChart(div_pie);
+                    google.visualization.events.addListener(pie, 'ready', function () {
+                        div_pie.innerHTML = `<img src="${pie.getImageURI()}">`;
+                    });
 				    pie.draw(data, options);
                 })
 
@@ -408,9 +431,18 @@
                             title: 'Cantidad'
                         }
                     }
-                    const chart = new google.visualization.ColumnChart(document.getElementById('graph_bar_mascota'));
+                    const div_bar = document.getElementById('graph_bar_mascota');
+                    const chart = new google.visualization.ColumnChart(div_bar);
+                    google.visualization.events.addListener(chart, 'ready', function () {
+                        div_bar.innerHTML = `<img src="${chart.getImageURI()}">`;
+                    });
 				    chart.draw(data, options);
-                    const pie = new google.visualization.PieChart(document.getElementById('graph_pie_mascota'));
+                    
+                    const div_pie = document.getElementById('graph_pie_mascota');
+                    const pie = new google.visualization.PieChart(div_pie);
+                    google.visualization.events.addListener(pie, 'ready', function () {
+                        div_pie.innerHTML = `<img src="${pie.getImageURI()}">`;
+                    });
 				    pie.draw(data, options);
                 })
 
@@ -460,9 +492,18 @@
                             title: 'Cantidad'
                         }
                     }
-                    const chart = new google.visualization.ColumnChart(document.getElementById('graph_bar_mascota_ocupacion'));
+                    const div_bar = document.getElementById('graph_bar_mascota_ocupacion');
+                    const chart = new google.visualization.ColumnChart(div_bar);
+                    google.visualization.events.addListener(chart, 'ready', function () {
+                        div_bar.innerHTML = `<img src="${chart.getImageURI()}">`;
+                    });
 				    chart.draw(data, options);
-                    const pie = new google.visualization.PieChart(document.getElementById('graph_pie_mascota_ocupacion'));
+                    
+                    const div_pie = document.getElementById('graph_pie_mascota_ocupacion');
+                    const pie = new google.visualization.PieChart(div_pie);
+                    google.visualization.events.addListener(pie, 'ready', function () {
+                        div_pie.innerHTML = `<img src="${pie.getImageURI()}">`;
+                    });
 				    pie.draw(data, options);
                 })
 
@@ -512,9 +553,18 @@
                             title: 'Cantidad'
                         }
                     }
-                    const chart = new google.visualization.ColumnChart(document.getElementById('graph_bar_localizacion_anatomica'));
+                    const div_bar = document.getElementById('graph_bar_localizacion_anatomica');
+                    const chart = new google.visualization.ColumnChart(div_bar);
+                    google.visualization.events.addListener(chart, 'ready', function () {
+                        div_bar.innerHTML = `<img src="${chart.getImageURI()}">`;
+                    });
 				    chart.draw(data, options);
-                    const pie = new google.visualization.PieChart(document.getElementById('graph_pie_localizacion_anatomica'));
+                    
+                    const div_pie = document.getElementById('graph_pie_localizacion_anatomica');
+                    const pie = new google.visualization.PieChart(div_pie);
+                    google.visualization.events.addListener(pie, 'ready', function () {
+                        div_pie.innerHTML = `<img src="${pie.getImageURI()}">`;
+                    });
 				    pie.draw(data, options);
                 })
             })
@@ -563,9 +613,18 @@
                             title: 'Cantidad'
                         }
                     }
-                    const chart = new google.visualization.ColumnChart(document.getElementById('graph_bar_tipo_ataque'));
+                    const div_bar = document.getElementById('graph_bar_tipo_ataque');
+                    const chart = new google.visualization.ColumnChart(div_bar);
+                    google.visualization.events.addListener(chart, 'ready', function () {
+                        div_bar.innerHTML = `<img src="${chart.getImageURI()}">`;
+                    });
 				    chart.draw(data, options);
-                    const pie = new google.visualization.PieChart(document.getElementById('graph_pie_tipo_ataque'));
+                    
+                    const div_pie = document.getElementById('graph_pie_tipo_ataque');
+                    const pie = new google.visualization.PieChart(div_pie);
+                    google.visualization.events.addListener(pie, 'ready', function () {
+                        div_pie.innerHTML = `<img src="${pie.getImageURI()}">`;
+                    });
 				    pie.draw(data, options);
                 })
             })

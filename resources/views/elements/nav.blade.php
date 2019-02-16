@@ -1,4 +1,4 @@
-<header id="header">
+<header id="header" class="noprint">
 	<div class="container">
 		<div id="logo" class="pull-left">
 			<h1>

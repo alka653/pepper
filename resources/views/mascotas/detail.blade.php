@@ -56,41 +56,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-12" style="margin: 10px 0px;">
-				<h4 class="text-center">Certificados</h4>
-				<div class="block">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>Fecha remisión</th>
-								<th>Fecha vencimiento</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							@forelse($mascota->certificados as $certificado)
-								<tr>
-									<td>{{ $certificado->fecha_remitido }}</td>
-									<td>{{ $certificado->fecha_vencimiento }}</td>
-									<td>
-										<a href="{{ route('certificado.pdf', ['mascota' => $mascota->id, 'certificado' => $certificado->id]) }}" class="btn btn-sm btn-success" target="_blank">Descargar el certificado</a>
-									</td>
-								</tr>
-							@empty
-								<tr>
-									<td class="text-center" colspan="3">
-										@role('guest')
-											{{ $mascota->nombre }} aún no tiene certificado. Da <a href="{{ route('crear_solicitud') }}?mascota={{ $mascota->id }}">clic aquí</a> para hacer la solicitud.
-										@else
-											Sin certificados
-										@endrole
-									</td>
-								</tr>
-							@endforelse
-						</tbody>
-					</table>
-				</div>
-			</div>
 		</div>
 	</div>
 @endsection

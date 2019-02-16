@@ -10,6 +10,9 @@
 	</ul>
 </li>
 <li>
+	<a href="{{ route('listar_certificados') }}">Certificados</a>
+</li>
+<li>
 	<a href="{{ route('listar_ataques') }}">Ataques</a>
 </li>
 <li class="menu-has-children">

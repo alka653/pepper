@@ -65,6 +65,9 @@ Route::group(['middleware' => 'auth'], function(){
 			});
 		});
 	});
+	Route::prefix('/certificados')->group(function(){
+		Route::get('/', 'MascotasController@listCertificado')->name('listar_certificados');
+	});
 	Route::prefix('/solicitudes')->group(function(){
 		Route::get('/', 'SolicitudesController@list')->name('listar_solicitudes');
 		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestionar_solicitud'], function(){
@@ -166,6 +169,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario')->middleware('permission:gestionar_ataques');
 	});
 	Route::get('/log', 'LogController@list')->name('log')->middleware('permission:log');
+	Route::get('/permisos', 'PermisosController@list')->name('permisos')->middleware('permission:log');
 	Route::prefix('/ataques')->group(function(){
 		Route::get('/', 'AtaquesController@list')->name('listar_ataques');
 		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestionar_ataques'], function(){
