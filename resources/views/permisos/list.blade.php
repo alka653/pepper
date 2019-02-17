@@ -12,7 +12,7 @@
 	<div class="container" style="margin-bottom: 50px">
 		<h2>
             Lista de permisos
-            <a href="#" class="btn btn-sm btn-primary open-modal">Agregar acceso</a>
+            <a href="{{ route('crear_permiso') }}" class="btn btn-sm btn-primary open-modal">Agregar acceso</a>
 		</h2>
 		<div class="block">
 			<div id="chart_div"></div>
@@ -47,7 +47,7 @@
                                     </td>
                                     <td>{{ $permission->name }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-danger">Eliminar</a>
+                                        <a href="{{ route('eliminar_permiso', [$role->id, $permission->id]) }}" class="btn btn-danger open-modal">Eliminar</a>
                                     </td>
                                 </tr>
                             @endforeach

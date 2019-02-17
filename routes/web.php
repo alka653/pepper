@@ -169,7 +169,17 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('/obtener', 'UsersController@getOwnerByNumDoc')->name('datos_propietario')->middleware('permission:gestionar_ataques');
 	});
 	Route::get('/log', 'LogController@list')->name('log')->middleware('permission:log');
-	Route::get('/permisos', 'PermisosController@list')->name('permisos')->middleware('permission:log');
+	Route::group(['prefix' => 'permisos', 'middleware' => 'permission:log'], function(){
+		Route::get('/', 'PermisosController@list')->name('listar_permisos');
+		Route::prefix('/guardar')->group(function(){
+			Route::get('/', 'PermisosController@new')->name('crear_permiso');
+			Route::post('/', 'PermisosController@save')->name('crear_permiso.post');
+		});
+		Route::prefix('/{perfil}/{permiso}/eliminar')->group(function(){
+			Route::get('/', 'PermisosController@delete')->name('eliminar_permiso');
+			Route::delete('/', 'PermisosController@deleteData')->name('eliminar_permiso.delete');
+		});
+	});
 	Route::prefix('/ataques')->group(function(){
 		Route::get('/', 'AtaquesController@list')->name('listar_ataques');
 		Route::group(['prefix' => 'crear', 'middleware' => 'permission:gestionar_ataques'], function(){
