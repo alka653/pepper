@@ -23,7 +23,7 @@ class VerifyNotification extends Command{
 					$fecha_actual = date('Y-m-d');
 					$fecha_maxima_revision = date('Y-m-d', strtotime('+8 day', strtotime($revision->fecha)));
 					$fecha_minima_revision = date('Y-m-d', strtotime('+3 day', strtotime($revision->fecha)));
-					/*if($fecha_actual >= $fecha_maxima_revision){
+					if($fecha_actual >= $fecha_maxima_revision){
 						$solicitud->estado = 'C';
 						$solicitud->save();
 					}else if($fecha_actual >= $fecha_minima_revision){
@@ -38,7 +38,7 @@ class VerifyNotification extends Command{
 							$userData->receiver = $usuario->persona->nombre.' '.$usuario->persona->apellido;
 							Mail::to($usuario->email)->send(new RevisionEmail($userData));
 						}catch(\Exception $e){}
-					}*/
+					}
 				}
 			}
 		}

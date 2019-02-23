@@ -47,14 +47,14 @@
 				</div>
 			@endif
 			@unlessrole('guest')
-				@if($solicitud->revisionesInspector($solicitud->id, Auth::user()->id)->count() == 0 && $solicitud->estado == 'P')
+				@if($solicitud->revisionesInspector($solicitud->id, Auth::user()->id, ['P', 'N'])['response'] && $solicitud->estado == 'P')
 					{{ Form::model($revisionModel, ['route' => ['crear_revision.post', $solicitud->id], 'method' => 'post', 'autocomplete' => 'off']) }}
 						<div class="form-group">
 							{{ Form::label('observacion', 'Observación', ['class' => 'label-required']) }}
 							{{ Form::textarea('observacion', null, ['required', 'rows' => 2, 'class' => 'form-control']) }}
 						</div>
-						@php($revisiones = $solicitud->revisionesInspector($solicitud->id))
-						@php($revisionesFinale = $solicitud->revisionesInspector($solicitud->id, null, 'P'))
+						@php($revisiones = $solicitud->revisionesInspector($solicitud->id)['data'])
+						@php($revisionesFinale = $solicitud->revisionesInspector($solicitud->id, null, ['P'])['data'])
 						@if($revisiones->count() == 0 || ($revisionesFinale->count() > 0 && $revisionesFinale->first()->modo < 3) || (Auth::user()->perfil != 'J' && $revisionesFinale->count() == 0))
 							<div class="form-group">
 								{{ Form::label('remitir', '¿Remitir al siguiente inspector?', ['class' => 'label-required']) }}
@@ -80,7 +80,7 @@
 					{{ Form::close() }}
 				@else
 					<div class="alert alert-warning">
-						Ya has realizado la revisión
+						No se puede realizar una observación en la solicitud
 					</div>
 				@endif
 			@endunlessrole
@@ -107,7 +107,7 @@
 									<td>{{ $revision->getEstado($revision->estado) }}</td>
 									@unlessrole('guest')
 										<td>
-											@if($revision->inspector_id == Auth::user()->id)
+											@if($revision->inspector_id == Auth::user()->id && $solicitud->estado == 'P')
 												<a href="{{ route('editar_revision', ['solicitud' => $revision->solicitud_id, 'revision' => $revision->id]) }}" class="btn btn-warning open-modal">Editar</a>
 											@endif
 										</td>

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Revisiones;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Solicitudes extends Model{
@@ -35,13 +36,40 @@ class Solicitudes extends Model{
 		}
 		return $withHtml ? '<span class="badge badge-'.$estadoHtml.'">'.$estado.'</span>' : $estado;
 	}
-	public static function revisionesInspector($solicitud_id, $inspector_id = null, $estado = 'R'){
-		$revisiones = Revisiones::where(['solicitud_id' => $solicitud_id, 'estado' => $estado]);
-		return $inspector_id != null ? $revisiones->where(['inspector_id' => $inspector_id])->orderBy('id', 'DESC') : $revisiones->orderBy('id', 'DESC');
+	public static function revisionesInspector($solicitud_id, $inspector_id = null, $estado = ['R']){
+		$response = true;
+		$revisiones = Revisiones::where(['solicitud_id' => $solicitud_id])->whereIn('estado', $estado);
+		if($inspector_id != null){
+			$modo = '';
+			switch(Auth::user()->perfil){
+				case 'Z':
+					$modo = 1;
+					break;
+				case 'C':
+					$modo = 2;
+					break;
+				case 'J':
+					$modo = 3;
+					break;
+			}
+			if($revisiones->where('modo', $modo)->whereIn('estado', ['N', 'P'])->count() == 0){
+				$response = false;
+			}
+		}
+		return [
+			'data' => $revisiones->orderBy('id', 'DESC'),
+			'response' => $response
+		];
 	}
 	public static function saveData($data){
 		$data['fecha_solicitud'] = date('Y-m-d');
 		$data['estado'] = 'P';
-		return Solicitudes::create($data);
+		$solicitud = Solicitudes::create($data);
+		Revisiones::saveData([
+			'solicitud_id' => $solicitud->id,
+			'estado' => 'P',
+			'modo' => 1
+		]);
+		return $solicitud;
 	}
 }
