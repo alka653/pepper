@@ -12,7 +12,7 @@
 					<div class="col-12 form-group">
 						<div class="form-group">
 							{{ Form::label('observacion', 'Observación', ['class' => 'label-required']) }}
-							{{ Form::textarea('observacion', null, ['required', 'rows' => 2, 'class' => 'form-control']) }}
+							{{ Form::textarea('observacion', null, ['required', 'rows' => 2, 'class' => 'form-control only-char']) }}
 						</div>
 					</div>
 					<div class="col-12 form-group">

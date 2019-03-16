@@ -54,7 +54,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('ataque[fecha_ataque]', 'Fecha del ataque', ['class' => 'label-required']) }}
-									{{ Form::text('ataque[fecha_ataque]', null, ['required', 'class' => 'form-control fecha_ataque', 'data-error' => 'Ingresa la fecha del ataque']) }}
+									{{ Form::text('ataque[fecha_ataque]', null, ['required', 'class' => 'form-control fecha_ataque readonly', 'data-error' => 'Ingresa la fecha del ataque']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -92,14 +92,14 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('victima[nombre]', 'Nombres del paciente', ['class' => 'label-required']) }}
-									{{ Form::text('victima[nombre]', null, ['required', 'class' => 'form-control', 'data-error' => 'Ingresa el nombre del paciente']) }}
+									{{ Form::text('victima[nombre]', null, ['required', 'class' => 'form-control only-char', 'data-error' => 'Ingresa el nombre del paciente']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('victima[apellido]', 'Apellidos del paciente', ['class' => 'label-required']) }}
-									{{ Form::text('victima[apellido]', null, ['required', 'class' => 'form-control', 'data-error' => 'Ingresa el apellido del paciente']) }}
+									{{ Form::text('victima[apellido]', null, ['required', 'class' => 'form-control only-char', 'data-error' => 'Ingresa el apellido del paciente']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -259,7 +259,7 @@
 							<div class="col-md-6 hidden">
 								<div class="form-group">
 									{{ Form::label('ataque_victima[fecha_aplicacion_suero]', 'Fecha de aplicación del suero', ['class' => 'label-required']) }}
-									{{ Form::text('ataque_victima[fecha_aplicacion_suero]', null, ['class' => 'form-control fecha_aplicacion_suero', 'data-error' => 'Ingresa la fecha de aplicación del suero']) }}
+									{{ Form::text('ataque_victima[fecha_aplicacion_suero]', null, ['class' => 'form-control fecha_aplicacion_suero readonly', 'data-error' => 'Ingresa la fecha de aplicación del suero']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -285,7 +285,7 @@
 							<div class="col-md-6 hidden">
 								<div class="form-group">
 									{{ Form::label('ataque_victima[fecha_ultima_dosis]', 'Fecha de última dosis', ['class' => 'label-required']) }}
-									{{ Form::text('ataque_victima[fecha_ultima_dosis]', null, ['class' => 'form-control fecha_ultima_dosis', 'data-error' => 'Ingresa la fecha de la última dosis']) }}
+									{{ Form::text('ataque_victima[fecha_ultima_dosis]', null, ['class' => 'form-control fecha_ultima_dosis readonly', 'data-error' => 'Ingresa la fecha de la última dosis']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -341,7 +341,7 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									{{ Form::label('ataque_victima[razon_social_unidad]', 'Razón social de la unidad primaria generadora del dato de donde fue atendido el paciente', ['class' => 'label-required']) }}
-									{{ Form::text('ataque_victima[razon_social_unidad]', null, ['class' => 'form-control razon_social_unidad', 'data-error' => 'Ingresa la razón social', 'required' => true]) }}
+									{{ Form::text('ataque_victima[razon_social_unidad]', null, ['class' => 'form-control razon_social_unidad only-char', 'data-error' => 'Ingresa la razón social', 'required' => true]) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -354,13 +354,13 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								{{ Form::label('propietario[nombre]', 'Nombre del propietario') }}
-								{{ Form::text('propietario[nombre]', null, ['class' => 'form-control dato-propietario']) }}
+								{{ Form::text('propietario[nombre]', null, ['class' => 'form-control dato-propietario only-char']) }}
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								{{ Form::label('propietario[apellido]', 'Apellido del propietario') }}
-								{{ Form::text('propietario[apellido]', null, ['class' => 'form-control dato-propietario']) }}
+								{{ Form::text('propietario[apellido]', null, ['class' => 'form-control dato-propietario only-char']) }}
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -430,7 +430,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('ataque_animal[nombre_especie]', 'Nombre de la especie agresora', ['class' => 'label-required']) }}
-									{{ Form::text('ataque_animal[nombre_especie]', null, ['required', 'class' => 'form-control nombre_especie', 'data-error' => 'Ingresa el nombre de la especie']) }}
+									{{ Form::text('ataque_animal[nombre_especie]', null, ['required', 'class' => 'form-control nombre_especie only-char', 'data-error' => 'Ingresa el nombre de la especie']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -467,7 +467,7 @@
 							<div class="col-md-6 hidden">
 								<div class="form-group">
 									{{ Form::label('ataque_animal[fecha_vacunacion]', 'Fecha de vacunación') }}
-									{{ Form::text('ataque_animal[fecha_vacunacion]', null, ['class' => 'form-control fecha_vacunacion']) }}
+									{{ Form::text('ataque_animal[fecha_vacunacion]', null, ['class' => 'form-control fecha_vacunacion readonly']) }}
 								</div>
 							</div>
 						</div>

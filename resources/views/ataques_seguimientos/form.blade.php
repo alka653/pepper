@@ -10,7 +10,7 @@
 			<div class="modal-body">
 				<div class="form-group">
 					{{ Form::label('fecha', 'Fecha del seguimiento', ['class' => 'label-required']) }}
-					{{ Form::text('fecha', null, ['required', 'class' => 'form-control']) }}
+					{{ Form::text('fecha', null, ['required', 'class' => 'form-control readonly']) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('descripcion', 'Descripción', ['class' => 'label-required']) }}

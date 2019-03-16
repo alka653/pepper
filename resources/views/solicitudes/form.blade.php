@@ -40,7 +40,7 @@
 						@endif
 						<div class="custom-file">
 							{{ Form::file('documento[]', ['class' => 'custom-file-input', 'onchange' => 'readURL(this)', 'accept' => 'image/*,application/pdf,application/msword', 'data-name' => 'carnet_vacunacion'] + (!isset($solicitud->documentos[0]) ? ['required'] : [])) }}
-							{{ Form::label('documento[]', 'Carnet de vacunación', ['class' => 'custom-file-label']) }}
+							{{ Form::label('documento[]', 'Carnet de vacunación (Imágenes, archivos de texto y PDF, máximo 10mb)', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
 				</div>
@@ -52,8 +52,8 @@
 							</div>
 						@endif
 						<div class="custom-file">
-							{{ Form::file('documento[]', ['class' => 'custom-file-input', 'onchange' => 'readURL(this)', 'data-name' => 'poliza'] + (!isset($solicitud->documentos[1]) ? ['required'] : [])) }}
-							{{ Form::label('documento[]', 'Póliza', ['class' => 'custom-file-label']) }}
+							{{ Form::file('documento[]', ['class' => 'custom-file-input', 'onchange' => 'readURL(this)', 'accept' => 'image/*,application/pdf,application/msword', 'data-name' => 'poliza'] + (!isset($solicitud->documentos[1]) ? ['required'] : [])) }}
+							{{ Form::label('documento[]', 'Póliza (Imágenes, archivos de texto y PDF, máximo 10mb)', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
 				</div>
@@ -65,8 +65,8 @@
 							</div>
 						@endif
 						<div class="custom-file">
-							{{ Form::file('documento[]', ['class' => 'custom-file-input', 'onchange' => 'readURL(this)', 'data-name' => 'declaracion']) }}
-							{{ Form::label('documento[]', 'Declaración', ['class' => 'custom-file-label']) }}
+							{{ Form::file('documento[]', ['class' => 'custom-file-input', 'onchange' => 'readURL(this)', 'accept' => 'image/*,application/pdf,application/msword', 'data-name' => 'declaracion']) }}
+							{{ Form::label('documento[]', 'Declaración (Imágenes, archivos de texto y PDF, máximo 10mb)', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
 				</div>
@@ -88,7 +88,7 @@
 		}
 		function readURL(input){
 			if(input.files && input.files[0]){
-				if(input.files[0].size <= 500000){
+				if(input.files[0].size <= 1000000){
 					$parent = $(`[data-name="${input.getAttribute('data-name')}"]`).parent().parent()
 					$parent.find('a').remove()
 					$parent.find('p').remove()
@@ -96,7 +96,7 @@
 						<p class="text-center no-margin">${input.files[0].name}</p>
 					`)
 				}else{
-					alert('El archivo no puede superar los 5Mb')
+					alert('El archivo no puede superar los 10Mb')
 				}
 			}
 		}

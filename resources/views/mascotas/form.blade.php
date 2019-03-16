@@ -25,12 +25,12 @@
 							@endif
 							<div class="col-md-6 form-group">
 								{{ Form::label('nombre', 'Nombre de la mascota', ['class' => 'label-required']) }}
-								{{ Form::text('nombre', null, ['required', 'class' => 'form-control']) }}
+								{{ Form::text('nombre', null, ['required', 'class' => 'form-control only-char']) }}
 								{!! $errors->first('nombre', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group">
 								{{ Form::label('fecha_nacimiento', 'Fecha de nacimiento', ['class' => 'label-required']) }}
-								{{ Form::text('fecha_nacimiento', null, ['required', 'class' => 'form-control date']) }}
+								{{ Form::text('fecha_nacimiento', null, ['required', 'class' => 'form-control date readonly']) }}
 								{!! $errors->first('fecha_nacimiento', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group">
@@ -56,7 +56,7 @@
 							</div>
 							<div class="col-md-6 form-grou hidden" id="color_otro_div">
 								{{ Form::label('color_otro', 'Especifique el color', ['class' => 'label-required']) }}
-								{{ Form::text('color_otro', null, ['class' => 'form-control']) }}
+								{{ Form::text('color_otro', null, ['class' => 'form-control only-char']) }}
 								{!! $errors->first('color_otro', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group">
@@ -70,7 +70,7 @@
 							</div>
 							<div class="col-md-6 form-group hidden" id="fecha_vacunacion_div">
 								{{ Form::label('fecha_vacunacion', 'Fecha de vacunación', ['class' => 'label-required']) }}
-								{{ Form::text('fecha_vacunacion', null, ['class' => 'form-control date']) }}
+								{{ Form::text('fecha_vacunacion', null, ['class' => 'form-control date readonly']) }}
 								{!! $errors->first('fecha_vacunacion', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-md-6 form-group">
@@ -84,7 +84,7 @@
 							</div>
 							<div class="col-md-6 form-group hidden" id="ocupacion_otro_div">
 								{{ Form::label('ocupacion_otro', 'Especifique la ocupación', ['class' => 'label-required']) }}
-								{{ Form::text('ocupacion_otro', null, ['class' => 'form-control']) }}
+								{{ Form::text('ocupacion_otro', null, ['class' => 'form-control only-char']) }}
 								{!! $errors->first('ocupacion_otro', '<p class="help-block">:message</p>') !!}
 							</div>
 							<div class="col-12 form-group">
@@ -104,7 +104,7 @@
 						@endif
 						<div class="custom-file">
 							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '1'] + (!$mascota->toArray() || !isset($mascota->fotos[0]) ? ['required'] : [])) }}
-							{{ Form::label('foto[]', 'Foto frontal', ['class' => 'custom-file-label']) }}
+							{{ Form::label('foto[]', 'Foto frontal (Solo imágen, máximo 10mb)', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
 				</div>
@@ -117,7 +117,7 @@
 						@endif
 						<div class="custom-file">
 							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '2']) }}
-							{{ Form::label('foto[]', 'Foto de lado', ['class' => 'custom-file-label']) }}
+							{{ Form::label('foto[]', 'Foto de lado (Solo imágen, máximo 10mb)', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
 				</div>
@@ -130,7 +130,7 @@
 						@endif
 						<div class="custom-file">
 							{{ Form::file('foto[]', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => '3']) }}
-							{{ Form::label('foto[]', 'Foto desde arriba', ['class' => 'custom-file-label']) }}
+							{{ Form::label('foto[]', 'Foto desde arriba (Solo imágen, máximo 10mb)', ['class' => 'custom-file-label']) }}
 						</div>
 					</div>
 				</div>
@@ -186,14 +186,14 @@
 		})
 		function readURL(input){
 			if(input.files && input.files[0]){
-				if(input.files[0].size <= 500000){
+				if(input.files[0].size <= 1000000){
 					var reader = new FileReader()
 					reader.onload = function(e){
 						$(`[data-id="${input.getAttribute('data-id')}"]`).parent().parent().find('img').attr('src', e.target.result).removeClass('hidden')
 					}
 					reader.readAsDataURL(input.files[0])
 				}else{
-					alert('La foto no puede superar los 5Mb')
+					alert('La foto no puede superar los 10Mb')
 				}
 			}
 		}

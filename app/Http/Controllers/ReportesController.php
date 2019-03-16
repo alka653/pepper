@@ -31,14 +31,14 @@ class ReportesController extends Controller{
 					'field' => 'fecha_inicial',
 					'type' => 'text',
 					'required' => false,
-					'extra_class' => 'date'
+					'extra_class' => 'date readonly'
 				],
 				[
 					'name' => 'Fecha final',
 					'field' => 'fecha_final',
 					'type' => 'text',
 					'required' => false,
-					'extra_class' => 'date'
+					'extra_class' => 'date readonly'
 				],
 				[
 					'name' => 'Estado de solicitud',
@@ -54,7 +54,7 @@ class ReportesController extends Controller{
 					]
 				],
 				[
-					'name' => 'Nombre o númerdo de identificación del propietario',
+					'name' => 'Nombre o número de identificación del propietario',
 					'field' => 'propietario',
 					'type' => 'text',
 					'required' => false,
@@ -83,7 +83,7 @@ class ReportesController extends Controller{
 					'extra_class' => '',
 					'options' => [
 						'' => 'Todos',
-						'P' => 'Propietario',
+						'U' => 'Propietario',
 						'J' => 'Jefe',
 						'C' => 'Coordinador',
 						'Z' => 'Zootecnico'
@@ -102,7 +102,7 @@ class ReportesController extends Controller{
 					'field' => 'propietario',
 					'type' => 'text',
 					'required' => false,
-					'extra_class' => ''
+					'extra_class' => 'only-char'
 				],
 				[
 					'name' => 'Ocupación',
@@ -117,7 +117,7 @@ class ReportesController extends Controller{
 					'field' => 'fecha_registro',
 					'type' => 'text',
 					'required' => false,
-					'extra_class' => 'date'
+					'extra_class' => 'date readonly'
 				],
 				[
 					'name' => 'Estado',
@@ -152,7 +152,7 @@ class ReportesController extends Controller{
 					'field' => 'fecha_registro',
 					'type' => 'text',
 					'required' => false,
-					'extra_class' => ''
+					'extra_class' => 'readonly'
 				],
 				[
 					'name' => 'Localización anatómica',
@@ -252,10 +252,10 @@ class ReportesController extends Controller{
 			$filename = 'mascotas-'.date('Y-m-d').'.pdf';
 			$mascotas = Mascotas::with('propietario', 'raza');
 			if($request->ocupacion != ''){
-				$mascotas = $mascotas->whereRaw('LOWER(ocupacion) LIKE ?', ['%'.strtolower($request->tipo_usuario).'%']);
+				$mascotas = $mascotas->whereRaw('LOWER(ocupacion) LIKE ?', ['%'.strtolower($request->ocupacion).'%']);
 			}
 			if($request->fecha_registro != null){
-				$mascotas = $mascotas->where('fecha_ingreso', $request->fecha_registro);
+				$mascotas = $mascotas->where('fecha_ingreso', date('Y-m-d', strtotime($request->fecha_registro)));
 			}
 			if($request->estado != null){
 				$mascotas = $mascotas->where('estado', $request->estado);
@@ -296,7 +296,7 @@ class ReportesController extends Controller{
 			$filename = 'ataques-'.date('Y-m-d').'.pdf';
 			$ataques = Ataques::with('victima', 'mascota', 'tipoAgresion');
 			if($request->fecha_registro != ''){
-				$ataques = $ataques->where('fecha_ataque', $request->fecha_registro);
+				$ataques = $ataques->where('fecha_ataque', date('Y-m-d', strtotime($request->fecha_registro)));
 			}
 			if($request->tipo_ataque_id != ''){
 				$ataques = $ataques->where('tipo_ataque_id', $request->tipo_ataque_id);

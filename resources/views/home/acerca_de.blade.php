@@ -14,7 +14,7 @@
 				Las imágenes utilizadas para la realización de esta página fueron tomadas de Freepik el cual es un motor de búsqueda de imágenes libres que ayuda a los diseñadores gráficos y de web a localizar fotos de alta calidad, imágenes vectoriales, ilustraciones y archivos PSD. Aclarando que no todas las imágenes fueron tomadas de esta sitio, debido a que son autoría propia.
 			</p>
 			<h5>
-				<b>Sobre el uso de imágenes</b>
+				<b>Sobre el uso de del software</b>
 			</h5>
 			<p>
 				Para el funcionamiento de esta aplicación se requiere un navegador web google chrome y conexión a internet.

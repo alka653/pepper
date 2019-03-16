@@ -1,4 +1,7 @@
 jQuery(document).ready(function ($) {
+	$('.readonly').map(function(){
+		return $(this).attr('readonly', true)
+	})
 	$(window).scroll(function(){
 		if ($(this).scrollTop() > 100) {
 			$('.back-to-top').fadeIn('slow')
@@ -139,6 +142,12 @@ $(document).on('keypress', '.only-number', function(e){
 	if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 		return false
 	}
+})
+$(document).on('focusout', '.only-char', function(e){
+	$(this).val($(this).val().replace(/[0-9]/g, ''))
+})
+$(document).on('keypress', '.only-char', function(e){
+	$(this).val($(this).val().replace(/[0-9]/g, ''))
 })
 $(document).on('keypress', '.only-number-float', function(event){
 	if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {

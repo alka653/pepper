@@ -43,7 +43,7 @@
 		<div class="block">
 			@if($solicitud->estado == 'F' && Auth::user()->perfil == 'U')
 				<div class="alert alert-success">
-					La solicitud ha sido aprobada. Puede descargarlo <a href="#">aquí</a>
+					La solicitud ha sido aprobada. Puede descargarlo <a href="{{ route('listar_certificados') }}">aquí</a>
 				</div>
 			@endif
 			@unlessrole('guest')

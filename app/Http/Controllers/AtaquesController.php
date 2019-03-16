@@ -123,7 +123,7 @@ class AtaquesController extends Controller{
 		]);
 		$request->session()->flash('message.level', 'success');
 		$request->session()->flash('message.content', 'Se ha registrado el ataque occn éxito.');
-		return redirect()->route('seguimiento_ataque', ['ataque' => $ataque->id]);
+		return redirect()->route('detalle_ataque', ['ataque' => $ataque->id]);
 	}
 	public function detail(Ataques $ataque){
 		return view(self::DIR_TEMPLATE.'detail', [

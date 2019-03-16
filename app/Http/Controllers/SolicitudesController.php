@@ -58,7 +58,7 @@ class SolicitudesController extends Controller{
 				return redirect()->route('detalle_solicitud', ['solicitud' => $solicitud->id]);
 			}
 		}
-		$mascota_solicitud = Solicitudes::where('estado', 'P')->get()->map(function($solicitud){
+		$mascota_solicitud = Solicitudes::where('estado', 'P')->orWhere('estado', 'F')->get()->map(function($solicitud){
 			return $solicitud->only(['mascota_id']);
 		})->toArray();
 		$mascotas = Mascotas::where('propietario_id', Auth::user()->persona_id)->whereNotIn('id', $mascota_solicitud)->get();

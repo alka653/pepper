@@ -83,7 +83,7 @@
 					['Estado de casos', 'Cantidad', { role: 'style' }],
 					['Radicado', {{ $solicitudCount['pendientes'] }}, '#3498db'],
 					['Aprobado', {{ $solicitudCount['finalizados'] }}, '#2ecc71'],
-					['Rechazado', {{ $solicitudCount['cancelados'] }}, '#e74c3c']
+					['Rechazado o vencido', {{ $solicitudCount['cancelados'] }}, '#e74c3c']
 				]);
 				const options = {
 					title: 'Total de solicitudes',

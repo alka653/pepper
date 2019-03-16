@@ -10,7 +10,7 @@
 			<div class="modal-body">
 				<div class="form-group">
 					{{ Form::label('nombre', 'Nombre de la tipo de ataque', ['class' => 'label-required']) }}
-					{{ Form::text('nombre', null, ['required', 'class' => 'form-control']) }}
+					{{ Form::text('nombre', null, ['required', 'class' => 'form-control only-char']) }}
 					{!! $errors->first('nombre', '<p class="help-block">:message</p>') !!}
 				</div>
 			</div>

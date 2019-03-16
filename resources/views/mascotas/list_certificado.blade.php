@@ -28,7 +28,7 @@
                             <td>{{ $certificado->fecha_remitido }}</td>
                             <td>{{ $certificado->fecha_vencimiento }}</td>
                             <td>
-                                <a href="{{ route('certificado.pdf', ['mascota' => $mascota->id, 'certificado' => $certificado->id]) }}" class="btn btn-sm btn-success" target="_blank">Descargar el certificado</a>
+                                <a href="{{ route('certificado.pdf', ['mascota' => $certificado->mascota->id, 'certificado' => $certificado->id]) }}" class="btn btn-sm btn-success" target="_blank">Descargar el certificado</a>
                             </td>
                         </tr>
                     @empty

@@ -16,12 +16,12 @@
 				<div class="row">
 					<div class="col-md-6 form-group">
 						{{ Form::label('nombre', 'Nombre', ['class' => 'label-required']) }}
-						{{ Form::text('nombre', null, ['required', 'class' => 'form-control']) }}
+						{{ Form::text('nombre', null, ['required', 'class' => 'form-control only-char']) }}
 						{!! $errors->first('nombre', '<p class="help-block">:message</p>') !!}
 					</div>
 					<div class="col-md-6 form-group">
 						{{ Form::label('apellido', 'Apellido', ['class' => 'label-required']) }}
-						{{ Form::text('apellido', null, ['required', 'class' => 'form-control']) }}
+						{{ Form::text('apellido', null, ['required', 'class' => 'form-control only-char']) }}
 						{!! $errors->first('apellido', '<p class="help-block">:message</p>') !!}
 					</div>
 					<div class="col-md-6 form-group">
@@ -91,7 +91,7 @@
 					</div>
 					<div class="col-md-6 form-group hidden" id="ocupacion_otro_div">
 						{{ Form::label('ocupacion_otro', 'Digite la ocupación') }}
-						{{ Form::text('ocupacion_otro', null, ['class' => 'form-control']) }}
+						{{ Form::text('ocupacion_otro', null, ['class' => 'form-control only-char']) }}
 						{!! $errors->first('ocupacion_otro', '<p class="help-block">:message</p>') !!}
 					</div>
 					@can('modulo_usuarios')
@@ -115,7 +115,7 @@
 						@endif
 						<div class="custom-file">
 							{{ Form::file('foto', ['class' => 'custom-file-input', 'accept' => 'image/*', 'onchange' => 'readURL(this)', 'data-id' => 1]) }}
-							{{ Form::label('foto', 'Foto', ['class' => 'custom-file-label']) }}
+							{{ Form::label('foto', 'Foto (Formato img, máximo 10mb)', ['class' => 'custom-file-label']) }}
 							{!! $errors->first('foto', '<p class="help-block">:message</p>') !!}
 						</div>
 					</div>
@@ -127,7 +127,7 @@
 						</div>
 						<div class="col-md-6 form-group">
 							{{ Form::label('username', 'Nombre de usuario', ['class' => 'label-required']) }}
-							{{ Form::text('username', null, ['required', 'class' => 'form-control']) }}
+							{{ Form::text('username', null, ['required', 'class' => 'form-control only-char']) }}
 							{!! $errors->first('username', '<p class="help-block">:message</p>') !!}
 						</div>
 						<div class="col-md-6 form-group">
@@ -189,14 +189,14 @@
 		})
 		function readURL(input){
 			if(input.files && input.files[0]){
-				if(input.files[0].size <= 500000){
+				if(input.files[0].size <= 1000000){
 					var reader = new FileReader()
 					reader.onload = function(e){
 						$(`[data-id="${input.getAttribute('data-id')}"]`).parent().parent().find('img').attr('src', e.target.result).removeClass('hide')
 					}
 					reader.readAsDataURL(input.files[0])
 				}else{
-					alert('La foto no puede superar los 5Mb')
+					alert('La foto no puede superar los 10Mb')
 				}
 			}
 		}
