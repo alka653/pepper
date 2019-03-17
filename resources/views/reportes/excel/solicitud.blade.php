@@ -17,7 +17,7 @@
                 <td>{{ $solicitud->mascota->nombre }}</td>
                 <td>{{ $solicitud->mascota->raza->nombre }}</td>
                 <td>{{ $solicitud->mascota->propietario->nombre.' '.$solicitud->mascota->propietario->apellido }}</td>
-                <td>{{ $solicitud->getEstado($solicitud->estado, false) }}</td>
+                <td>{{ $solicitud->getEstado($solicitud->id, false) }}</td>
             </tr>
         @endforeach
     </tbody>

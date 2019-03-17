@@ -12,7 +12,7 @@
 	<div class="container" style="margin-bottom: 100px;">	
 		<h2 class="no-margin">
 			Solicitud de certificado para {{ $solicitud->mascota->nombre }}
-			<small>{!! $solicitud->getEstado($solicitud->estado) !!}</small>
+			<small>{!! $solicitud->getEstado($solicitud->id) !!}</small>
 			@if(Auth::user()->perfil == 'U' && $solicitud->estado == 'P')
 				<small>
 					<a href="{{ route('editar_solicitud', ['solicitud' => $solicitud->id]) }}" class="btn btn-warning btn-sm">Editar</a>

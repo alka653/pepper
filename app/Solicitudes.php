@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Revisiones;
+use App\Solicitudes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,21 +20,24 @@ class Solicitudes extends Model{
 	public function revisiones(){
 		return $this->hasMany('App\Revisiones', 'solicitud_id')->orderBy('fecha', 'DESC')->orderBy('id', 'DESC');
 	}
-	public function getEstado($estado, $withHtml = true){
+	public function getEstado($solicitud_id, $withHtml = true){
 		$estadoHtml = '';
-		switch($estado){
-			case 'P':
-				$estadoHtml = 'info';
-				$estado = 'Radicado';
-				break;
-			case 'F':
-				$estadoHtml = 'success';
-				$estado = 'Aprobado';
-				break;
-			case 'C':
-				$estadoHtml = 'danger';
-				$estado = 'Rechazado';
-				break;
+		$solicitud = Solicitudes::where('id', $solicitud_id)->first();
+		if($solicitud->estado == 'F'){
+			$estadoHtml = 'success';
+			$estado = 'Aprobado';
+		}elseif($solicitud->estado == 'C'){
+			$estadoHtml = 'danger';
+			$estado = 'Vencido';
+		}elseif(Revisiones::where('solicitud_id', $solicitud_id)->count() == 0){
+			$estadoHtml = 'info';
+			$estado = 'Radicado';
+		}elseif(Revisiones::where(['solicitud_id' => $solicitud_id, 'estado' => 'N'])->orderBy('modo', 'DESC')->first() != null){
+			$estadoHtml = 'warning';
+			$estado = 'Rechazado';
+		}else{
+			$estadoHtml = 'info';
+			$estado = 'Proceso';
 		}
 		return $withHtml ? '<span class="badge badge-'.$estadoHtml.'">'.$estado.'</span>' : $estado;
 	}

@@ -14,16 +14,22 @@
 	<a href="#" class="sf-with-ul">Solicitudes</a>
 	<ul>
 		<li>
-			<a href="{{ route('listar_solicitudes') }}?estado=P">Radicados</a>
+			<a href="{{ route('listar_solicitudes') }}?estado=R">Radicados</a>
 		</li>
 		<li>
 			<a href="{{ route('listar_solicitudes') }}?estado=F">Aprobados</a>
 		</li>
 		<li>
-			<a href="{{ route('listar_solicitudes') }}?estado=C">Cancelados</a>
+			<a href="{{ route('listar_solicitudes') }}?estado=DE">Rechazado</a>
+		</li>
+		<li>
+			<a href="{{ route('listar_solicitudes') }}?estado=C">Vencidos</a>
 		</li>
 		<li>
 			<a href="{{ route('listar_solicitudes') }}?estado=PE">Pendientes</a>
+		</li>
+		<li>
+			<a href="{{ route('listar_solicitudes') }}?estado=PR">Proceso</a>
 		</li>
 		<li>
 			<a href="{{ route('listar_solicitudes') }}?estado=RE">Revisados</a>

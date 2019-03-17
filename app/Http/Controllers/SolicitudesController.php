@@ -8,6 +8,7 @@ use App\Documentos;
 use App\Revisiones;
 use App\Solicitudes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class SolicitudesController extends Controller{
@@ -21,6 +22,17 @@ class SolicitudesController extends Controller{
 		}
 		if($estado != null && $estado != ''){
 			switch($estado){
+				case 'R':
+					$solicitudes_inspeccionadas = Revisiones::pluck('solicitud_id')->toArray();
+					$solicitudes = $solicitudes::whereNotIn('id', $solicitudes_inspeccionadas);	
+					break;
+				case 'DE':
+					$solicitudes_devueltas = [];
+					foreach(DB::select(DB::raw('SELECT *, MAX(modo) max FROM revisiones WHERE estado = "N" GROUP BY solicitud_id')) as $data){
+						array_push($solicitudes_devueltas, $data->solicitud_id);
+					}
+					$solicitudes = $solicitudes::whereIn('id', $solicitudes_devueltas);	
+					break;
 				case 'PE':
 					$solicitudes_pendientes = Revisiones::where(['inspector_id' => Auth::user()->id, 'estado' => 'R'])->groupBy('solicitud_id')->pluck('solicitud_id')->toArray();
 					$solicitudes = $solicitudes::whereNotIn('id', $solicitudes_pendientes);
@@ -28,6 +40,13 @@ class SolicitudesController extends Controller{
 				case 'RE':
 					$solicitudes_revisadas = Revisiones::where(['inspector_id' => Auth::user()->id, 'estado' => 'R'])->groupBy('solicitud_id')->pluck('solicitud_id')->toArray();
 					$solicitudes = $solicitudes::whereIn('id', $solicitudes_revisadas);
+					break;
+				case 'PR':
+					$solicitudes_proceso = [];
+					foreach(DB::select(DB::raw('SELECT *, MAX(modo) max FROM revisiones WHERE inspector_id IS NULL GROUP BY solicitud_id')) as $data){
+						array_push($solicitudes_proceso, $data->solicitud_id);
+					}
+					$solicitudes = $solicitudes::whereIn('id', $solicitudes_proceso);
 					break;
 				default:
 					$solicitudes = $solicitudes->where('estado', $estado);
