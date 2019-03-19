@@ -37,6 +37,7 @@
 								<td>{{ $ataque->agresorRaza($ataque->mascota->raza_id)->nombre }}</td>
 								<td>
 									<a href="{{ route('detalle_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-success">Ver detalle</a>
+									<a href="{{ route('editar_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-warning">Editar</a>
 									@can('seguimiento_ataque')
 										<a href="{{ route('seguimiento_ataque', ['ataque' => $ataque->id]) }}" class="btn btn-sm btn-info">Seguimiento</a>
 									@endcan

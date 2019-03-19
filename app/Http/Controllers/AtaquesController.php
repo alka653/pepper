@@ -40,6 +40,23 @@ class AtaquesController extends Controller{
 			'method' => 'post'
 		]);
 	}
+	public function edit(Ataques $ataque){
+		return view(self::DIR_TEMPLATE.'form', [
+			'ataque' => [
+				'ataque' => $ataque,
+				'ataque_victima' => $ataque->ataqueVictima,
+				'ataque_animal' => $ataque->ataqueAnimal,
+				'victima' => Personas::with('municipio_expedicion', 'municipio_residencia')->where('id', $ataque->victima_id)->first()
+			],
+			'razaLista' => Razas::lista(),
+			'tipoAgresionLista' => TiposAtaques::lista(),
+			'departamentoLista' => Departamentos::lista(),
+			'localizacionAnatomicaLista' => LocalizacionesAnatomicas::get(),
+			'title' => 'Agresiones por animales potencialmente transmisores de rabia. Código INS:300',
+			'route' => ['editar_ataque.post', $ataque->id],
+			'method' => 'post'
+		]);
+	}
 	public function saveOrUpdateData(Request $request){
 		$mascota = null;
 		$victima = Personas::where('numero_documento', $request->victima['numero_documento'])->first();
@@ -74,7 +91,7 @@ class AtaquesController extends Controller{
 			$duenio_mascota = $duenio_mascota->id;
 		}
 		$mascota = $request->ataque_animal['mascota_id'];
-		if($mascota == null){
+		if($mascota == null || strpos($mascota, 'Seleccione') !== false){
 			$mascota = Mascotas::saveData([
 				'nombre' => $request->ataque_animal['nombre_especie'],
 				'propietario_id' => $duenio_mascota,
@@ -89,10 +106,10 @@ class AtaquesController extends Controller{
 			'mascota_id' => $mascota,
 			'fecha_ataque' => $request->ataque['fecha_ataque'],
 			'descripcion' => $request->ataque['descripcion'],
-			'tipo_ataque_id' => $request->ataque['tipo_agresion_id'],
-			'ataque_mordedura' => $request->ataque['tipo_agresion_id'] == '1' ? 'C' : 'D',
+			'tipo_ataque_id' => $request->ataque['tipo_ataque_id'],
+			'ataque_mordedura' => $request->ataque['tipo_ataque_id'] == '1' ? 'C' : 'D',
 			'municipio_ataque_id' => $request->ataque['municipio_ataque_id'],
-			'agresion_provocada' => $request->ataque['agresion_provocada'] == 'S' ? true : false,
+			'agresion_provocada' => $request->ataque['agresion_provocada'] == '1' ? true : false,
 			'tipo_lesion' => $request->ataque['tipo_lesion'],
 			'profundidad' => $request->ataque['profundidad']
 		]);
@@ -115,10 +132,10 @@ class AtaquesController extends Controller{
 			'vacuna_antirrabica' => $request->ataque_victima['vacuna_antirrabica'],
 			'numero_dosis' => $request->ataque_victima['numero_dosis'],
 			'fecha_ultima_dosis' => $request->ataque_victima['fecha_ultima_dosis'],
-			'lavado_herida' => $request->ataque_victima['lavado_herida'] == 'S' ? true : false,
-			'sutura_herida' => $request->ataque_victima['sutura_herida'] == 'S' ? true : false,
-			'orden_suero' => $request->ataque_victima['orden_suero'] == 'S' ? true : false,
-			'orden_aplicacion_vacuna' => $request->ataque_victima['orden_aplicacion_vacuna'] == 'S' ? true : false,
+			'lavado_herida' => $request->ataque_victima['lavado_herida'] == '1' ? true : false,
+			'sutura_herida' => $request->ataque_victima['sutura_herida'] == '1' ? true : false,
+			'orden_suero' => $request->ataque_victima['orden_suero'] == '1' ? true : false,
+			'orden_aplicacion_vacuna' => $request->ataque_victima['orden_aplicacion_vacuna'] == '1' ? true : false,
 			'razon_social_unidad' => $request->ataque_victima['razon_social_unidad']
 		]);
 		$request->session()->flash('message.level', 'success');

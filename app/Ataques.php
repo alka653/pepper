@@ -14,6 +14,9 @@ class Ataques extends Model{
 	public function mascota(){
 		return $this->belongsTo('App\Mascotas', 'mascota_id');
 	}
+	public function municipio_ataque(){
+		return $this->belongsTo('App\Municipios', 'municipio_ataque_id');
+	}
 	public function tipoAgresion(){
 		return $this->belongsTo('App\TiposAtaques', 'tipo_ataque_id');
 	}
@@ -67,6 +70,14 @@ class Ataques extends Model{
 	}
 	public static function agresorRaza($raza_id){
 		return Razas::where('id', $raza_id)->first();
+	}
+	public static function inArrayFk($localizacion_anatomica, $localizacion_anatomica_list){
+		foreach($localizacion_anatomica_list as $item){
+			if($item['id'] == $localizacion_anatomica['id']){
+				return true;
+			}
+		}
+		return false;
 	}
 	public static function saveData($data){
 		$data['fecha_ataque'] = date('Y-m-d', strtotime($data['fecha_ataque']));

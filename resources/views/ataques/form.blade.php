@@ -61,14 +61,14 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('ataque[departamento_ataque_id]', 'Departamento del ataque', ['class' => 'label-required']) }}
-									{{ Form::select('ataque[departamento_ataque_id]', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change', 'data-error' => 'Selecciona un elemento de la lista']) }}
+									{{ Form::select('ataque[departamento_ataque_id]', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change', 'data-error' => 'Selecciona un elemento de la lista'] + ($ataque['ataque']->toArray() ? ['data-id' => $ataque['ataque']->municipio_ataque->departamento_id] : [])) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('ataque[municipio_ataque_id]', 'Municipio del ataque', ['class' => 'label-required']) }}
-									{{ Form::select('ataque[municipio_ataque_id]', [], null, ['required', 'class' => 'form-control select2', 'data-error' => 'Selecciona un elemento de la lista']) }}
+									{{ Form::select('ataque[municipio_ataque_id]', [], null, ['required', 'class' => 'form-control select2', 'data-error' => 'Selecciona un elemento de la lista'] + ($ataque['ataque']->toArray() ? ['data-id' => $ataque['ataque']->municipio_ataque_id] : [])) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -153,14 +153,14 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('victima[departamento_residencia_id]', 'Departamento residencia', ['class' => 'label-required']) }}
-									{{ Form::select('victima[departamento_residencia_id]', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change', 'data-error' => 'Selecciona un elemento de la lista']) }}
+									{{ Form::select('victima[departamento_residencia_id]', $departamentoLista, null, ['required', 'class' => 'form-control select2 departamento_change', 'data-error' => 'Selecciona un elemento de la lista'] + ($ataque['victima']->toArray() ? ['data-id' => $ataque['victima']->municipio_residencia->departamento_id] : [])) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									{{ Form::label('victima[municipio_residencia_id]', 'Municipio residencia', ['class' => 'label-required']) }}
-									{{ Form::select('victima[municipio_residencia_id]', [], null, ['required', 'class' => 'form-control select2', 'data-error' => 'Selecciona un elemento de la lista']) }}
+									{{ Form::select('victima[municipio_residencia_id]', [], null, ['required', 'class' => 'form-control select2', 'data-error' => 'Selecciona un elemento de la lista'] + ($ataque['victima']->toArray() ? ['data-id' => $ataque['victima']->municipio_residencia_id] : [])) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -172,8 +172,8 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
-									{{ Form::label('ataque[tipo_agresion_id]', 'Tipo de agresión', ['class' => 'label-required']) }}
-									{{ Form::select('ataque[tipo_agresion_id]', $tipoAgresionLista, null, ['required', 'class' => 'form-control tipo_agresion_id', 'data-error' => 'Selecciona un elemento de la lista']) }}
+									{{ Form::label('ataque[tipo_ataque_id]', 'Tipo de agresión', ['class' => 'label-required']) }}
+									{{ Form::select('ataque[tipo_ataque_id]', $tipoAgresionLista, null, ['required', 'class' => 'form-control tipo_ataque_id', 'data-error' => 'Selecciona un elemento de la lista']) }}
 									<div class="help-block with-errors"></div>
 								</div>
 							</div>
@@ -193,8 +193,8 @@
 									{{ Form::label('ataque[agresion_provocada]', '¿La agresión fue provocada?', ['class' => 'label-required']) }}
 									{{ Form::select('ataque[agresion_provocada]', [
 										'' => 'Seleccione una opción',
-										'S' => 'Si',
-										'N' => 'No'
+										'1' => 'Si',
+										'0' => 'No'
 									], null, ['class' => 'form-control', 'required', 'data-error' => 'Selecciona un elemento de la lista']) }}
 									<div class="help-block with-errors"></div>
 								</div>
@@ -226,7 +226,7 @@
 								<div style="margin-left: 10px;">
 									@foreach($localizacionAnatomicaLista as $localizacion_anatomica)
 										<div class="custom-control custom-checkbox">
-											{{ Form::checkbox('localizacion_anatomica[]', $localizacion_anatomica->id, false, ['class' => 'custom-control-input', 'id' => 'localizacion_anatomica'.$localizacion_anatomica->id]) }}
+											{{ Form::checkbox('localizacion_anatomica[]', $localizacion_anatomica->id, ($ataque['ataque']->toArray() ? $ataque['ataque']->inArrayFk($localizacion_anatomica->toArray(), $ataque['ataque']->localizacionesAnatomicas->toArray()) : false), ['class' => 'custom-control-input', 'id' => 'localizacion_anatomica'.$localizacion_anatomica->id]) }}
 											{{ Form::label('localizacion_anatomica'.$localizacion_anatomica->id, $localizacion_anatomica->nombre, ['class' => 'custom-control-label']) }}
 										</div>
 									@endforeach
@@ -299,8 +299,8 @@
 									{{ Form::label('ataque_victima[lavado_herida]', '¿Lavado de herida con agua y jabón?', ['class' => 'label-required']) }}
 									{{ Form::select('ataque_victima[lavado_herida]', [
 										'' => 'Selecciona una opción',
-										'S' => 'Si',
-										'N' => 'No'
+										'1' => 'Si',
+										'0' => 'No'
 									], null, ['required', 'class' => 'form-control', 'data-error' => 'Selecciona un elemento de la lista']) }}
 									<div class="help-block with-errors"></div>
 								</div>
@@ -310,8 +310,8 @@
 									{{ Form::label('ataque_victima[sutura_herida]', '¿Sutura de la herida?', ['class' => 'label-required']) }}
 									{{ Form::select('ataque_victima[sutura_herida]', [
 										'' => 'Selecciona una opción',
-										'S' => 'Si',
-										'N' => 'No'
+										'1' => 'Si',
+										'0' => 'No'
 									], null, ['required', 'class' => 'form-control', 'data-error' => 'Selecciona un elemento de la lista']) }}
 									<div class="help-block with-errors"></div>
 								</div>
@@ -321,8 +321,8 @@
 									{{ Form::label('ataque_victima[orden_suero]', '¿Ordenó suero antirrábico?', ['class' => 'label-required']) }}
 									{{ Form::select('ataque_victima[orden_suero]', [
 										'' => 'Selecciona una opción',
-										'S' => 'Si',
-										'N' => 'No'
+										'1' => 'Si',
+										'0' => 'No'
 									], null, ['required', 'class' => 'form-control', 'data-error' => 'Selecciona un elemento de la lista']) }}
 									<div class="help-block with-errors"></div>
 								</div>
@@ -332,8 +332,8 @@
 									{{ Form::label('ataque_victima[orden_aplicacion_vacuna]', '¿Ordenó aplicación de vacuna?', ['class' => 'label-required']) }}
 									{{ Form::select('ataque_victima[orden_aplicacion_vacuna]', [
 										'' => 'Selecciona una opción',
-										'S' => 'Si',
-										'N' => 'No'
+										'1' => 'Si',
+										'0' => 'No'
 									], null, ['required', 'class' => 'form-control', 'data-error' => 'Selecciona un elemento de la lista']) }}
 									<div class="help-block with-errors"></div>
 								</div>
@@ -353,56 +353,64 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[nombre]', 'Nombre del propietario') }}
-								{{ Form::text('propietario[nombre]', null, ['class' => 'form-control dato-propietario only-char']) }}
+								{{ Form::label('propietario[nombre]', 'Nombre del propietario', ['class' => 'label-required']) }}
+								{{ Form::text('propietario[nombre]', null, ['class' => 'form-control dato-propietario only-char', 'data-error' => 'Ingresa el nombre del propietario', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[apellido]', 'Apellido del propietario') }}
-								{{ Form::text('propietario[apellido]', null, ['class' => 'form-control dato-propietario only-char']) }}
+								{{ Form::label('propietario[apellido]', 'Apellido del propietario', ['class' => 'label-required']) }}
+								{{ Form::text('propietario[apellido]', null, ['class' => 'form-control dato-propietario only-char', 'data-error' => 'Ingresa el apellido del propietario', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[tipo_documento]', 'Tipo de documento') }}
+								{{ Form::label('propietario[tipo_documento]', 'Tipo de documento', ['class' => 'label-required']) }}
 								{{ Form::select('propietario[tipo_documento]', [
 									'' => 'Seleccione una opción',
 									'TI' => 'Tarjeta de identidad',
 									'CC' => 'Cédula de ciudadanía',
 									'CE' => 'Cédula extranjera',
 									'PS' => 'Pasaporte'
-								], null, ['class' => 'form-control']) }}
+								], null, ['class' => 'form-control', 'data-error' => 'Selecciona una opción', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[numero_documento]', 'Número del documento del propietario') }}
-								{{ Form::text('propietario[numero_documento]', null, ['class' => 'form-control dato-propietario numero_documento_propietario only-number']) }}
+								{{ Form::label('propietario[numero_documento]', 'Número del documento del propietario', ['class' => 'label-required']) }}
+								{{ Form::text('propietario[numero_documento]', null, ['class' => 'form-control dato-propietario numero_documento_propietario only-number', 'data-error' => 'Ingresa el número de documento del propietario', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[direccion_residencia]', 'Dirección de residencia') }}
-								{{ Form::text('propietario[direccion_residencia]', null, ['class' => 'form-control dato-propietario']) }}
+								{{ Form::label('propietario[direccion_residencia]', 'Dirección de residencia', ['class' => 'label-required']) }}
+								{{ Form::text('propietario[direccion_residencia]', null, ['class' => 'form-control dato-propietario', 'data-error' => 'Ingresa la dirección de la residencia', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[departamento_residencia_id]', 'Departamento residencia') }}
-								{{ Form::select('propietario[departamento_residencia_id]', $departamentoLista, null, ['class' => 'form-control dato-propietario select2 departamento_change']) }}
+								{{ Form::label('propietario[departamento_residencia_id]', 'Departamento residencia', ['class' => 'label-required']) }}
+								{{ Form::select('propietario[departamento_residencia_id]', $departamentoLista, null, ['class' => 'form-control dato-propietario select2 departamento_change', 'data-error' => 'Selecciona una opción', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[municipio_residencia_id]', 'Municipio residencia') }}
-								{{ Form::select('propietario[municipio_residencia_id]', [], null, ['class' => 'form-control dato-propietario select2']) }}
+								{{ Form::label('propietario[municipio_residencia_id]', 'Municipio residencia', ['class' => 'label-required']) }}
+								{{ Form::select('propietario[municipio_residencia_id]', [], null, ['class' => 'form-control dato-propietario select2', 'data-error' => 'Selecciona una opción', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								{{ Form::label('propietario[numero_celular]', 'Número celular') }}
-								{{ Form::text('propietario[numero_celular]', null, ['class' => 'form-control only-number dato-propietario']) }}
+								{{ Form::label('propietario[numero_celular]', 'Número celular', ['class' => 'label-required']) }}
+								{{ Form::text('propietario[numero_celular]', null, ['class' => 'form-control only-number dato-propietario', 'data-error' => 'Ingresa el número del celular', 'required' => true]) }}
+								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -412,7 +420,7 @@
 									'' => 'Seleccione una opción',
 									'M' => 'Masculino',
 									'F' => 'Femenino'
-								], null, ['required', 'class' => 'form-control select2 dato-propietario']) }}
+								], null, ['required' => true, 'class' => 'form-control select2 dato-propietario', 'data-error' => 'Selecciona una opción']) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
@@ -546,7 +554,7 @@
 		$('.fecha_vacunacion').datepicker({
 			uiLibrary: 'bootstrap4'
 		})
-		$(document).on('change', '.tipo_agresion_id', function(){
+		$(document).on('change', '.tipo_ataque_id', function(){
 			let ataque_mordedura = $('.ataque_mordedura')
 			if($(this).val() == '1'){
 				ataque_mordedura.attr('required', true)
@@ -579,10 +587,10 @@
 						}
 					}else{
 						$('.mascota_id').removeAttr('required').empty().append('<option val="">Seleccione una opción</option>').parent().parent().addClass('hidden')
-						$('[name="propietario[nombre]"]').val('')
-						$('[name="propietario[apellido]"]').val('')
-						$('[name="propietario[tipo_documento]"]').val('').trigger('change')
-						$('[name="propietario[direccion_residencia]"]').val('').trigger('change')
+						// $('[name="propietario[nombre]"]').val('')
+						// $('[name="propietario[apellido]"]').val('')
+						// $('[name="propietario[tipo_documento]"]').val('').trigger('change')
+						// $('[name="propietario[direccion_residencia]"]').val('').trigger('change')
 						$('.raza_id').attr('required', true).parent().parent().removeClass('hidden')
 						$('.nombre_especie').attr('required', true).parent().parent().removeClass('hidden')
 					}
@@ -655,6 +663,9 @@
 						.addClass('btn btn-success hidden btn-finish')
 					]
 				}
+			})
+			$('.departamento_change').each(function(){
+				$(this).val($(this).attr('data-id')).trigger('change')
 			})
 		})
 		$('#form-wizard').submit(function(event){

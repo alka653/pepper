@@ -205,6 +205,10 @@ Route::group(['middleware' => 'auth'], function(){
 					});
 				});
 			});
+			Route::group(['prefix' => 'editar', 'middleware' => 'permission:gestionar_ataques'], function(){
+				Route::get('/', 'AtaquesController@edit')->name('editar_ataque');
+				Route::post('/', 'AtaquesController@saveOrUpdateData')->name('editar_ataque.post')->middleware('make_user_log:update_attack');
+			});
 		});
 	});
 	Route::group(['middleware' => 'permission:modulo_reportes', 'prefix' => 'reportes'], function(){

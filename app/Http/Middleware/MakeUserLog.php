@@ -67,6 +67,9 @@ class MakeUserLog{
             case 'create_attack':
                 $descripcion = 'Creación de ataque';
                 break;
+            case 'update_attack':
+                $descripcion = 'Edición de ataque';
+                break;
             case 'create_follow':
                 $descripcion = 'Creación de revisión';
                 break;
