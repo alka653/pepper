@@ -395,14 +395,14 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								{{ Form::label('propietario[departamento_residencia_id]', 'Departamento residencia', ['class' => 'label-required']) }}
-								{{ Form::select('propietario[departamento_residencia_id]', $departamentoLista, null, ['class' => 'form-control dato-propietario select2 departamento_change', 'data-error' => 'Selecciona una opción', 'required' => true]) }}
+								{{ Form::select('propietario[departamento_residencia_id]', $departamentoLista, null, ['class' => 'form-control dato-propietario select2 departamento_change', 'data-error' => 'Selecciona una opción', 'required' => true] + ($ataque['propietario']->toArray() ? ['data-id' => $ataque['propietario']->municipio_residencia->departamento_id] : [])) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								{{ Form::label('propietario[municipio_residencia_id]', 'Municipio residencia', ['class' => 'label-required']) }}
-								{{ Form::select('propietario[municipio_residencia_id]', [], null, ['class' => 'form-control dato-propietario select2', 'data-error' => 'Selecciona una opción', 'required' => true]) }}
+								{{ Form::select('propietario[municipio_residencia_id]', [], null, ['class' => 'form-control dato-propietario select2', 'data-error' => 'Selecciona una opción', 'required' => true] + ($ataque['propietario']->toArray() ? ['data-id' => $ataque['propietario']->municipio_residencia_id] : [])) }}
 								<div class="help-block with-errors"></div>
 							</div>
 						</div>
@@ -585,6 +585,9 @@
 								`)
 							})
 						}
+						@if($ataque['ataque_animal']->toArray())
+							$('.mascota_id').val('{{ $ataque["ataque"]["mascota_id"] }}').trigger('change')
+						@endif
 					}else{
 						$('.mascota_id').removeAttr('required').empty().append('<option val="">Seleccione una opción</option>').parent().parent().addClass('hidden')
 						// $('[name="propietario[nombre]"]').val('')
@@ -664,9 +667,14 @@
 					]
 				}
 			})
-			$('.departamento_change').each(function(){
-				$(this).val($(this).attr('data-id')).trigger('change')
-			})
+			@if($ataque['propietario']->toArray())
+				$('.departamento_change').each(function(){
+					$(this).val($(this).attr('data-id')).trigger('change')
+				})
+				$('.numero_documento_propietario').each(function(){
+					$(this).trigger('focusout')
+				})
+			@endif
 		})
 		$('#form-wizard').submit(function(event){
 			let elmForm = $('#form-step-4')

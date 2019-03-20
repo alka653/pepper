@@ -41,11 +41,15 @@ class AtaquesController extends Controller{
 		]);
 	}
 	public function edit(Ataques $ataque){
+		$ataque_animal = $ataque->ataqueAnimal;
+		$ataque_animal->mascota_id = $ataque->mascota_id;
+		$propietario = Personas::with('municipio_residencia')->where('id', $ataque->mascota->propietario_id)->first();
 		return view(self::DIR_TEMPLATE.'form', [
 			'ataque' => [
 				'ataque' => $ataque,
 				'ataque_victima' => $ataque->ataqueVictima,
-				'ataque_animal' => $ataque->ataqueAnimal,
+				'ataque_animal' => $ataque_animal,
+				'propietario' => $propietario,
 				'victima' => Personas::with('municipio_expedicion', 'municipio_residencia')->where('id', $ataque->victima_id)->first()
 			],
 			'razaLista' => Razas::lista(),
@@ -57,8 +61,9 @@ class AtaquesController extends Controller{
 			'method' => 'post'
 		]);
 	}
-	public function saveOrUpdateData(Request $request){
+	public function saveOrUpdateData(Request $request, Ataques $ataque){
 		$mascota = null;
+		dd($ataque, $request->ataque);
 		$victima = Personas::where('numero_documento', $request->victima['numero_documento'])->first();
 		if(!$victima){
 			$victima = Personas::saveData([
