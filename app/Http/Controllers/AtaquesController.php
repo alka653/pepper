@@ -63,7 +63,6 @@ class AtaquesController extends Controller{
 	}
 	public function saveOrUpdateData(Request $request, Ataques $ataque){
 		$mascota = null;
-		dd($ataque, $request->ataque);
 		$victima = Personas::where('numero_documento', $request->victima['numero_documento'])->first();
 		if(!$victima){
 			$victima = Personas::saveData([
@@ -76,6 +75,14 @@ class AtaquesController extends Controller{
 				'numero_celular' => $request->victima['numero_celular'],
 				'tipo_documento' => $request->victima['tipo_documento']
 			]);
+		}else{
+			$victima->nombre = $request->victima['nombre'];
+			$victima->apellido = $request->victima['apellido'];
+			$victima->numero_celular = $request->victima['numero_celular'];
+			$victima->sexo = $request->victima['sexo'];
+			$victima->direccion_residencia = $request->victima['direccion_residencia'];
+			$victima->municipio_residencia_id = $request->victima['municipio_residencia_id'];
+			$victima->save();
 		}
 		$duenio_mascota = Personas::where('numero_documento', $request->propietario['numero_documento'])->first();
 		if(!$duenio_mascota){
@@ -93,31 +100,52 @@ class AtaquesController extends Controller{
 				])->id;
 			}
 		}else{
-			$duenio_mascota = $duenio_mascota->id;
+			$duenio_mascota->nombre = $request->propietario['nombre'];
+			$duenio_mascota->apellido = $request->propietario['apellido'];
+			$duenio_mascota->numero_celular = $request->propietario['numero_celular'];
+			$duenio_mascota->sexo = $request->propietario['sexo'];
+			$duenio_mascota->direccion_residencia = $request->propietario['direccion_residencia'];
+			$duenio_mascota->municipio_residencia_id = $request->propietario['municipio_residencia_id'];
+			$duenio_mascota->save();
 		}
 		$mascota = $request->ataque_animal['mascota_id'];
 		if($mascota == null || strpos($mascota, 'Seleccione') !== false){
 			$mascota = Mascotas::saveData([
 				'nombre' => $request->ataque_animal['nombre_especie'],
-				'propietario_id' => $duenio_mascota,
+				'propietario_id' => $duenio_mascota->id,
 				'vacunado' => $request->ataque_animal['animal_vacunado'] == 'S' ? true : false,
 				'fecha_nacimiento' => null,
 				'fecha_vacunacion' => $request->ataque_animal['fecha_vacunacion'],
 				'raza_id' => $request->ataque_animal['raza_id']
 			])->id;
 		}
-		$ataque = Ataques::saveData([
-			'victima_id' => $victima->id,
-			'mascota_id' => $mascota,
-			'fecha_ataque' => $request->ataque['fecha_ataque'],
-			'descripcion' => $request->ataque['descripcion'],
-			'tipo_ataque_id' => $request->ataque['tipo_ataque_id'],
-			'ataque_mordedura' => $request->ataque['tipo_ataque_id'] == '1' ? 'C' : 'D',
-			'municipio_ataque_id' => $request->ataque['municipio_ataque_id'],
-			'agresion_provocada' => $request->ataque['agresion_provocada'] == '1' ? true : false,
-			'tipo_lesion' => $request->ataque['tipo_lesion'],
-			'profundidad' => $request->ataque['profundidad']
-		]);
+		if(!$request->ataque){
+			$ataque = Ataques::saveData([
+				'victima_id' => $victima->id,
+				'mascota_id' => $mascota,
+				'fecha_ataque' => $request->ataque['fecha_ataque'],
+				'descripcion' => $request->ataque['descripcion'],
+				'tipo_ataque_id' => $request->ataque['tipo_ataque_id'],
+				'ataque_mordedura' => $request->ataque['tipo_ataque_id'] == '1' ? 'C' : 'D',
+				'municipio_ataque_id' => $request->ataque['municipio_ataque_id'],
+				'agresion_provocada' => $request->ataque['agresion_provocada'] == '1' ? true : false,
+				'tipo_lesion' => $request->ataque['tipo_lesion'],
+				'profundidad' => $request->ataque['profundidad']
+			]);
+		}else{
+			$ataque->fecha_ataque = $request->ataque['fecha_ataque'];
+			$ataque->descripcion = $request->ataque['descripcion'];
+			$ataque->tipo_ataque_id = $request->ataque['tipo_ataque_id'];
+			$ataque->ataque_mordedura = $request->ataque['tipo_ataque_id'] == '1' ? 'C' : 'D';
+			$ataque->municipio_ataque_id = $request->ataque['municipio_ataque_id'];
+			$ataque->agresion_provocada = $request->ataque['agresion_provocada'] == '1' ? true : false;
+			$ataque->tipo_lesion = $request->ataque['tipo_lesion'];
+			$ataque->profundidad = $request->ataque['profundidad'];
+			$ataque->save();
+			AtaquesAnatomicas::where('ataque_id', $ataque->id)->delete();
+			AtaquesAnimal::where('ataque_id', $ataque->id)->delete();
+			AtaquesVictima::where('ataque_id', $ataque->id)->delete();
+		}
 		foreach($request->localizacion_anatomica as $localizacion_anatomica){
 			$ataque->localizacionesAnatomicas()->attach($localizacion_anatomica);
 		}
