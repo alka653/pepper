@@ -98,11 +98,11 @@ class ReportesController extends Controller{
 			'title' => 'Informe de mascotas',
 			'forms' => [
 				[
-					'name' => 'Nombre del propietario',
+					'name' => 'Nombre o número de cédula del propietario',
 					'field' => 'propietario',
 					'type' => 'text',
 					'required' => false,
-					'extra_class' => 'only-char'
+					'extra_class' => ''
 				],
 				[
 					'name' => 'Ocupación',

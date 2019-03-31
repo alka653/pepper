@@ -10,8 +10,12 @@ use Illuminate\Http\Request;
 use App\Mail\UserRegisterEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ChangePasswordFormRequest;
 use App\Http\Requests\RegistroUsuarioFormRequest;
+
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class UsersController extends Controller{
 	const DIR_TEMPLATE = 'usuarios.';
@@ -154,10 +158,22 @@ class UsersController extends Controller{
 		]);
 	}
 	public function updatePassword(ChangePasswordFormRequest $request){
-		User::updatePassword($request->password, $request->usuario);
-		return response()->json([
-			'message' => 'Contraseña actualizada con éxito'
-		]);
+		$current_password = Auth::User()->password;  
+		if(Hash::check($request->password_current, $current_password)){
+			User::updatePassword($request->password, $request->usuario);
+			return response()->json([
+				'message' => 'Contraseña actualizada con éxito'
+			]);
+		}else{
+			throw new HttpResponseException(response()->json([
+				'errors' => [
+					'password_current' => [
+						'La contraseña actual es inválida'
+					]
+				],
+				'message' => 'Hay algunos campos con valores no válidos'
+			], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
+		}
 	}
 	public function getOwnerByNumDoc(Request $request){
 		$data = [];

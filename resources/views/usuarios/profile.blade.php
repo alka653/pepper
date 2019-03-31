@@ -71,11 +71,11 @@
 							</a>
 							@can('modulo_usuarios')
 								@if($usuario->estado == 'A')
-									<a href="{{ route('cambiar_estado', ['persona' => $usuario->persona_id, 'estado' => 'I']) }}" class="btn btn-sm btn-info">
+									<a href="{{ route('cambiar_estado', ['persona' => $usuario->persona_id, 'estado' => 'I']) }}" class="btn btn-sm btn-info" onclick="onConfirm('desactivar', event)">
 										Desactivar cuenta
 									</a>
 								@else
-									<a href="{{ route('cambiar_estado', ['persona' => $usuario->persona_id, 'estado' => 'A']) }}" class="btn btn-sm btn-info">
+									<a href="{{ route('cambiar_estado', ['persona' => $usuario->persona_id, 'estado' => 'A']) }}" class="btn btn-sm btn-info" onclick="onConfirm('activar', event)">
 										Activar cuenta
 									</a>
 								@endif
@@ -86,4 +86,14 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('script')
+	<script>
+		onConfirm = (action, event) => {
+			if(!confirm(`¿Desea ${action} la cuenta?`)){
+				event.preventDefault();
+			}
+		}
+	</script>
 @endsection

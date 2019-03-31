@@ -12,6 +12,11 @@
 					{{ Form::hidden('usuario', $usuario) }}
 				@endif
 				<div class="form-group">
+					{{ Form::label('password_current', 'Contraseña actual') }}
+					{{ Form::password('password_current', ['required', 'class' => 'form-control']) }}
+					{!! $errors->first('password_current', '<p class="help-block">:message</p>') !!}
+				</div>
+				<div class="form-group">
 					{{ Form::label('password', 'Contraseña') }}
 					{{ Form::password('password', ['required', 'class' => 'form-control']) }}
 					{!! $errors->first('password', '<p class="help-block">:message</p>') !!}
