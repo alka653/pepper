@@ -95,7 +95,7 @@ class Constants{
 		'Otro' => 'Otro'
 	];
 	const OCUPACIONES_MASCOTA_LISTA = [
-		'' => 'Seleccione una opción',
+		'' => 'Ocupación canina',
 		'Perro de búsqueda y rescate' => 'Perro de búsqueda y rescate',
 		'Perro de detección' => 'Perro de detección',
 		'Perro de terapia' => 'Perro de terapia',
