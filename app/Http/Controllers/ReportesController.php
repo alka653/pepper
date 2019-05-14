@@ -252,7 +252,11 @@ class ReportesController extends Controller{
 			$filename = 'mascotas-'.date('Y-m-d').'.pdf';
 			$mascotas = Mascotas::with('propietario', 'raza');
 			if($request->ocupacion != ''){
-				$mascotas = $mascotas->whereRaw('LOWER(ocupacion) LIKE ?', ['%'.strtolower($request->ocupacion).'%']);
+                if($request->ocupacion != 'Otro'){
+                    $mascotas = $mascotas->whereRaw('LOWER(ocupacion) LIKE ?', ['%'.strtolower($request->ocupacion).'%']);
+                }else{
+                    $mascotas = $mascotas->whereNotIn('ocupacion', Constants::OCUPACIONES_MASCOTA_LISTA);
+                }
 			}
 			if($request->fecha_registro != null){
 				$mascotas = $mascotas->where('fecha_ingreso', date('Y-m-d', strtotime($request->fecha_registro)));

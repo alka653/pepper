@@ -26,7 +26,7 @@ class MascotasController extends Controller{
 		$query = $request->input('query');
 		$estado = $request->input('estado');
 		$raza_id = $request->input('raza_id');
-		$color = $request->input('color');
+		$ocupacion = $request->input('ocupacion');
 		$sexo = $request->input('sexo');
 		if($query != null){
 			$mascotas = $mascotas->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($query).'%']);
@@ -39,20 +39,25 @@ class MascotasController extends Controller{
 		}
 		if($sexo != null){
 			$mascotas = $mascotas->where('sexo', $sexo);
+        }
+		if($ocupacion != null){
+            if($ocupacion != 'Otro'){
+                $mascotas = $mascotas->whereRaw('LOWER(ocupacion) LIKE ?', ['%'.strtolower($ocupacion).'%']);
+            }else{
+                $mascotas = $mascotas->whereNotIn('ocupacion', Constants::OCUPACIONES_MASCOTA_LISTA);
+            }
 		}
-		if($color != null){
-			$mascotas = $mascotas->whereRaw('LOWER(color) LIKE ?', ['%'.strtolower($color).'%']);
-		}
-		return view(self::DIR_TEMPLATE.'list', [
+        return view(self::DIR_TEMPLATE.'list', [
 			'query' => $query,
 			'extraQuery' => [
 				'estado' => $estado,
 				'raza_id' => $raza_id,
-				'color' => $color,
+				'ocupacion' => $ocupacion,
 				'sexo' => $sexo
 			],
 			'url' => route('listar_mascota'),
-			'razas' => Razas::lista('Por raza'),
+            'razas' => Razas::lista('Por raza'),
+            'ocupaciones' => Constants::OCUPACIONES_MASCOTA_LISTA,
 			'placeholder' => 'Buscar una mascota',
 			'mascotas' => Auth::user()->perfil == 'U' ? $mascotas->where('propietario_id', Auth::user()->persona->id)->paginate(10) : $mascotas->paginate(10)
 		] + (Auth::user()->perfil != 'U' ? ['mascotaCount' => [
