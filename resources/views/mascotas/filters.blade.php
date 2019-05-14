@@ -9,7 +9,7 @@
 	], $extraQuery['sexo'], ['class' => 'form-control']) }}
 </div>
 <div class="col-md-3 form-group">
-	{{ Form::text('color', $extraQuery['color'], ['class' => 'form-control', 'placeholder' => 'Por color']) }}
+    {{ Form::select('ocupacion', $ocupaciones, $extraQuery['ocupacion'], ['class' => 'form-control']) }}
 </div>
 <div class="col-md-3 form-group">
 	{{ Form::select('raza_id', $razas, $extraQuery['raza_id'], ['class' => 'form-control']) }}
