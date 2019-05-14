@@ -7,6 +7,9 @@
             <h5>
                 <b>SISTEMA DE INFORMACIÓN PARA EL REGISTRO Y CONTROL DE LOS PERROS POTENCIALMENTE PELIGROSOS (PEPPER)</b>
             </h5>
+            <h6>
+                <b>SECRETARÍA DE SALUD</b>
+            </h6>
         </div>
         <div class="col-1" style="margin-left: 85%">
             <img src="{{ $escudo }}" class="img-fluid">
